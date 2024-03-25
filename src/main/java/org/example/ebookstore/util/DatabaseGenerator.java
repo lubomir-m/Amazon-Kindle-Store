@@ -1,4 +1,4 @@
-package org.example.ebookstore;
+package org.example.ebookstore.util;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -7,6 +7,10 @@ import org.springframework.stereotype.Component;
 public class DatabaseGenerator implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
+//        generateDatabase();
+    }
+
+    public void generateDatabase() {
         generatePublishers();
         generateAuthors();
         generateCategories();
