@@ -13,7 +13,7 @@ public class Role extends BaseEntity {
     }
 
     @Enumerated(EnumType.STRING)
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 100)
     private UserRole name;
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;

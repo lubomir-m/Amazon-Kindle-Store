@@ -14,19 +14,19 @@ import java.util.Set;
 @Table(name = "users")
 public class User extends BaseEntity {
     @Size(min = 5, max = 30)
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 30)
     private String username;
     @Email(message = "Invalid email.")
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 150)
     private String email;
     @Size(min = 7, max = 128)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 128)
     private String password;
     @Size(min = 2, max = 50)
-    @Column(name = "first_name", nullable = false)
+    @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
     @Size(min = 2, max = 50)
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
     @Positive
     @Column(nullable = false)
