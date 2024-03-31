@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "publishers")
 public class Publisher extends BaseEntity {
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 128)
     @Size(min = 5, max = 128)
     private String name;
     @Column(columnDefinition = "TEXT")

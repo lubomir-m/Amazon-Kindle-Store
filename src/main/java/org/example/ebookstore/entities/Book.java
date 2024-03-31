@@ -3,7 +3,7 @@ package org.example.ebookstore.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-
+import jakarta.validation.constraints.Size;
 
 
 import java.math.BigDecimal;
@@ -34,11 +34,14 @@ public class Book extends BaseEntity {
     @Column(name = "average_rating", nullable = false)
     private double averageRating;
     @Column(name = "ratings_count", nullable = false)
-    private long ratingsCount;
+    private Long ratingsCount;
     @OneToMany(mappedBy = "book")
     private Set<Review> reviews = new HashSet<>();
     @Column(columnDefinition = "TEXT")
     private String description;
+    @Column(nullable = false)
+    @Size(min = 3)
+    private String title;
     @Column(name = "publication_date", nullable = false)
     private LocalDate publicationDate;
     @ManyToOne
@@ -229,5 +232,13 @@ public class Book extends BaseEntity {
 
     public BigDecimal getPriceNgn() {
         return priceNgn;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

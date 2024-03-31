@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Table(name = "authors")
 public class Author extends BaseEntity {
-    @Column(name = "full_name", nullable = false)
+    @Column(name = "full_name", nullable = false, length = 50)
     @Size(min = 5, max = 50)
     private String fullName;
     @ManyToMany(mappedBy = "authors")

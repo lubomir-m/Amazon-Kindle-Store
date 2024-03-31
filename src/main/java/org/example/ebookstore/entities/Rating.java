@@ -1,6 +1,8 @@
 package org.example.ebookstore.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 import java.time.LocalDate;
 
@@ -15,8 +17,20 @@ public class Rating extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
+    @Column(name = "rating_value", nullable = false)
+    @Min(1)
+    @Max(5)
+    private Integer ratingValue;
 
     public Rating() {
+    }
+
+    public Integer getRatingValue() {
+        return ratingValue;
+    }
+
+    public void setRatingValue(Integer ratingValue) {
+        this.ratingValue = ratingValue;
     }
 
     public User getUser() {

@@ -10,13 +10,13 @@ import java.util.Set;
 @Entity
 @Table(name = "currencies")
 public class Currency extends BaseEntity {
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 30)
     @Size(min = 3, max = 30)
     private String name;
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 3)
     @Size(min = 3, max = 3)
     private String code;
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 128)
     @Size(min = 3, max = 128)
     private String symbol;
     @OneToMany(mappedBy = "currencyFrom")
