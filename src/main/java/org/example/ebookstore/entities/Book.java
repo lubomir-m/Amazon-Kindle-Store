@@ -3,7 +3,7 @@ package org.example.ebookstore.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import org.aspectj.weaver.ast.Or;
+
 
 
 import java.math.BigDecimal;

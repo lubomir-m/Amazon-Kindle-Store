@@ -2,6 +2,7 @@ package org.example.ebookstore.entities;
 
 import jakarta.persistence.*;
 
+import java.util.Collections;
 import java.util.Set;
 
 @Entity
@@ -30,10 +31,12 @@ public class Wishlist extends BaseEntity {
     }
 
     public Set<Book> getBooks() {
-        return books;
+        return Collections.unmodifiableSet(this.books);
     }
-
-    public void setBooks(Set<Book> books) {
-        this.books = books;
+    public void addBook(Book book) {
+        this.books.add(book);
+    }
+    public void removeBook(Book book) {
+        this.books.remove(book);
     }
 }

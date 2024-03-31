@@ -3,6 +3,7 @@ package org.example.ebookstore.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,18 +41,22 @@ public class Category extends BaseEntity {
     }
 
     public Set<Category> getSubcategories() {
-        return subcategories;
+        return Collections.unmodifiableSet(this.subcategories);
     }
-
-    public void setSubcategories(Set<Category> subcategories) {
-        this.subcategories = subcategories;
+    public void addSubcategory(Category subcategory) {
+        this.subcategories.add(subcategory);
+    }
+    public void removeSubcategory(Category subcategory) {
+        this.subcategories.remove(subcategory);
     }
 
     public Set<Book> getBooks() {
-        return books;
+        return Collections.unmodifiableSet(this.books);
     }
-
-    public void setBooks(Set<Book> books) {
-        this.books = books;
+    public void addBook(Book book) {
+        this.books.add(book);
+    }
+    public void removeBook(Book book) {
+        this.books.remove(book);
     }
 }

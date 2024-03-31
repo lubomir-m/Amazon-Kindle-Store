@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -84,11 +85,14 @@ public class User extends BaseEntity {
     }
 
     public Set<Role> getRoles() {
-        return roles;
+        return Collections.unmodifiableSet(this.roles);
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
+    public void removeRole(Role role) {
+        this.roles.remove(role);
     }
 
     public ShoppingCart getShoppingCart() {

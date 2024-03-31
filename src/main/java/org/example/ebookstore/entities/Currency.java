@@ -3,6 +3,7 @@ package org.example.ebookstore.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -49,10 +50,12 @@ public class Currency extends BaseEntity {
     }
 
     public Set<ExchangeRate> getExchangeRates() {
-        return exchangeRates;
+        return Collections.unmodifiableSet(this.exchangeRates);
     }
-
-    public void setExchangeRates(Set<ExchangeRate> exchangeRates) {
-        this.exchangeRates = exchangeRates;
+    public void addExchangeRate(ExchangeRate exchangeRate) {
+        this.exchangeRates.add(exchangeRate);
+    }
+    public void removeExchangeRate(ExchangeRate exchangeRate) {
+        this.exchangeRates.remove(exchangeRate);
     }
 }

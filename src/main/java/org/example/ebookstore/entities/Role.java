@@ -2,6 +2,7 @@ package org.example.ebookstore.entities;
 
 import jakarta.persistence.*;
 
+import java.util.Collections;
 import java.util.Set;
 
 @Entity
@@ -29,10 +30,12 @@ public class Role extends BaseEntity {
     }
 
     public Set<User> getUsers() {
-        return users;
+        return Collections.unmodifiableSet(this.users);
     }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void addUser(User user) {
+        this.users.add(user);
+    }
+    public void removeUser(User user) {
+        this.users.remove(user);
     }
 }

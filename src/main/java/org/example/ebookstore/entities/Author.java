@@ -3,6 +3,7 @@ package org.example.ebookstore.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,11 +30,14 @@ public class Author extends BaseEntity {
     }
 
     public Set<Book> getBooks() {
-        return books;
+        return Collections.unmodifiableSet(this.books);
     }
 
-    public void setBooks(Set<Book> books) {
-        this.books = books;
+    public void addBook(Book book) {
+        this.books.add(book);
+    }
+    public void removeBook(Book book) {
+        this.books.remove(book);
     }
 
     public String getDescription() {

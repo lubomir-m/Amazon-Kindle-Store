@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayDeque;
+import java.util.Collections;
+import java.util.Deque;
 import java.util.Set;
 
 @Entity
@@ -74,12 +77,25 @@ public class Order extends BaseEntity {
         this.totalPrice = totalPrice;
     }
 
-    public Set<OrderItem> getOrderItems() {
-        return orderItems;
+    public Set<Book> getBooks() {
+        return Collections.unmodifiableSet(this.books);
+    }
+    public void addBook(Book book) {
+        this.books.add(book);
+    }
+    public void removeBook(Book book) {
+        this.books.remove(book);
+        Deque<Integer> deque = new ArrayDeque<>();
     }
 
-    public void setOrderItems(Set<OrderItem> orderItems) {
-        this.orderItems = orderItems;
+    public Set<OrderItem> getOrderItems() {
+        return Collections.unmodifiableSet(this.orderItems);
+    }
+    public void addOrderItem(OrderItem orderItem) {
+        this.orderItems.add(orderItem);
+    }
+    public void removeOrderItem(OrderItem orderItem) {
+        this.orderItems.remove(orderItem);
     }
 }
 
