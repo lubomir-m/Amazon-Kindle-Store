@@ -22,9 +22,12 @@ public class User extends BaseEntity {
     @Size(min = 7, max = 128)
     @Column(nullable = false)
     private String password;
-    @Size(min = 5, max = 50)
-    @Column(nullable = false)
-    private String fullName;
+    @Size(min = 2, max = 50)
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+    @Size(min = 2, max = 50)
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
     @Positive
     @Column(nullable = false)
     @Max(150)
@@ -68,12 +71,20 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public int getAge() {
