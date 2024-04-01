@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Component
 public class InitialDatabaseSetup implements CommandLineRunner {
@@ -28,6 +29,7 @@ public class InitialDatabaseSetup implements CommandLineRunner {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final PasswordEncoder passwordEncoder;
+    private static final Random random = new Random();
 
     @Autowired
     public InitialDatabaseSetup(PublisherRepository publisherRepository, AuthorRepository authorRepository, CategoryRepository categoryRepository, BookRepository bookRepository, CurrencyRepository currencyRepository, ExchangeRateRepository exchangeRateRepository, RoleRepository roleRepository, RatingRepository ratingRepository, ReviewRepository reviewRepository, WishlistRepository wishlistRepository, ShoppingCartRepository shoppingCartRepository, UserRepository userRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, PasswordEncoder passwordEncoder) {
@@ -128,7 +130,7 @@ public class InitialDatabaseSetup implements CommandLineRunner {
                 "their commitment to quality and originality is unwavering.", "they are at the forefront of delivering compelling content."
         };
 
-        List<String> publisherDescriptions = new ArrayList<>();
+        List<String> publisherDescriptions = new ArrayList<>(152);
         for (String beginning : beginnings) {
             for (String middle : middles) {
                 for (String end : ends) {
@@ -142,8 +144,14 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         List<Publisher> publishers = new ArrayList<>();
         for (String name : publisherNames) {
             Publisher publisher = new Publisher();
+            publisher.setName(name);
+            String description = publisherDescriptions.get(random.nextInt(publisherDescriptions.size()));
+            publisher.setDescription(description);
 
+            publishers.add(publisher);
         }
+
+        this.publisherRepository.saveAll(publishers);
     }
 
     public void generateAuthors() {
@@ -175,6 +183,45 @@ public class InitialDatabaseSetup implements CommandLineRunner {
                 "Butler", "Simmons", "Foster", "Gonzales", "Bryant", "Alexander", "Russell", "Griffin", "Diaz", "Hayes",
                 "Myers", "Ford", "Hamilton", "Graham", "Sullivan", "Wallace", "Woods", "Cole", "West", "Jordan",
                 "Owens", "Reynolds", "Fisher", "Ellis", "Harrison", "Gibson", "McDonald", "Cruz", "Marshall", "Ortiz"
+        };
+
+        String[] skills = {
+                "Award-winning author celebrated for his innovative narrative techniques and profound insight into the human condition,",
+                "Bestselling novelist whose gripping narratives have become a staple in the thriller genre,",
+                "Critically acclaimed for his meticulous research and the depth of his historical biographies,",
+                "Innovative writer known for pushing the boundaries of science fiction and fantasy,",
+                "Influential poet whose verses resonate with the complexities of love and loss,",
+                "Pioneering journalist who has brought light to some of the most pressing issues of our times,",
+                "Visionary playwright whose works challenge perceptions and speak powerfully to a range of audiences,",
+                "Groundbreaking academic whose publications have changed the landscape of contemporary literary studies,",
+                "Renowned for his explorative essays on modern society and the individual’s place within it,",
+                "Leading voice in children's literature, crafting stories that entertain and educate young minds alike,"
+        };
+
+        String[] genres = {
+                "weaving tales of historical fiction that vividly bring the past to life,",
+                "mastering the art of suspense with his mystery and thriller novels,",
+                "delving into the complexities of science and technology with a humanistic approach,",
+                "creating captivating fantasy worlds that have enchanted readers of all ages,",
+                "offering guidance through his transformative self-help books,",
+                "exploring the multifaceted nature of romance through his compelling narratives,",
+                "resonating with the trials and triumphs of the young adult experience,",
+                "penning biographies that uncover the nuanced lives of historical figures,",
+                "crafting poetry that explores the deepest emotions and universal human experiences,",
+                "shaping young minds with his delightful and insightful children's literature,"
+        };
+
+        String[] accolades = {
+                "his work has been featured in the New York Times for its remarkable literary achievements.",
+                "he is a proud recipient of the National Book Award for his contributions to contemporary literature.",
+                "a favorite in book clubs around the world, his novels spark lively discussions and lasting memories.",
+                "his writing has garnered numerous literary prizes, recognizing his flair for vivid storytelling.",
+                "as a frequent book festival panelist, he inspires aspiring writers with his passion and wisdom.",
+                "his leadership in writing workshops has guided many to find their own voice in the literary world.",
+                "his genre-defining books have set a high bar for storytelling excellence and creativity.",
+                "known for captivating storytelling, he weaves complex characters and plot with finesse.",
+                "boasting numerous literary accolades, he is celebrated by critics and readers alike.",
+                "his works have been translated into multiple languages, touching the lives of readers across the globe."
         };
     }
 
