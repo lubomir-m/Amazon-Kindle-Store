@@ -1,5 +1,6 @@
 package org.example.ebookstore.util;
 
+import org.example.ebookstore.entities.Author;
 import org.example.ebookstore.entities.Publisher;
 import org.example.ebookstore.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,10 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         generateAuthors();
         generateCategories();
         generateBooks();
+    }
+
+    public void generatePictures() {
+
     }
 
     public void generatePublishers() {
@@ -223,6 +228,34 @@ public class InitialDatabaseSetup implements CommandLineRunner {
                 "boasting numerous literary accolades, he is celebrated by critics and readers alike.",
                 "his works have been translated into multiple languages, touching the lives of readers across the globe."
         };
+
+        List<String> descriptions = new ArrayList<>(1000);
+        for (String skill : skills) {
+            for (String genre : genres) {
+                for (String accolade : accolades) {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(skill).append(" ").append(genre).append(" ").append(accolade);
+                    descriptions.add(sb.toString());
+                }
+            }
+        }
+
+        List<Author> authors = new ArrayList<>(10000);
+        for (String firstName : firstNames) {
+            for (String lastName : lastNames) {
+                StringBuilder sb = new StringBuilder();
+                sb.append(firstName).append(" ").append(lastName);
+                String fullName = sb.toString();
+                String description = descriptions.get(random.nextInt(descriptions.size()));
+
+                Author author = new Author();
+                author.setFullName(fullName);
+                author.setDescription(description);
+                authors.add(author);
+            }
+        }
+
+        this.authorRepository.saveAll(authors);
     }
 
     public void generateCategories() {
