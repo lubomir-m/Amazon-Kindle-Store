@@ -10,8 +10,8 @@ import java.util.Set;
 @Entity
 @Table(name = "categories")
 public class Category extends BaseEntity {
-    @Column(unique = true, nullable = false, length = 50)
-    @Size(min = 4, max = 50)
+    @Column(unique = true, nullable = false, length = 80)
+    @Size(min = 3, max = 80)
     private String name;
     @ManyToOne
     @JoinColumn(name = "parent_id")

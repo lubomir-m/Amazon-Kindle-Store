@@ -1,8 +1,6 @@
 package org.example.ebookstore.util;
 
-import org.example.ebookstore.entities.Author;
-import org.example.ebookstore.entities.Picture;
-import org.example.ebookstore.entities.Publisher;
+import org.example.ebookstore.entities.*;
 import org.example.ebookstore.repositories.*;
 import org.example.ebookstore.services.interfaces.AuthorService;
 import org.example.ebookstore.services.interfaces.UserService;
@@ -12,9 +10,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 @Component
 public class InitialDatabaseSetup implements CommandLineRunner {
@@ -33,14 +34,16 @@ public class InitialDatabaseSetup implements CommandLineRunner {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final PasswordEncoder passwordEncoder;
-    private static final Random random = new Random();
-    private static List<Picture> authorPicturesList = new ArrayList<>();
-    private static List<Picture> userPicturesList = new ArrayList<>();
+    private final Random random = new Random();
+    private List<Picture> authorPicturesList = new ArrayList<>();
+    private List<Picture> userPicturesList = new ArrayList<>();
     private final UserService userService;
     private final AuthorService authorService;
+    private final PictureRepository pictureRepository;
+    private Map<Category, List<Category>> level2ToLeafCategories = new HashMap<>();
 
     @Autowired
-    public InitialDatabaseSetup(PublisherRepository publisherRepository, AuthorRepository authorRepository, CategoryRepository categoryRepository, BookRepository bookRepository, CurrencyRepository currencyRepository, ExchangeRateRepository exchangeRateRepository, RoleRepository roleRepository, RatingRepository ratingRepository, ReviewRepository reviewRepository, WishlistRepository wishlistRepository, ShoppingCartRepository shoppingCartRepository, UserRepository userRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, PasswordEncoder passwordEncoder, UserService userService, AuthorService authorService) {
+    public InitialDatabaseSetup(PublisherRepository publisherRepository, AuthorRepository authorRepository, CategoryRepository categoryRepository, BookRepository bookRepository, CurrencyRepository currencyRepository, ExchangeRateRepository exchangeRateRepository, RoleRepository roleRepository, RatingRepository ratingRepository, ReviewRepository reviewRepository, WishlistRepository wishlistRepository, ShoppingCartRepository shoppingCartRepository, UserRepository userRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, PasswordEncoder passwordEncoder, UserService userService, AuthorService authorService, PictureRepository pictureRepository) {
         this.publisherRepository = publisherRepository;
         this.authorRepository = authorRepository;
         this.categoryRepository = categoryRepository;
@@ -58,6 +61,7 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         this.passwordEncoder = passwordEncoder;
         this.userService = userService;
         this.authorService = authorService;
+        this.pictureRepository = pictureRepository;
     }
 
     @Override
@@ -69,7 +73,7 @@ public class InitialDatabaseSetup implements CommandLineRunner {
     }
 
     
-    public void generateDatabase() {
+    public void generateDatabase() throws IOException {
         generatePictures();
         generatePublishers();
         generateAuthors();
@@ -77,12 +81,31 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         generateBooks();
     }
 
-    public void generatePictures() {
+    public void generatePictures() throws IOException {
         List<String> authorImagePaths = ImagePathService.getAllImagePaths(
                 "src/main/resources/static/images/authors");
-        List<String> userImagePaths = ImagePathService.getAllImagePaths("" +
+        List<String> userImagePaths = ImagePathService.getAllImagePaths(
                 "src/main/resources/static/images/users");
 
+        saveImagesToList(authorImagePaths, this.authorPicturesList);
+        saveImagesToList(userImagePaths, this.userPicturesList);
+        this.pictureRepository.saveAll(this.authorPicturesList);
+        this.pictureRepository.saveAll(this.userPicturesList);
+    }
+
+    public void saveImagesToList(List<String> paths, List<Picture> imageList) throws IOException {
+        for (String path : paths) {
+            BufferedImage bImage = ImageIO.read(new File(path));
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            String fileExtension = getFileExtension(path);
+            ImageIO.write(bImage, fileExtension, bos);
+            byte[] data = bos.toByteArray();
+
+            Picture picture = new Picture();
+            picture.setName(new File(path).getName());
+            picture.setData(data);
+            imageList.add(picture);
+        }
     }
 
     public String getFileExtension(String path) {
@@ -178,6 +201,7 @@ public class InitialDatabaseSetup implements CommandLineRunner {
             publisher.setName(name);
             String description = publisherDescriptions.get(random.nextInt(publisherDescriptions.size()));
             publisher.setDescription(description);
+            publisher.setLogoColor(Colors.getRandomColor());
 
             publishers.add(publisher);
         }
@@ -277,6 +301,8 @@ public class InitialDatabaseSetup implements CommandLineRunner {
                 Author author = new Author();
                 author.setFullName(fullName);
                 author.setDescription(description);
+                author.setPicture(this.authorPicturesList.get(random.nextInt(this.authorPicturesList.size())));
+
                 authors.add(author);
             }
         }
@@ -316,15 +342,64 @@ public class InitialDatabaseSetup implements CommandLineRunner {
                 "Teen & Young Adult",
                 "Travel"
         };
+
+        List<Category> categoryList = new ArrayList<>(5881);
+        Category level1 = new Category();
+        level1.setName("Books");
+        categoryList.add(level1);
+
+        for (int i = 0; i < categories.length; i++) {
+            String level2Name = categories[i];
+            Category level2 = new Category();
+            level2.setName(level2Name);
+            level2.setParent(level1);
+            level1.addSubcategory(level2);
+
+            for (int j = 0; j < 10; j++) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("Subcategory ").append(i + 1).append(".").append(j + 1);
+                String level3Name = sb.toString();
+
+                Category level3 = new Category();
+                level3.setName(level3Name);
+                level3.setParent(level2);
+                level2.addSubcategory(level3);
+
+                for (int k = 1; k <= 5; k++) {
+                    sb.append(".").append(k);
+                    String level4Name = sb.toString();
+
+                    Category level4 = new Category();
+                    level4.setName(level4Name);
+                    level4.setParent(level3);
+                    level3.addSubcategory(level4);
+
+                    for (int l = 1; l <= 3; l++) {
+                        sb.append(".").append(l);
+                        String level5Name = sb.toString();
+
+                        Category level5 = new Category();
+                        level5.setName(level5Name);
+                        level5.setParent(level4);
+                        level4.addSubcategory(level5);
+
+                        categoryList.add(level2);
+                        categoryList.add(level3);
+                        categoryList.add(level4);
+                        categoryList.add(level5);
+
+                        this.level2ToLeafCategories.putIfAbsent(level2, new ArrayList<>());
+                        List<Category> leaves = this.level2ToLeafCategories.get(level2);
+                        leaves.add(level5);
+                    }
+                }
+            }
+        }
+
+        this.categoryRepository.saveAll(categoryList);
     }
 
     public void generateBooks() {
-
-
-
-    }
-
-    public void generateBookDescriptions() {
         // (12, 14, 16, 2688)
         String[] beginnings = {"In a world where magic and mystery intertwine,",
                 "Set against the backdrop of a war-torn kingdom,",
@@ -371,6 +446,24 @@ public class InitialDatabaseSetup implements CommandLineRunner {
                 "can they bridge the chasm between worlds, or will the gap widen beyond repair?",
                 "will the dawn of a new era bring peace, or will it herald an age of chaos?"
         };
+
+        List<String> descriptions = new ArrayList<>(2688);
+        for (String beginning : beginnings) {
+            for (String middle : middles) {
+                for (String end : ends) {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(beginning).append(" ").append(middle).append(" ").append(end);
+                    descriptions.add(sb.toString());
+                }
+            }
+        }
+
+        List<Book> books = new ArrayList<>(194172);
+        
+    }
+
+    public void generateBookDescriptions() {
+
     }
 
     public void generateUsers() {

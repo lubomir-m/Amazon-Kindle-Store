@@ -17,8 +17,19 @@ public class Publisher extends BaseEntity {
     private String description;
     @OneToMany(mappedBy = "publisher")
     private Set<Book> books = new HashSet<>();
+    @Column(name = "logo_color", nullable = false, length = 30)
+    @Size(min = 1, max = 30)
+    private String logoColor;
 
     public Publisher() {
+    }
+
+    public String getLogoColor() {
+        return logoColor;
+    }
+
+    public void setLogoColor(String logoColor) {
+        this.logoColor = logoColor;
     }
 
     public String getName() {

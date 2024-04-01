@@ -9,7 +9,7 @@ public class PlaceholderReview {
     private static final List<Review> placeholderReviews = new ArrayList<>();
 
     static {
-        // Use the provided array of review texts to initialize placeholder reviews
+        // array size 10
         String[] reviewTexts = {
                 "A tapestry of intricate storytelling, this book weaves together themes of courage, betrayal, and redemption in a way that is both profound and profoundly human. It's a rare gem that holds up a mirror to the soul, challenging and comforting in equal measure.",
                 "This narrative is a masterclass in character development, with each chapter peeling back layers of intrigue and complexity. The author's deft prose and sharp dialogue create a world so tangible, it feels as if you could step into it. A truly immersive experience.",
