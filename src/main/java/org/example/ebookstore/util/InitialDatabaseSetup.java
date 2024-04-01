@@ -1,8 +1,11 @@
 package org.example.ebookstore.util;
 
 import org.example.ebookstore.entities.Author;
+import org.example.ebookstore.entities.Picture;
 import org.example.ebookstore.entities.Publisher;
 import org.example.ebookstore.repositories.*;
+import org.example.ebookstore.services.interfaces.AuthorService;
+import org.example.ebookstore.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,9 +34,13 @@ public class InitialDatabaseSetup implements CommandLineRunner {
     private final OrderItemRepository orderItemRepository;
     private final PasswordEncoder passwordEncoder;
     private static final Random random = new Random();
+    private static List<Picture> authorPicturesList = new ArrayList<>();
+    private static List<Picture> userPicturesList = new ArrayList<>();
+    private final UserService userService;
+    private final AuthorService authorService;
 
     @Autowired
-    public InitialDatabaseSetup(PublisherRepository publisherRepository, AuthorRepository authorRepository, CategoryRepository categoryRepository, BookRepository bookRepository, CurrencyRepository currencyRepository, ExchangeRateRepository exchangeRateRepository, RoleRepository roleRepository, RatingRepository ratingRepository, ReviewRepository reviewRepository, WishlistRepository wishlistRepository, ShoppingCartRepository shoppingCartRepository, UserRepository userRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, PasswordEncoder passwordEncoder) {
+    public InitialDatabaseSetup(PublisherRepository publisherRepository, AuthorRepository authorRepository, CategoryRepository categoryRepository, BookRepository bookRepository, CurrencyRepository currencyRepository, ExchangeRateRepository exchangeRateRepository, RoleRepository roleRepository, RatingRepository ratingRepository, ReviewRepository reviewRepository, WishlistRepository wishlistRepository, ShoppingCartRepository shoppingCartRepository, UserRepository userRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, PasswordEncoder passwordEncoder, UserService userService, AuthorService authorService) {
         this.publisherRepository = publisherRepository;
         this.authorRepository = authorRepository;
         this.categoryRepository = categoryRepository;
@@ -49,6 +56,8 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
+        this.authorService = authorService;
     }
 
     @Override
@@ -61,6 +70,7 @@ public class InitialDatabaseSetup implements CommandLineRunner {
 
     
     public void generateDatabase() {
+        generatePictures();
         generatePublishers();
         generateAuthors();
         generateCategories();
@@ -68,8 +78,24 @@ public class InitialDatabaseSetup implements CommandLineRunner {
     }
 
     public void generatePictures() {
+        List<String> authorImagePaths = ImagePathService.getAllImagePaths(
+                "src/main/resources/static/images/authors");
+        List<String> userImagePaths = ImagePathService.getAllImagePaths("" +
+                "src/main/resources/static/images/users");
 
     }
+
+    public String getFileExtension(String path) {
+        if (path == null) {
+            return null;
+        }
+        int lastIndex = path.lastIndexOf('.');
+        if (lastIndex == -1) {
+            return ""; // empty extension
+        }
+        return path.substring(lastIndex + 1);
+    }
+
 
     public void generatePublishers() {
         // array size 152
@@ -345,5 +371,15 @@ public class InitialDatabaseSetup implements CommandLineRunner {
                 "can they bridge the chasm between worlds, or will the gap widen beyond repair?",
                 "will the dawn of a new era bring peace, or will it herald an age of chaos?"
         };
+    }
+
+    public void generateUsers() {
+        String[] firstNames = {"James", "John", "Robert", "Michael", "William", "David",
+                "Richard", "Joseph", "Thomas", "Charles"};
+
+        String[] lastNames = {"Smith", "Johnson", "Williams", "Jones", "Brown", "Davis",
+                "Miller", "Wilson", "Moore", "Taylor"};
+
+
     }
 }

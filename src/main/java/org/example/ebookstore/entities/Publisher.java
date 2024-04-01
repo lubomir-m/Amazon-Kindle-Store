@@ -17,19 +17,8 @@ public class Publisher extends BaseEntity {
     private String description;
     @OneToMany(mappedBy = "publisher")
     private Set<Book> books = new HashSet<>();
-    @ManyToOne
-    @JoinColumn(name = "picture_id")
-    private Picture picture;
 
     public Publisher() {
-    }
-
-    public Picture getPicture() {
-        return picture;
-    }
-
-    public void setPicture(Picture picture) {
-        this.picture = picture;
     }
 
     public String getName() {
