@@ -45,8 +45,19 @@ public class User extends BaseEntity {
     private Wishlist wishlist;
     @OneToMany(mappedBy = "user")
     private Set<Order> orders = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "picture_id")
+    private Picture picture;
 
     public User() {
+    }
+
+    public Picture getPicture() {
+        return picture;
+    }
+
+    public void setPicture(Picture picture) {
+        this.picture = picture;
     }
 
     public Set<Order> getOrders() {

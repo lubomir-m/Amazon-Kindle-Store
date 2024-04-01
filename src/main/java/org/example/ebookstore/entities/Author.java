@@ -17,8 +17,19 @@ public class Author extends BaseEntity {
     private Set<Book> books = new HashSet<>();
     @Column(columnDefinition = "TEXT")
     private String description;
+    @ManyToOne
+    @JoinColumn(name = "picture_id")
+    private Picture picture;
 
     public Author() {
+    }
+
+    public Picture getPicture() {
+        return picture;
+    }
+
+    public void setPicture(Picture picture) {
+        this.picture = picture;
     }
 
     public String getFullName() {

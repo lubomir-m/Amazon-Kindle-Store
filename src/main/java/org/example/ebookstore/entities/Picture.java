@@ -1,0 +1,36 @@
+package org.example.ebookstore.entities;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Lob;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
+
+@Entity
+@Table(name = "pictures")
+public class Picture extends BaseEntity {
+    @Column(nullable = false, length = 100)
+    @Size(min = 2, max = 100)
+    private String name;
+    @Lob
+    private byte[] data;
+
+    public Picture() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
+    }
+}

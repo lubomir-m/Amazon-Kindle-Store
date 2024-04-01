@@ -1,9 +1,6 @@
 package org.example.ebookstore.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
 import java.util.Collections;
@@ -20,8 +17,19 @@ public class Publisher extends BaseEntity {
     private String description;
     @OneToMany(mappedBy = "publisher")
     private Set<Book> books = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "picture_id")
+    private Picture picture;
 
     public Publisher() {
+    }
+
+    public Picture getPicture() {
+        return picture;
+    }
+
+    public void setPicture(Picture picture) {
+        this.picture = picture;
     }
 
     public String getName() {
