@@ -71,8 +71,19 @@ public class Book extends BaseEntity {
     private BigDecimal priceEgp;
     @Column(name = "price_ngn", precision = 19, scale = 4)
     private BigDecimal priceNgn;
+    @Column(name = "image_url")
+    @Size(min = 2)
+    private String imageUrl;
 
     public Book() {
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public void addAuthors(Author... authors) {
@@ -240,5 +251,61 @@ public class Book extends BaseEntity {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public void setRatingsCount(Long ratingsCount) {
+        this.ratingsCount = ratingsCount;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPublicationDate(LocalDate publicationDate) {
+        this.publicationDate = publicationDate;
+    }
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
+    }
+
+    public void setPurchaseCount(long purchaseCount) {
+        this.purchaseCount = purchaseCount;
+    }
+
+    public void setPriceEur(BigDecimal priceEur) {
+        this.priceEur = priceEur;
+    }
+
+    public void setPriceUsd(BigDecimal priceUsd) {
+        this.priceUsd = priceUsd;
+    }
+
+    public void setPriceAud(BigDecimal priceAud) {
+        this.priceAud = priceAud;
+    }
+
+    public void setPriceBrl(BigDecimal priceBrl) {
+        this.priceBrl = priceBrl;
+    }
+
+    public void setPriceInr(BigDecimal priceInr) {
+        this.priceInr = priceInr;
+    }
+
+    public void setPriceCny(BigDecimal priceCny) {
+        this.priceCny = priceCny;
+    }
+
+    public void setPriceEgp(BigDecimal priceEgp) {
+        this.priceEgp = priceEgp;
+    }
+
+    public void setPriceNgn(BigDecimal priceNgn) {
+        this.priceNgn = priceNgn;
     }
 }

@@ -12,9 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 @Component
@@ -40,7 +38,7 @@ public class InitialDatabaseSetup implements CommandLineRunner {
     private final UserService userService;
     private final AuthorService authorService;
     private final PictureRepository pictureRepository;
-    private Map<Category, List<Category>> level2ToLeafCategories = new HashMap<>();
+    private Map<String, List<Category>> level2NameToLeafCategories;
 
     @Autowired
     public InitialDatabaseSetup(PublisherRepository publisherRepository, AuthorRepository authorRepository, CategoryRepository categoryRepository, BookRepository bookRepository, CurrencyRepository currencyRepository, ExchangeRateRepository exchangeRateRepository, RoleRepository roleRepository, RatingRepository ratingRepository, ReviewRepository reviewRepository, WishlistRepository wishlistRepository, ShoppingCartRepository shoppingCartRepository, UserRepository userRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, PasswordEncoder passwordEncoder, UserService userService, AuthorService authorService, PictureRepository pictureRepository) {
@@ -355,6 +353,8 @@ public class InitialDatabaseSetup implements CommandLineRunner {
             level2.setParent(level1);
             level1.addSubcategory(level2);
 
+            this.level2NameToLeafCategories.putIfAbsent(level2Name, new ArrayList<>());
+
             for (int j = 0; j < 10; j++) {
                 StringBuilder sb = new StringBuilder();
                 sb.append("Subcategory ").append(i + 1).append(".").append(j + 1);
@@ -388,8 +388,7 @@ public class InitialDatabaseSetup implements CommandLineRunner {
                         categoryList.add(level4);
                         categoryList.add(level5);
 
-                        this.level2ToLeafCategories.putIfAbsent(level2, new ArrayList<>());
-                        List<Category> leaves = this.level2ToLeafCategories.get(level2);
+                        List<Category> leaves = this.level2NameToLeafCategories.get(level2Name);
                         leaves.add(level5);
                     }
                 }
@@ -459,11 +458,53 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         }
 
         List<Book> books = new ArrayList<>(194172);
-        
-    }
+        String line;
+        List<Author> authorList = this.authorRepository.findAll();
 
-    public void generateBookDescriptions() {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/datafiles/bookdata.csv"))) {
+            while ((line = br.readLine()) != null) {
+                String[] tokens = line.split(";");
+                Book book = new Book();
 
+                book.setImageUrl(tokens[0]);
+                char[] array = tokens[1].toCharArray();
+                StringBuilder sb = new StringBuilder();
+                for (char character : array) {
+                    if ((int) character <= 127) {
+                        sb.append(character);
+                    }
+                }
+
+                String title = sb.toString();
+                if (title.length() > 255) {
+                    title = title.substring(0, 255);
+                }
+                book.setTitle(title);
+
+                int authorCount = 1 + random.nextInt(3);
+                Set<Picture> currentPictures = new HashSet<>();
+                for (int i = 0; i < authorCount; i++) {
+                    Author author = authorList.get(random.nextInt(authorList.size()));
+                    while (currentPictures.contains(author.getPicture())) {
+                        author = authorList.get(random.nextInt(authorList.size()));
+                    }
+
+                    currentPictures.add(author.getPicture());
+                    book.addAuthors(author);
+                }
+
+                String categoryName = tokens[5];
+                List<Category> leafCategories = this.level2NameToLeafCategories.get(categoryName);
+                book.addCategories(leafCategories.get(random.nextInt(leafCategories.size())));
+
+                // TODO: add other book fields
+                books.add(book);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        this.bookRepository.saveAll(books);
     }
 
     public void generateUsers() {
