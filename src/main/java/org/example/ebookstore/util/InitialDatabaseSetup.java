@@ -1,15 +1,62 @@
 package org.example.ebookstore.util;
 
+import org.example.ebookstore.entities.Publisher;
+import org.example.ebookstore.repositories.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
-public class DatabaseGenerator implements CommandLineRunner {
-    @Override
-    public void run(String... args) throws Exception {
-//        generateDatabase();
+public class InitialDatabaseSetup implements CommandLineRunner {
+    private final PublisherRepository publisherRepository;
+    private final AuthorRepository authorRepository;
+    private final CategoryRepository categoryRepository;
+    private final BookRepository bookRepository;
+    private final CurrencyRepository currencyRepository;
+    private final ExchangeRateRepository exchangeRateRepository;
+    private final RoleRepository roleRepository;
+    private final RatingRepository ratingRepository;
+    private final ReviewRepository reviewRepository;
+    private final WishlistRepository wishlistRepository;
+    private final ShoppingCartRepository shoppingCartRepository;
+    private final UserRepository userRepository;
+    private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public InitialDatabaseSetup(PublisherRepository publisherRepository, AuthorRepository authorRepository, CategoryRepository categoryRepository, BookRepository bookRepository, CurrencyRepository currencyRepository, ExchangeRateRepository exchangeRateRepository, RoleRepository roleRepository, RatingRepository ratingRepository, ReviewRepository reviewRepository, WishlistRepository wishlistRepository, ShoppingCartRepository shoppingCartRepository, UserRepository userRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, PasswordEncoder passwordEncoder) {
+        this.publisherRepository = publisherRepository;
+        this.authorRepository = authorRepository;
+        this.categoryRepository = categoryRepository;
+        this.bookRepository = bookRepository;
+        this.currencyRepository = currencyRepository;
+        this.exchangeRateRepository = exchangeRateRepository;
+        this.roleRepository = roleRepository;
+        this.ratingRepository = ratingRepository;
+        this.reviewRepository = reviewRepository;
+        this.wishlistRepository = wishlistRepository;
+        this.shoppingCartRepository = shoppingCartRepository;
+        this.userRepository = userRepository;
+        this.orderRepository = orderRepository;
+        this.orderItemRepository = orderItemRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
+    @Override
+    @Transactional
+    public void run(String... args) throws Exception {
+        if (this.roleRepository.count() < 2 || this.publisherRepository.count() == 0) {
+            generateDatabase();
+        }
+    }
+
+    
     public void generateDatabase() {
         generatePublishers();
         generateAuthors();
@@ -75,105 +122,98 @@ public class DatabaseGenerator implements CommandLineRunner {
                 "educational materials, shaping the minds of tomorrow,", "romance, with a heart for every story,",
         };
 
-        final String[] ends = {
+        String[] ends = {
                 "this publisher stands out as a beacon of creativity.", "they are dedicated to enriching readers' shelves and lives.",
                 "their catalog is a testament to enduring stories and innovation.", "they bring untold stories to life, illuminating the human experience.",
                 "their commitment to quality and originality is unwavering.", "they are at the forefront of delivering compelling content."
         };
 
+        List<String> publisherDescriptions = new ArrayList<>();
+        for (String beginning : beginnings) {
+            for (String middle : middles) {
+                for (String end : ends) {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(beginning).append(" ").append(middle).append(" ").append(end);
+                    publisherDescriptions.add(sb.toString());
+                }
+            }
+        }
+
+        List<Publisher> publishers = new ArrayList<>();
+        for (String name : publisherNames) {
+            Publisher publisher = new Publisher();
+
+        }
     }
 
     public void generateAuthors() {
         // (100, 100, 10000)
         String[] firstNames = {
-                "James", "Mary", "John", "Patricia", "Robert", "Jennifer", "Michael", "Linda",
-                "William", "Elizabeth", "David", "Barbara", "Richard", "Susan", "Joseph", "Jessica",
-                "Thomas", "Sarah", "Charles", "Karen", "Christopher", "Nancy", "Daniel", "Lisa",
-                "Matthew", "Margaret", "Anthony", "Betty", "Mark", "Sandra", "Donald", "Ashley",
-                "Steven", "Kimberly", "Paul", "Emily", "Andrew", "Donna", "Joshua", "Michelle",
-                "Kenneth", "Dorothy", "Kevin", "Carol", "Brian", "Amanda", "George", "Melissa",
-                "Edward", "Deborah", "Ronald", "Stephanie", "Timothy", "Rebecca", "Jason", "Laura",
-                "Jeffrey", "Helen", "Ryan", "Sharon", "Jacob", "Cynthia", "Gary", "Kathleen",
-                "Nicholas", "Amy", "Eric", "Shirley", "Jonathan", "Angela", "Stephen", "Anna",
-                "Larry", "Ruth", "Justin", "Lisa", "Scott", "Sara", "Brandon", "Kimberly",
-                "Benjamin", "Denise", "Samuel", "Diana", "Gregory", "Madison", "Alexander", "Megan",
-                "Jack", "Cheryl", "Dennis", "Hannah", "Jerry", "Evelyn"
+                "James", "John", "Robert", "Michael", "William", "David", "Richard", "Joseph", "Thomas", "Charles",
+                "Christopher", "Daniel", "Matthew", "Anthony", "Mark", "Donald", "Steven", "Paul", "Andrew", "Joshua",
+                "Kenneth", "Kevin", "Brian", "George", "Edward", "Ronald", "Timothy", "Jason", "Jeffrey", "Ryan",
+                "Jacob", "Gary", "Nicholas", "Eric", "Jonathan", "Stephen", "Larry", "Justin", "Scott", "Brandon",
+                "Benjamin", "Samuel", "Gregory", "Alexander", "Jack", "Dennis", "Jerry", "Tyler", "Aaron", "Jose",
+                "Adam", "Henry", "Douglas", "Nathan", "Peter", "Zachary", "Kyle", "Walter", "Harold", "Jeremy",
+                "Ethan", "Carl", "Keith", "Roger", "Gerald", "Christian", "Terry", "Sean", "Arthur", "Austin",
+                "Noah", "Lawrence", "Jesse", "Joe", "Bryan", "Billy", "Jordan", "Albert", "Dylan", "Bruce",
+                "Willie", "Gabriel", "Alan", "Juan", "Logan", "Wayne", "Ralph", "Roy", "Eugene", "Randy",
+                "Vincent", "Russell", "Louis", "Philip", "Bobby", "Johnny", "Bradley", "Clarence", "Sam", "Leonard",
+                "Francis", "Cody", "Alexander", "Edwin", "Caleb", "Evan", "Antonio", "Frederick", "Elijah", "Dale"
         };
 
         String[] lastNames = {
-                "Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson",
-                "Moore", "Taylor", "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin",
-                "Thompson", "Garcia", "Martinez", "Robinson", "Clark", "Rodriguez", "Lewis", "Lee",
-                "Walker", "Hall", "Allen", "Young", "Hernandez", "King", "Wright", "Lopez", "Hill",
-                "Scott", "Green", "Adams", "Baker", "Gonzalez", "Nelson", "Carter", "Mitchell",
-                "Perez", "Roberts", "Turner", "Phillips", "Campbell", "Parker", "Evans", "Edwards",
-                "Collins", "Stewart", "Sanchez", "Morris", "Rogers", "Reed", "Cook", "Morgan",
-                "Bell", "Murphy", "Bailey", "Rivera", "Cooper", "Richardson", "Cox", "Howard",
-                "Ward", "Torres", "Peterson", "Gray", "Ramirez", "James", "Watson", "Brooks",
-                "Kelly", "Sanders", "Price", "Bennett", "Wood", "Barnes", "Ross", "Henderson",
-                "Coleman", "Jenkins", "Perry", "Powell", "Long", "Patterson", "Hughes", "Flores",
-                "Washington", "Butler", "Simmons", "Foster", "Gonzales", "Bryant", "Alexander",
-                "Russell", "Griffin", "Diaz", "Hayes"
+                "Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor",
+                "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Martinez", "Robinson",
+                "Clark", "Rodriguez", "Lewis", "Lee", "Walker", "Hall", "Allen", "Young", "Hernandez", "King",
+                "Wright", "Lopez", "Hill", "Scott", "Green", "Adams", "Baker", "Gonzalez", "Nelson", "Carter",
+                "Mitchell", "Perez", "Roberts", "Turner", "Phillips", "Campbell", "Parker", "Evans", "Edwards", "Collins",
+                "Stewart", "Sanchez", "Morris", "Rogers", "Reed", "Cook", "Morgan", "Bell", "Murphy", "Bailey",
+                "Rivera", "Cooper", "Richardson", "Cox", "Howard", "Ward", "Torres", "Peterson", "Gray", "Ramirez",
+                "James", "Watson", "Brooks", "Kelly", "Sanders", "Price", "Bennett", "Wood", "Barnes", "Ross",
+                "Henderson", "Coleman", "Jenkins", "Perry", "Powell", "Long", "Patterson", "Hughes", "Flores", "Washington",
+                "Butler", "Simmons", "Foster", "Gonzales", "Bryant", "Alexander", "Russell", "Griffin", "Diaz", "Hayes",
+                "Myers", "Ford", "Hamilton", "Graham", "Sullivan", "Wallace", "Woods", "Cole", "West", "Jordan",
+                "Owens", "Reynolds", "Fisher", "Ellis", "Harrison", "Gibson", "McDonald", "Cruz", "Marshall", "Ortiz"
         };
     }
 
     public void generateCategories() {
-        // array size 30
+        // array size 28
         String[] categories = {
                 "Arts & Photography",
-                "Business & Money",
-                "Comics, Manga & Graphic Novels",
-                "Cookbooks, Food & Wine",
-                "Education & Teaching",
-                "Foreign Languages",
-                "History",
-                "Law",
-                "Literature & Fiction",
-                "Mystery, Thriller & Suspense",
-                "Parenting & Relationships",
-                "Reference",
-                "Romance",
-                "Science Fiction & Fantasy",
-                "Sports & Outdoors",
-                "Travel",
                 "Biographies & Memoirs",
+                "Business & Money",
                 "Children's eBooks",
+                "Comics, Manga & Graphic Novels",
                 "Computers & Technology",
+                "Cookbooks, Food & Wine",
                 "Crafts, Hobbies & Home",
+                "Education & Teaching",
                 "Engineering & Transportation",
                 "Health, Fitness & Dieting",
+                "History",
                 "Humor & Entertainment",
+                "Law",
+                "Literature & Fiction",
                 "Medical eBooks",
-                "Nonfiction",
+                "Mystery, Thriller & Suspense",
+                "Parenting & Relationships",
                 "Politics & Social Sciences",
+                "Reference",
                 "Religion & Spirituality",
+                "Romance",
                 "Science & Math",
+                "Science Fiction & Fantasy",
                 "Self-Help",
-                "Teen & Young Adult"
+                "Sports & Outdoors",
+                "Teen & Young Adult",
+                "Travel"
         };
     }
 
     public void generateBooks() {
-        //(20, 20, 20, 8000)
-        String[] adjectives = {
-                "Forbidden", "Ancient", "Eternal", "Mystic", "Shadowy", "Divine",
-                "Infinite", "Lost", "Forsaken", "Hidden", "Glorious", "Silent", "Reckless",
-                "Brave", "Dark", "Golden", "Fallen", "Forgotten", "Bright", "Cursed"
-        };
 
-        String[] nouns = {
-                "Kingdom", "Empire", "Secret", "Legacy", "Quest", "Journey",
-                "Heart", "Shadow", "Light", "Night", "Day", "Twilight", "Dawn",
-                "Eclipse", "Moon", "Sun", "Star", "Planet", "Galaxy", "Universe"
-        };
-
-        String[] suffixes = {
-                "of the Ancients", "of the Forgotten", "of Eternity", "of Shadows",
-                "of Light", "of Darkness", "beyond Time", "without End", "of Neverland",
-                "of the New World", "of the Old Gods", "of the Lost", "of Fire and Ice",
-                "of the Dragon", "of the Phoenix", "of Destiny", "of Fate", "of the Future",
-                "of the Past", "of Dreams"
-        };
 
 
     }

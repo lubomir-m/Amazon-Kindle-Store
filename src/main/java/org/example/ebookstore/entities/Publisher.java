@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,7 +19,7 @@ public class Publisher extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
     @OneToMany(mappedBy = "publisher")
-    private Set<Book> books;
+    private Set<Book> books = new HashSet<>();
 
     public Publisher() {
     }

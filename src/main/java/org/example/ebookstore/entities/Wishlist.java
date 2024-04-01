@@ -3,6 +3,7 @@ package org.example.ebookstore.entities;
 import jakarta.persistence.*;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -17,7 +18,7 @@ public class Wishlist extends BaseEntity {
             joinColumns = @JoinColumn(name = "wishlist_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id")
     )
-    private Set<Book> books;
+    private Set<Book> books = new HashSet<>();
 
     public Wishlist() {
     }

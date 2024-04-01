@@ -43,8 +43,20 @@ public class User extends BaseEntity {
     private ShoppingCart shoppingCart;
     @OneToOne(mappedBy = "user")
     private Wishlist wishlist;
+    @OneToMany(mappedBy = "user")
+    private Set<Order> orders = new HashSet<>();
 
     public User() {
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+    public void addOrder(Order order) {
+        this.orders.add(order);
+    }
+    public void removeOrder(Order order) {
+        this.orders.remove(order);
     }
 
     public String getUsername() {
