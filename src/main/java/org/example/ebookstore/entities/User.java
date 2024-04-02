@@ -48,8 +48,19 @@ public class User extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "picture_id")
     private Picture picture;
+    @ManyToOne
+    @JoinColumn(name = "currency_id")
+    private Currency selectedCurrency;
 
     public User() {
+    }
+
+    public Currency getSelectedCurrency() {
+        return selectedCurrency;
+    }
+
+    public void setSelectedCurrency(Currency selectedCurrency) {
+        this.selectedCurrency = selectedCurrency;
     }
 
     public Picture getPicture() {

@@ -12,7 +12,7 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
     @Column(nullable = false, length = 700)
-    @Size(min = 10, max = 700)
+    @Size(min = 5, max = 700)
     private String text;
     @Column(name = "submission_date", nullable = false)
     private LocalDate submissionDate;
@@ -20,10 +20,17 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "rating_id", nullable = false)
     private Rating rating;
     @ManyToOne
-    @JoinColumn(name = "book_id", nullable = false)
+    @JoinColumn(name = "book_id")
     private Book book;
 
     public Review() {
+    }
+
+    public Review(User user, String text, LocalDate submissionDate, Rating rating) {
+        this.user = user;
+        this.text = text;
+        this.submissionDate = submissionDate;
+        this.rating = rating;
     }
 
     public User getUser() {

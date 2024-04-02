@@ -15,7 +15,7 @@ public class Rating extends BaseEntity {
     @Column(name = "submission_date", nullable = false)
     private LocalDate submissionDate;
     @ManyToOne
-    @JoinColumn(name = "book_id", nullable = false)
+    @JoinColumn(name = "book_id")
     private Book book;
     @Column(name = "rating_value", nullable = false)
     @Min(1)
@@ -23,6 +23,12 @@ public class Rating extends BaseEntity {
     private Integer ratingValue;
 
     public Rating() {
+    }
+
+    public Rating(User user, LocalDate submissionDate, Integer ratingValue) {
+        this.user = user;
+        this.submissionDate = submissionDate;
+        this.ratingValue = ratingValue;
     }
 
     public Integer getRatingValue() {

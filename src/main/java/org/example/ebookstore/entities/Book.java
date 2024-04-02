@@ -74,8 +74,19 @@ public class Book extends BaseEntity {
     @Column(name = "image_url")
     @Size(min = 2)
     private String imageUrl;
+    @Column(name = "cover_color", nullable = false, length = 30)
+    @Size(min = 1, max = 30)
+    private String coverColor;
 
     public Book() {
+    }
+
+    public String getCoverColor() {
+        return coverColor;
+    }
+
+    public void setCoverColor(String coverColor) {
+        this.coverColor = coverColor;
     }
 
     public String getImageUrl() {
