@@ -17,7 +17,7 @@ public class Currency extends BaseEntity {
     @Size(min = 3, max = 3)
     private String code;
     @Column(unique = true, nullable = false, length = 128)
-    @Size(min = 3, max = 128)
+    @Size(min = 1, max = 128)
     private String symbol;
     @OneToMany(mappedBy = "currencyFrom")
     private Set<ExchangeRate> exchangeRates = new HashSet<>();

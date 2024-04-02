@@ -38,7 +38,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     private byte[] loadDefaultImageData() {
         try {
-            Resource resource = new ClassPathResource("src/main/resources/static/images/default-profile-picture.jpg");
+            Resource resource = new ClassPathResource("static/images/default-profile-picture.jpg");
             BufferedImage bImage = ImageIO.read(resource.getInputStream());
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ImageIO.write(bImage, "jpg", bos);
@@ -49,7 +49,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @PostConstruct
-    private void init() {
+    public void init() {
         this.defaultPicture = this.pictureRepository.findById(1L)
                 .orElseGet(() -> {
                     Picture picture = new Picture();

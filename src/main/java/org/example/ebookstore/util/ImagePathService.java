@@ -15,6 +15,7 @@ public class ImagePathService {
             for (Path path : stream) {
                 if (!Files.isDirectory(path)) {
                     fileNames.add(path.toString());
+                    System.out.println(path.toString());
                 }
             }
         } catch (IOException e) {

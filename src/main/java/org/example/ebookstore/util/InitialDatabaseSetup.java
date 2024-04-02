@@ -9,6 +9,8 @@ import org.example.ebookstore.services.interfaces.ExchangeRateService;
 import org.example.ebookstore.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -46,9 +49,10 @@ public class InitialDatabaseSetup implements CommandLineRunner {
     private Map<String, List<Category>> level2NameToLeafCategories = new HashMap<>();
     private final ExchangeRateService exchangeRateService;
     private final BookService bookService;
+    private ResourceLoader resourceLoader;
 
     @Autowired
-    public InitialDatabaseSetup(PublisherRepository publisherRepository, AuthorRepository authorRepository, CategoryRepository categoryRepository, BookRepository bookRepository, CurrencyRepository currencyRepository, ExchangeRateRepository exchangeRateRepository, RoleRepository roleRepository, RatingRepository ratingRepository, ReviewRepository reviewRepository, WishlistRepository wishlistRepository, ShoppingCartRepository shoppingCartRepository, UserRepository userRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, PasswordEncoder passwordEncoder, UserService userService, AuthorService authorService, PictureRepository pictureRepository, ExchangeRateService exchangeRateService, BookService bookService) {
+    public InitialDatabaseSetup(ResourceLoader resourceLoader, PublisherRepository publisherRepository, AuthorRepository authorRepository, CategoryRepository categoryRepository, BookRepository bookRepository, CurrencyRepository currencyRepository, ExchangeRateRepository exchangeRateRepository, RoleRepository roleRepository, RatingRepository ratingRepository, ReviewRepository reviewRepository, WishlistRepository wishlistRepository, ShoppingCartRepository shoppingCartRepository, UserRepository userRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, PasswordEncoder passwordEncoder, UserService userService, AuthorService authorService, PictureRepository pictureRepository, ExchangeRateService exchangeRateService, BookService bookService) {
         this.publisherRepository = publisherRepository;
         this.authorRepository = authorRepository;
         this.categoryRepository = categoryRepository;
@@ -69,6 +73,7 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         this.pictureRepository = pictureRepository;
         this.exchangeRateService = exchangeRateService;
         this.bookService = bookService;
+        this.resourceLoader = resourceLoader;
     }
 
     @Override
@@ -107,8 +112,17 @@ public class InitialDatabaseSetup implements CommandLineRunner {
     }
 
     public void saveImagesToList(List<String> paths, List<Picture> imageList) throws IOException {
+//        for (String path : paths) {
+//            BufferedImage bImage = ImageIO.read(new File(path));
         for (String path : paths) {
-            BufferedImage bImage = ImageIO.read(new File(path));
+            File file = new File(path);
+            System.out.println("Reading image from path: " + file.getAbsolutePath());
+            BufferedImage bImage = ImageIO.read(file);
+            if (bImage == null) {
+                System.out.println("Failed to read image file: " + file.getAbsolutePath());
+                continue; // Skip this file and continue with the loop
+            }
+
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             String fileExtension = getFileExtension(path);
             ImageIO.write(bImage, fileExtension, bos);
@@ -527,9 +541,14 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         List<Publisher> publisherList = this.publisherRepository.findAll();
         List<Category> updatedCategories = new ArrayList<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/datafiles/bookdata.csv"))) {
+        Resource resource = resourceLoader.getResource("classpath:datafiles/bookdata.csv");
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8))) {
             while ((line = br.readLine()) != null) {
                 String[] tokens = line.split(";");
+                if (tokens.length < 6) {
+                    System.out.println(line);
+                    continue;
+                }
                 Book book = new Book();
 
                 book.setImageUrl(tokens[0]);
@@ -560,8 +579,16 @@ public class InitialDatabaseSetup implements CommandLineRunner {
                     author.addBook(book);
                 }
 
+                if (tokens.length <= 5) {
+                    System.out.println(tokens[1]);
+                    continue;
+                }
                 String categoryName = tokens[5];
                 List<Category> leafCategories = this.level2NameToLeafCategories.get(categoryName);
+                if (leafCategories == null || leafCategories.isEmpty()) {
+                    System.out.println(categoryName);
+                    continue;
+                }
                 Category category = leafCategories.get(random.nextInt(leafCategories.size()));
                 book.addCategories(category);
                 category.addBook(book);

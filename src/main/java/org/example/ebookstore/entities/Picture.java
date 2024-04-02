@@ -13,6 +13,7 @@ public class Picture extends BaseEntity {
     @Size(min = 2, max = 100)
     private String name;
     @Lob
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] data;
 
     public Picture() {
