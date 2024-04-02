@@ -32,7 +32,7 @@ public class Book extends BaseEntity {
     @OneToMany(mappedBy = "book")
     private Set<Rating> ratings = new HashSet<>();
     @Column(name = "average_rating", nullable = false)
-    private double averageRating;
+    private Double averageRating;
     @Column(name = "ratings_count", nullable = false)
     private Long ratingsCount;
     @OneToMany(mappedBy = "book")
@@ -54,7 +54,7 @@ public class Book extends BaseEntity {
     @ManyToMany(mappedBy = "books")
     private Set<Wishlist> wishlists = new HashSet<>();
     @Column(name = "purchase_count", nullable = false)
-    private long purchaseCount;
+    private Long purchaseCount;
     @Column(name = "price_eur", precision = 19, scale = 4)
     private BigDecimal priceEur;
     @Column(name = "price_usd", precision = 19, scale = 4)
@@ -173,11 +173,11 @@ public class Book extends BaseEntity {
         return Collections.unmodifiableSet(this.ratings);
     }
 
-    public double getAverageRating() {
+    public Double getAverageRating() {
         return averageRating;
     }
 
-    public long getRatingsCount() {
+    public Long getRatingsCount() {
         return ratingsCount;
     }
 
@@ -253,10 +253,6 @@ public class Book extends BaseEntity {
         this.title = title;
     }
 
-    public void setAverageRating(double averageRating) {
-        this.averageRating = averageRating;
-    }
-
     public void setRatingsCount(Long ratingsCount) {
         this.ratingsCount = ratingsCount;
     }
@@ -273,9 +269,6 @@ public class Book extends BaseEntity {
         this.publisher = publisher;
     }
 
-    public void setPurchaseCount(long purchaseCount) {
-        this.purchaseCount = purchaseCount;
-    }
 
     public void setPriceEur(BigDecimal priceEur) {
         this.priceEur = priceEur;
@@ -308,4 +301,13 @@ public class Book extends BaseEntity {
     public void setPriceNgn(BigDecimal priceNgn) {
         this.priceNgn = priceNgn;
     }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public void setPurchaseCount(Long purchaseCount) {
+        this.purchaseCount = purchaseCount;
+    }
+
 }

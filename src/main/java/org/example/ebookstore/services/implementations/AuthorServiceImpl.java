@@ -49,7 +49,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @PostConstruct
-    public void init() {
+    private void init() {
         this.defaultPicture = this.pictureRepository.findById(1L)
                 .orElseGet(() -> {
                     Picture picture = new Picture();

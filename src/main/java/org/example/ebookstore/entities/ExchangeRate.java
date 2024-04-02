@@ -19,6 +19,12 @@ public class ExchangeRate extends BaseEntity {
     public ExchangeRate() {
     }
 
+    public ExchangeRate(Currency currencyFrom, LocalDate validityDate, BigDecimal rate) {
+        this.currencyFrom = currencyFrom;
+        this.validityDate = validityDate;
+        this.rate = rate;
+    }
+
     public Currency getCurrencyFrom() {
         return currencyFrom;
     }

@@ -1,8 +1,11 @@
 package org.example.ebookstore.util;
 
 import org.example.ebookstore.entities.*;
+import org.example.ebookstore.entities.Currency;
 import org.example.ebookstore.repositories.*;
 import org.example.ebookstore.services.interfaces.AuthorService;
+import org.example.ebookstore.services.interfaces.BookService;
+import org.example.ebookstore.services.interfaces.ExchangeRateService;
 import org.example.ebookstore.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -13,6 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.*;
 
 @Component
@@ -38,10 +44,12 @@ public class InitialDatabaseSetup implements CommandLineRunner {
     private final UserService userService;
     private final AuthorService authorService;
     private final PictureRepository pictureRepository;
-    private Map<String, List<Category>> level2NameToLeafCategories;
+    private Map<String, List<Category>> level2NameToLeafCategories = new HashMap<>();
+    private final ExchangeRateService exchangeRateService;
+    private final BookService bookService;
 
     @Autowired
-    public InitialDatabaseSetup(PublisherRepository publisherRepository, AuthorRepository authorRepository, CategoryRepository categoryRepository, BookRepository bookRepository, CurrencyRepository currencyRepository, ExchangeRateRepository exchangeRateRepository, RoleRepository roleRepository, RatingRepository ratingRepository, ReviewRepository reviewRepository, WishlistRepository wishlistRepository, ShoppingCartRepository shoppingCartRepository, UserRepository userRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, PasswordEncoder passwordEncoder, UserService userService, AuthorService authorService, PictureRepository pictureRepository) {
+    public InitialDatabaseSetup(PublisherRepository publisherRepository, AuthorRepository authorRepository, CategoryRepository categoryRepository, BookRepository bookRepository, CurrencyRepository currencyRepository, ExchangeRateRepository exchangeRateRepository, RoleRepository roleRepository, RatingRepository ratingRepository, ReviewRepository reviewRepository, WishlistRepository wishlistRepository, ShoppingCartRepository shoppingCartRepository, UserRepository userRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, PasswordEncoder passwordEncoder, UserService userService, AuthorService authorService, PictureRepository pictureRepository, ExchangeRateService exchangeRateService, BookService bookService) {
         this.publisherRepository = publisherRepository;
         this.authorRepository = authorRepository;
         this.categoryRepository = categoryRepository;
@@ -60,6 +68,8 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         this.userService = userService;
         this.authorService = authorService;
         this.pictureRepository = pictureRepository;
+        this.exchangeRateService = exchangeRateService;
+        this.bookService = bookService;
     }
 
     @Override
@@ -76,7 +86,11 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         generatePublishers();
         generateAuthors();
         generateCategories();
+        generateCurrencies();
+        generateExchangeRates();
         generateBooks();
+        generateRoles();
+        generateUsers();
     }
 
     public void generatePictures() throws IOException {
@@ -399,7 +413,42 @@ public class InitialDatabaseSetup implements CommandLineRunner {
     }
 
     public void generateCurrencies() {
+        List<Currency> currencies = Arrays.asList(
+                new Currency("Euro", "EUR", "€"),
+                new Currency("US Dollar", "USD", "$"),
+                new Currency("Australian Dollar", "AUD", "A$"),
+                new Currency("Brazilian Real", "BRL", "R$"),
+                new Currency("Indian Rupee", "INR", "₹"),
+                new Currency("Chinese Yuan", "CNY", "¥"),
+                new Currency("Egyptian Pound", "EGP", "E£"),
+                new Currency("Nigerian Naira", "NGN", "₦")
+        );
 
+        this.currencyRepository.saveAll(currencies);
+    }
+
+    public void generateExchangeRates() {
+        LocalDate validityDate = LocalDate.of(2024, 4, 2);
+        List<ExchangeRate> exchangeRates = List.of(
+                new ExchangeRate(this.currencyRepository.findByCodeIgnoreCase("EUR").get(), validityDate,
+                        BigDecimal.valueOf(1.00)),
+                new ExchangeRate(this.currencyRepository.findByCodeIgnoreCase("USD").get(), validityDate,
+                        BigDecimal.valueOf(1.07)),
+                new ExchangeRate(this.currencyRepository.findByCodeIgnoreCase("AUD").get(), validityDate,
+                        BigDecimal.valueOf(1.65)),
+                new ExchangeRate(this.currencyRepository.findByCodeIgnoreCase("BRL").get(), validityDate,
+                        BigDecimal.valueOf(5.42)),
+                new ExchangeRate(this.currencyRepository.findByCodeIgnoreCase("INR").get(), validityDate,
+                        BigDecimal.valueOf(89.43)),
+                new ExchangeRate(this.currencyRepository.findByCodeIgnoreCase("CNY").get(), validityDate,
+                        BigDecimal.valueOf(7.76)),
+                new ExchangeRate(this.currencyRepository.findByCodeIgnoreCase("EGP").get(), validityDate,
+                        BigDecimal.valueOf(50.64)),
+                new ExchangeRate(this.currencyRepository.findByCodeIgnoreCase("NGN").get(), validityDate,
+                        BigDecimal.valueOf(1396.75))
+        );
+
+        this.exchangeRateRepository.saveAll(exchangeRates);
     }
 
     public void generateBooks() {
@@ -465,6 +514,18 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         String line;
         List<Author> authorList = this.authorRepository.findAll();
 
+        BigDecimal usdRate = this.exchangeRateService.getLatestRate("usd").get();
+        BigDecimal audRate = this.exchangeRateService.getLatestRate("aud").get();
+        BigDecimal brlRate = this.exchangeRateService.getLatestRate("BRL").get();
+        BigDecimal inrRate = this.exchangeRateService.getLatestRate("INR").get();
+        BigDecimal cnyRate = this.exchangeRateService.getLatestRate("CNY").get();
+        BigDecimal egpRate = this.exchangeRateService.getLatestRate("EGP").get();
+        BigDecimal ngnRate = this.exchangeRateService.getLatestRate("NGN").get();
+        BigDecimal minPrice = new BigDecimal("10.00");
+        BigDecimal maxPrice = new BigDecimal("30.00");
+        List<Publisher> publisherList = this.publisherRepository.findAll();
+        List<Category> updatedCategories = new ArrayList<>();
+
         try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/datafiles/bookdata.csv"))) {
             while ((line = br.readLine()) != null) {
                 String[] tokens = line.split(";");
@@ -495,20 +556,60 @@ public class InitialDatabaseSetup implements CommandLineRunner {
 
                     currentPictures.add(author.getPicture());
                     book.addAuthors(author);
+                    author.addBook(book);
                 }
 
                 String categoryName = tokens[5];
                 List<Category> leafCategories = this.level2NameToLeafCategories.get(categoryName);
-                book.addCategories(leafCategories.get(random.nextInt(leafCategories.size())));
+                Category category = leafCategories.get(random.nextInt(leafCategories.size()));
+                book.addCategories(category);
+                category.addBook(book);
+                if (!updatedCategories.contains(category)) {
+                    updatedCategories.add(category);
+                }
 
-                // TODO: add other book fields
+                BigDecimal priceEur = minPrice.add(BigDecimal.valueOf(Math.random()).multiply(maxPrice.subtract(minPrice)));
+                priceEur = this.bookService.round(priceEur);
+                book.setPriceEur(priceEur);
+                book.setPriceUsd(this.bookService.round(priceEur.multiply(usdRate)));
+                book.setPriceAud(this.bookService.round(priceEur.multiply(audRate)));
+                book.setPriceBrl(this.bookService.round(priceEur.multiply(brlRate)));
+                book.setPriceInr(this.bookService.round(priceEur.multiply(inrRate)));
+                book.setPriceCny(this.bookService.round(priceEur.multiply(cnyRate)));
+                book.setPriceEgp(this.bookService.round(priceEur.multiply(egpRate)));
+                book.setPriceNgn(this.bookService.round(priceEur.multiply(ngnRate)));
+
+                book.setAverageRating(5.0 * Math.random());
+                book.setRatingsCount(random.nextLong(100000));
+                int publicationDay = 1 + random.nextInt(26);
+                int publicationMonth = 1 + random.nextInt(12);
+                int publicationYear = 2000 + random.nextInt(24);
+                LocalDate publicationDate = LocalDate.of(publicationYear, publicationMonth, publicationDay);
+                book.setPublicationDate(publicationDate);
+                book.setPurchaseCount(random.nextLong(2000000));
+
+                Publisher publisher = publisherList.get(random.nextInt(publisherList.size()));
+                book.setPublisher(publisher);
+                publisher.addBook(book);
+                book.setDescription(descriptions.get(random.nextInt(descriptions.size())));
+
                 books.add(book);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+        this.authorRepository.saveAll(authorList);
+        this.publisherRepository.saveAll(publisherList);
+        this.categoryRepository.saveAll(updatedCategories);
         this.bookRepository.saveAll(books);
+    }
+
+    public void generateRoles() {
+        Role admin = new Role(Role.UserRole.ADMIN);
+        Role user = new Role(Role.UserRole.USER);
+        this.roleRepository.save(admin);
+        this.roleRepository.save(user);
     }
 
     public void generateUsers() {
@@ -518,6 +619,9 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         String[] lastNames = {"Smith", "Johnson", "Williams", "Jones", "Brown", "Davis",
                 "Miller", "Wilson", "Moore", "Taylor"};
 
-
+        Role adminRole = this.roleRepository.findByName(Role.UserRole.ADMIN).get();
+        Role userRole = this.roleRepository.findByName(Role.UserRole.USER).get();
+        List<User> users = new ArrayList<>();
+        
     }
 }

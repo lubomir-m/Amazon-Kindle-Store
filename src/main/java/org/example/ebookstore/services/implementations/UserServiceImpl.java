@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @PostConstruct
-    public void init() {
+    private void init() {
         this.defaultPicture = this.pictureRepository.findById(Long.valueOf(1))
                 .orElseGet(() -> {
                     Picture picture = new Picture();

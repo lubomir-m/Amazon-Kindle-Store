@@ -25,6 +25,12 @@ public class Currency extends BaseEntity {
     public Currency() {
     }
 
+    public Currency(String name, String code, String symbol) {
+        this.name = name;
+        this.code = code;
+        this.symbol = symbol;
+    }
+
     public String getName() {
         return name;
     }

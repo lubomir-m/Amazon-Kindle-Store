@@ -3,6 +3,7 @@ package org.example.ebookstore.util;
 import org.example.ebookstore.entities.Review;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PlaceholderReview {
@@ -30,7 +31,9 @@ public class PlaceholderReview {
     }
 
     public static List<Review> getPlaceholderReviews() {
-        return new ArrayList<>(placeholderReviews);
+        List<Review> result = new ArrayList<>(placeholderReviews);
+        Collections.shuffle(result);
+        return result;
     }
 
     private static Review createPlaceholderReview(String text) {
