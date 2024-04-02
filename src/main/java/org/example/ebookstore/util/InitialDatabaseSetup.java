@@ -398,6 +398,10 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         this.categoryRepository.saveAll(categoryList);
     }
 
+    public void generateCurrencies() {
+
+    }
+
     public void generateBooks() {
         // (12, 14, 16, 2688)
         String[] beginnings = {"In a world where magic and mystery intertwine,",
