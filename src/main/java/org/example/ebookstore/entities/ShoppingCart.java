@@ -10,7 +10,7 @@ import java.util.Set;
 @Table(name = "shopping_carts")
 public class ShoppingCart extends BaseEntity {
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
     @ManyToMany
     @JoinTable(

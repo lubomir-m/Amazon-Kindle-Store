@@ -383,38 +383,42 @@ public class InitialDatabaseSetup implements CommandLineRunner {
             level1.addSubcategory(level2);
 
             this.level2NameToLeafCategories.putIfAbsent(level2Name, new ArrayList<>());
+            categoryList.add(level2);
 
             for (int j = 0; j < 10; j++) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("Subcategory ").append(i + 1).append(".").append(j + 1);
-                String level3Name = sb.toString();
+                StringBuilder sb3 = new StringBuilder();
+                sb3.append("Subcategory ").append(i + 1).append(".").append(j + 1);
+                String level3Name = sb3.toString();
 
                 Category level3 = new Category();
                 level3.setName(level3Name);
                 level3.setParent(level2);
                 level2.addSubcategory(level3);
+                categoryList.add(level3);
 
                 for (int k = 1; k <= 5; k++) {
-                    sb.append(".").append(k);
-                    String level4Name = sb.toString();
+                    StringBuilder sb4 = new StringBuilder();
+                    sb4.append(sb3);
+                    sb4.append(".").append(k);
+                    String level4Name = sb4.toString();
 
                     Category level4 = new Category();
                     level4.setName(level4Name);
                     level4.setParent(level3);
                     level3.addSubcategory(level4);
+                    categoryList.add(level4);
 
                     for (int l = 1; l <= 3; l++) {
-                        sb.append(".").append(l);
-                        String level5Name = sb.toString();
+                        StringBuilder sb5 = new StringBuilder();
+                        sb5.append(sb4);
+                        sb5.append(".").append(l);
+                        String level5Name = sb5.toString();
 
                         Category level5 = new Category();
                         level5.setName(level5Name);
                         level5.setParent(level4);
                         level4.addSubcategory(level5);
 
-                        categoryList.add(level2);
-                        categoryList.add(level3);
-                        categoryList.add(level4);
                         categoryList.add(level5);
 
                         List<Category> leaves = this.level2NameToLeafCategories.get(level2Name);
@@ -554,15 +558,23 @@ public class InitialDatabaseSetup implements CommandLineRunner {
                 book.setImageUrl(tokens[0]);
                 char[] array = tokens[1].toCharArray();
                 StringBuilder sb = new StringBuilder();
-                for (char character : array) {
-                    if ((int) character <= 127) {
-                        sb.append(character);
+                for (int i = 0; i < array.length; i++) {
+                    if ((int) array[i] <= 127) {
+                        if (i == 0) {
+                            sb.append(String.valueOf(array[i]).toUpperCase());
+                            continue;
+                        }
+                        sb.append(array[i]);
                     }
                 }
 
                 String title = sb.toString();
                 if (title.length() > 255) {
                     title = title.substring(0, 255);
+                }
+                if (title.length() < 3) {
+                    System.out.println(line);
+                    continue;
                 }
                 book.setTitle(title);
 
@@ -651,24 +663,32 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         Role adminRole = this.roleRepository.findByName(Role.UserRole.ADMIN).get();
         Role userRole = this.roleRepository.findByName(Role.UserRole.USER).get();
         List<User> users = new ArrayList<>();
+        List<Wishlist> wishlists = new ArrayList<>();
+        List<ShoppingCart> shoppingCarts = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            wishlists.add(new Wishlist());
+            shoppingCarts.add(new ShoppingCart());
+        }
 
         for (int i = 0; i < 10; i++) {
             User user = createUser("user" + (i + 1), "user" + (i + 1) + "@mail.com",
-                    "1234", firstNames[i], lastNames[i], 30, userRole);
+                    "1234", firstNames[i], lastNames[i], 30, wishlists.get(i), shoppingCarts.get(i), userRole);
             user.setPicture(this.userPicturesList.get(i));
             users.add(user);
         }
 
         users.add(createUser("admin", "admin@mail.com", "1234", "Admin",
-                "Admin", 30, adminRole, userRole));
+                "Admin", 30, wishlists.get(10), shoppingCarts.get(10), adminRole, userRole));
         users.add(createUser("user", "user@mail.com", "1234", "Ivan", "Ivanov",
-                30, userRole));
+                30,wishlists.get(11), shoppingCarts.get(11), userRole));
 
-        this.userRepository.saveAll(users);
+        this.wishlistRepository.saveAll(wishlists);
+        this.shoppingCartRepository.saveAll(shoppingCarts);
+        users.forEach(this.userService::save);
     }
 
     public User createUser(String username, String email, String password, String firstName,
-                           String lastName, int age, Role... roles) {
+                           String lastName, int age, Wishlist wishlist, ShoppingCart shoppingCart, Role... roles) {
         User user = new User();
         user.setUsername(username);
         user.setEmail(email);
@@ -679,8 +699,11 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         for (Role role : roles) {
             user.addRole(role);
         }
-        user.setShoppingCart(new ShoppingCart());
-        user.setWishlist(new Wishlist());
+
+        user.setWishlist(wishlist);
+        wishlist.setUser(user);
+        user.setShoppingCart(shoppingCart);
+        shoppingCart.setUser(user);
         user.setSelectedCurrency(this.currencyRepository.findByCodeIgnoreCase("eur").get());
 
         return user;

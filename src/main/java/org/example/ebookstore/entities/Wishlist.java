@@ -10,7 +10,7 @@ import java.util.Set;
 @Table(name = "wishlists")
 public class Wishlist extends BaseEntity {
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
     @ManyToMany
     @JoinTable(
