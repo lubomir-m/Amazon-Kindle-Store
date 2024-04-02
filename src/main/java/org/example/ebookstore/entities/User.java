@@ -13,13 +13,13 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
-    @Size(min = 5, max = 30)
+    @Size(min = 4, max = 30)
     @Column(unique = true, nullable = false, length = 30)
     private String username;
     @Email(message = "Invalid email.")
     @Column(unique = true, nullable = false, length = 150)
     private String email;
-    @Size(min = 7, max = 128)
+    @Size(min = 4, max = 128)
     @Column(nullable = false, length = 128)
     private String password;
     @Size(min = 2, max = 50)

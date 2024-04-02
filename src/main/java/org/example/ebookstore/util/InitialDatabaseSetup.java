@@ -622,6 +622,37 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         Role adminRole = this.roleRepository.findByName(Role.UserRole.ADMIN).get();
         Role userRole = this.roleRepository.findByName(Role.UserRole.USER).get();
         List<User> users = new ArrayList<>();
-        
+
+        users.add(createUser("admin", "admin@mail.com", "1234", "Admin",
+                "Admin", 30, adminRole, userRole));
+        users.add(createUser("user", "user@mail.com", "1234", "Ivan", "Ivanov",
+                30, userRole));
+
+        for (int i = 0; i < 10; i++) {
+            User user = createUser("user" + (i + 1), "user" + (i + 1) + "@mail.com",
+                    "1234", firstNames[i], lastNames[i], 30, userRole);
+            user.setPicture(this.userPicturesList.get(i));
+            users.add(user);
+        }
+
+        this.userRepository.saveAll(users);
+    }
+
+    public User createUser(String username, String email, String password, String firstName,
+                           String lastName, int age, Role... roles) {
+        User user = new User();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(this.passwordEncoder.encode(password));
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setAge(age);
+        for (Role role : roles) {
+            user.addRole(role);
+        }
+        user.setShoppingCart(new ShoppingCart());
+        user.setWishlist(new Wishlist());
+
+        return user;
     }
 }
