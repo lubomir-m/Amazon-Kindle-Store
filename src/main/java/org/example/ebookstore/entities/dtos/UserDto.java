@@ -1,21 +1,37 @@
 package org.example.ebookstore.entities.dtos;
 
+import org.example.ebookstore.entities.Currency;
+import org.example.ebookstore.entities.Order;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public class UserDto {
     private String firstName;
     private String lastName;
     private Long wishlistId;
     private Long shoppingCartId;
     private int numberOfItemsInCart;
+    private Set<Order> orders = new HashSet<>();
+    private Currency selectedCurrency;
 
     public UserDto() {
     }
 
-    public UserDto(String firstName, String lastName, Long wishlistId, Long shoppingCartId, int numberOfItemsInCart) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.wishlistId = wishlistId;
-        this.shoppingCartId = shoppingCartId;
-        this.numberOfItemsInCart = numberOfItemsInCart;
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
+    }
+
+    public Currency getSelectedCurrency() {
+        return selectedCurrency;
+    }
+
+    public void setSelectedCurrency(Currency selectedCurrency) {
+        this.selectedCurrency = selectedCurrency;
     }
 
     public String getFirstName() {
