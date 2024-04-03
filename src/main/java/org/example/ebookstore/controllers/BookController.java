@@ -1,6 +1,7 @@
 package org.example.ebookstore.controllers;
 
 import org.example.ebookstore.entities.Book;
+import org.example.ebookstore.entities.dtos.BookDto;
 import org.example.ebookstore.services.interfaces.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,8 @@ public class BookController {
 
     @GetMapping({"/", "/home", "/bestsellers"})
     public String viewHomepage(Model model) {
-        List<Book> books =
+        List<BookDto> books = this.bookService.findFirst50BestSellers();
+        model.addAttribute("books", books);
+        return "index";
     }
 }
