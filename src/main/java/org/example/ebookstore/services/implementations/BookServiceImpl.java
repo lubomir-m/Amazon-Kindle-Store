@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,9 +36,15 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDto> findFirst50BestSellers() {
-        return this.bookRepository.findFirst50ByOrderByPurchaseCountDesc()
+        return this.bookRepository.findFirst50ByAverageRatingGreaterThanEqualOrderByPurchaseCountDesc(4.0)
                 .stream().map(book -> this.modelMapper.map(book, BookDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<BookDto> getDto(Long id) {
+        Optional<Book> optional = this.bookRepository.findById(id);
+        return optional.map(book -> this.modelMapper.map(book, BookDto.class));
     }
 
 }

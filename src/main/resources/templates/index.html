@@ -9,7 +9,27 @@
 <body>
 <div th:replace="~{fragments/navigation :: navigation}"></div>
 
-<p>Homepage</p>
+<div class="homepage">
+    <div class="homepage-title">
+        <h2>Amazon Kindle Store Best Sellers</h2>
+    </div>
+    <div class="book-list">
+        <div class="book-item" th:each="book : ${books}" th:object="${book}">
+            <a th:href="@{/books/{id}(id=*{id})}">
+                <div class="book-cover">
+                    <div class="cover-title" th:text="*{title}"></div>
+                    <div class="cover-authors" th:each="author : *{authors}">
+                        <div class="cover-author" th:text="${author.fullName}"></div>
+                    </div>
+                </div>
+                <div class="book-title" th:text="*{title}"></div>
+                <div class="book-rating" th:text="*{averageRating}"></div>
+                <div class="book-price">Get price based on what currency the user has chosen</div>
+            </a>
+
+        </div>
+    </div>
+</div>
 
 
 <div th:replace="~{fragments/footer :: footer}"></div>
