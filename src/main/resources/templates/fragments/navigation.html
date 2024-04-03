@@ -1,0 +1,49 @@
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+
+<div th:fragment="navigation">
+
+    <div class="nav-row">
+        <div class="nav-section left">
+            <a href="/" class="navbar-brand">
+                <img src="path-to-your-logo.svg" alt="AmazonKindleStore Logo">
+            </a>
+        </div>
+        <div class="nav-section center">
+            <form th:action="@{/search}" method="get" class="search-form">
+                <input type="text" name="query" placeholder="Search Amazon Kindle Store">
+                <button type="submit" class="search-button">
+                    <i class="fas fa-search"></i> <!-- Assuming you're using FontAwesome for icons -->
+                </button>
+            </form>
+        </div>
+        <div class="nav-section right">
+            <div class="currency">
+                <span>$ USD</span>
+            </div>
+            <div class="account">
+                <span sec:authorize="isAuthenticated()">Hello, <span sec:authentication="name"></span></span>
+                <span sec:authorize="!isAuthenticated()">Hello, Sign in</span>
+                <div>Your Account</div>
+            </div>
+            <div class="cart">
+                <a th:href="@{/cart}">
+                    <i class="fas fa-shopping-cart"></i> Cart
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="nav-row">
+        <div class="nav-section left">
+            <a th:href="@{/categories}">Categories</a>
+            <a th:href="@{/best-sellers}">Best Sellers</a>
+            <a th:href="@{/newest-ebooks}">Newest eBooks</a>
+        </div>
+        <div class="nav-section right">
+            <a th:href="@{/customer-service}">Customer Service</a>
+            <a th:href="@{/about}">About</a>
+        </div>
+    </div>
+
+</div>
