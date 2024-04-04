@@ -2,6 +2,7 @@ package org.example.ebookstore.config;
 
 import org.example.ebookstore.entities.Currency;
 import org.example.ebookstore.entities.dtos.UserDto;
+import org.example.ebookstore.services.interfaces.CategoryService;
 import org.example.ebookstore.services.interfaces.CurrencyService;
 import org.example.ebookstore.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,13 @@ import java.util.Optional;
 public class GlobalControllerAdvice {
     private final CurrencyService currencyService;
     private final UserService userService;
+    private final CategoryService categoryService;
 
     @Autowired
-    public GlobalControllerAdvice(CurrencyService currencyService, UserService userService) {
+    public GlobalControllerAdvice(CurrencyService currencyService, UserService userService, CategoryService categoryService) {
         this.currencyService = currencyService;
         this.userService = userService;
+        this.categoryService = categoryService;
     }
 
     @ModelAttribute("allCurrencies")
