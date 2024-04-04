@@ -2,36 +2,30 @@ package org.example.ebookstore.entities.dtos;
 
 import org.example.ebookstore.entities.Currency;
 import org.example.ebookstore.entities.Order;
+import org.example.ebookstore.entities.ShoppingCart;
+import org.example.ebookstore.entities.Wishlist;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class UserDto {
+    private String username;
     private String firstName;
     private String lastName;
-    private Long wishlistId;
-    private Long shoppingCartId;
-    private int numberOfItemsInCart;
+    private Wishlist wishlist;
+    private ShoppingCart shoppingCart;
     private Set<Order> orders = new HashSet<>();
     private Currency selectedCurrency;
 
     public UserDto() {
     }
 
-    public Set<Order> getOrders() {
-        return orders;
+    public String getUsername() {
+        return username;
     }
 
-    public void setOrders(Set<Order> orders) {
-        this.orders = orders;
-    }
-
-    public Currency getSelectedCurrency() {
-        return selectedCurrency;
-    }
-
-    public void setSelectedCurrency(Currency selectedCurrency) {
-        this.selectedCurrency = selectedCurrency;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstName() {
@@ -50,27 +44,35 @@ public class UserDto {
         this.lastName = lastName;
     }
 
-    public Long getWishlistId() {
-        return wishlistId;
+    public Wishlist getWishlist() {
+        return wishlist;
     }
 
-    public void setWishlistId(Long wishlistId) {
-        this.wishlistId = wishlistId;
+    public void setWishlist(Wishlist wishlist) {
+        this.wishlist = wishlist;
     }
 
-    public Long getShoppingCartId() {
-        return shoppingCartId;
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
     }
 
-    public void setShoppingCartId(Long shoppingCartId) {
-        this.shoppingCartId = shoppingCartId;
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
     }
 
-    public int getNumberOfItemsInCart() {
-        return numberOfItemsInCart;
+    public Set<Order> getOrders() {
+        return orders;
     }
 
-    public void setNumberOfItemsInCart(int numberOfItemsInCart) {
-        this.numberOfItemsInCart = numberOfItemsInCart;
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
+    }
+
+    public Currency getSelectedCurrency() {
+        return selectedCurrency;
+    }
+
+    public void setSelectedCurrency(Currency selectedCurrency) {
+        this.selectedCurrency = selectedCurrency;
     }
 }

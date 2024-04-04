@@ -18,8 +18,11 @@
             <a th:href="@{/books/{id}(id=*{id})}">
                 <div class="book-cover">
                     <div class="cover-title" th:text="*{title}"></div>
-                    <div class="cover-authors" th:each="author : *{authors}">
-                        <div class="cover-author" th:text="${author.fullName}"></div>
+                    <div class="cover-authors">
+                        <span th:each="author,iterStat : *{authors}">
+                            <span th:text="${author.fullName}"></span>
+                            <span th:if="${!iterStat.last}">, </span>
+                        </span>
                     </div>
                 </div>
                 <div class="book-title" th:text="*{title}"></div>
