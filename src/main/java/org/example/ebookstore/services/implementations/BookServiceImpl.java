@@ -1,6 +1,7 @@
 package org.example.ebookstore.services.implementations;
 
 import org.example.ebookstore.entities.Book;
+import org.example.ebookstore.entities.Currency;
 import org.example.ebookstore.entities.dtos.BookDto;
 import org.example.ebookstore.repositories.BookRepository;
 import org.example.ebookstore.services.interfaces.BookService;
@@ -35,16 +36,24 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> findFirst50BestSellers() {
+    public BookDto mapBookToDto(Book book, Currency currency) {
+        BookDto bookDto = this.modelMapper.map(book, BookDto.class);
+        bookDto.setSelectedCurrency(currency);
+        bookDto.setSelectedCurrencyPrice();
+        return bookDto;
+    }
+
+    @Override
+    public List<BookDto> findFirst50BestSellers(Currency currency) {
         return this.bookRepository.findFirst50ByAverageRatingGreaterThanEqualOrderByPurchaseCountDesc(4.0)
-                .stream().map(book -> this.modelMapper.map(book, BookDto.class))
+                .stream().map(book -> mapBookToDto(book, currency))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<BookDto> getDto(Long id) {
+    public Optional<BookDto> getDto(Long id, Currency currency) {
         Optional<Book> optional = this.bookRepository.findById(id);
-        return optional.map(book -> this.modelMapper.map(book, BookDto.class));
+        return optional.map(book -> mapBookToDto(book, currency));
     }
 
 }

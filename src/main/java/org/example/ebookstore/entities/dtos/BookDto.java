@@ -33,8 +33,49 @@ public class BookDto {
     private BigDecimal priceNgn;
     private String imageUrl;
     private String coverColor;
+    private String selectedCurrencyPrice;
+    private Currency selectedCurrency;
 
     public BookDto() {
+    }
+
+    public Currency getSelectedCurrency() {
+        return selectedCurrency;
+    }
+
+    public void setSelectedCurrency(Currency selectedCurrency) {
+        this.selectedCurrency = selectedCurrency;
+    }
+
+    public String getSelectedCurrencyPrice() {
+        return selectedCurrencyPrice;
+    }
+
+    public void setSelectedCurrencyPrice() {
+        String symbol = this.selectedCurrency.getSymbol();
+        BigDecimal price = null;
+        String code = this.selectedCurrency.getCode();
+        if (code.equals("EUR")) {
+            price = this.priceEur;
+        } else if (code.equals("USD")) {
+            price = this.priceUsd;
+        } else if (code.equals("AUD")) {
+            price = this.priceAud;
+        } else if (code.equals("BRL")) {
+            price = this.priceBrl;
+        } else if (code.equals("INR")) {
+            price = this.priceInr;
+        } else if (code.equals("CNY")) {
+            price = this.priceCny;
+        } else if (code.equals("EGP")) {
+            price = this.priceEgp;
+        } else if (code.equals("NGN")) {
+            price = this.priceNgn;
+        } else {
+            price = this.priceEur;
+        }
+
+        this.selectedCurrencyPrice = String.format("%s%.2f", symbol, price);
     }
 
     public Long getId() {
