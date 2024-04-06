@@ -8,6 +8,8 @@ import org.example.ebookstore.services.interfaces.BookService;
 import org.example.ebookstore.services.interfaces.ExchangeRateService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -44,6 +46,18 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Page<BookDto> findByCategoriesId(Long categoryId, Pageable pageable, Currency currency) {
+        Page<Book> books = this.bookRepository.findByCategoriesId(categoryId, pageable);
+        return books.map(book -> mapBookToDto(book, currency));
+    }
+
+    @Override
+    public Page<BookDto> findBestsellersInCategory(Long categoryId, Pageable pageable, Currency currency) {
+        return this.bookRepository.findByCategoriesIdAndAverageRatingGreaterThanEqualOrderByPurchaseCountDesc(
+                categoryId, 4.0, pageable).map(book -> mapBookToDto(book, currency));
+    }
+
+    @Override
     public List<BookDto> findFirst50BestSellers(Currency currency) {
         return this.bookRepository.findFirst50ByAverageRatingGreaterThanEqualOrderByPurchaseCountDesc(4.0)
                 .stream().map(book -> mapBookToDto(book, currency))
@@ -55,5 +69,7 @@ public class BookServiceImpl implements BookService {
         Optional<Book> optional = this.bookRepository.findById(id);
         return optional.map(book -> mapBookToDto(book, currency));
     }
+
+
 
 }

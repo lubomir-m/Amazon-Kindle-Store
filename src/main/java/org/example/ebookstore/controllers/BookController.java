@@ -45,4 +45,7 @@ public class BookController {
             return "error";
         }
     }
+
+    @GetMapping("/categories")
+    public String viewCategoryPage()
 }
