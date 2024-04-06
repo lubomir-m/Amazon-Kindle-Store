@@ -5,6 +5,7 @@ import org.example.ebookstore.entities.Currency;
 import org.example.ebookstore.entities.dtos.BookDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -15,6 +16,7 @@ public interface BookService {
     List<BookDto> findFirst50BestSellers(Currency currency);
     Optional<BookDto> getDto(Long id, Currency currency);
     BookDto mapBookToDto(Book book, Currency currency);
-    Page<BookDto> findByCategoriesId(Long categoryId, Pageable pageable, Currency currency);
+    Page<BookDto> findByCategoryId(Long categoryId, Pageable pageable, Currency currency);
     Page<BookDto> findBestsellersInCategory(Long categoryId, Pageable pageable, Currency currency);
+    Sort getSortByParameter(String sortBy);
 }

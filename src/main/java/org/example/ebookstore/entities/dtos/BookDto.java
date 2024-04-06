@@ -12,7 +12,6 @@ import java.util.Set;
 public class BookDto {
     private Long Id;
     private Set<Author> authors = new HashSet<>();
-    private Set<Category> categories = new HashSet<>();
     private Set<Rating> ratings = new HashSet<>();
     private Double averageRating;
     private Long ratingsCount;

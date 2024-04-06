@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findFirst50ByAverageRatingGreaterThanEqualOrderByPurchaseCountDesc(Double avgRating);
-    Page<Book> findByCategoriesId(Long categoryId, Pageable pageable);
-    Page<Book> findByCategoriesIdAndAverageRatingGreaterThanEqualOrderByPurchaseCountDesc
-            (Long categoryId, Double avgRating, Pageable pageable);
+    Page<Book> findByCategoriesIdIn(List<Long> categoryIds, Pageable pageable);
+    Page<Book> findByCategoriesIdInAndAverageRatingGreaterThanEqualOrderByPurchaseCountDesc
+            (List<Long> categoryIds, Double avgRating, Pageable pageable);
 }

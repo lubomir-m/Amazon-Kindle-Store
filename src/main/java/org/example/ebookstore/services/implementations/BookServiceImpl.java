@@ -1,19 +1,23 @@
 package org.example.ebookstore.services.implementations;
 
+import org.example.ebookstore.entities.BaseEntity;
 import org.example.ebookstore.entities.Book;
 import org.example.ebookstore.entities.Currency;
 import org.example.ebookstore.entities.dtos.BookDto;
 import org.example.ebookstore.repositories.BookRepository;
+import org.example.ebookstore.repositories.CategoryRepository;
 import org.example.ebookstore.services.interfaces.BookService;
 import org.example.ebookstore.services.interfaces.ExchangeRateService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,12 +27,14 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final ExchangeRateService exchangeRateService;
     private final ModelMapper modelMapper;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository, ExchangeRateService exchangeRateService, ModelMapper modelMapper) {
+    public BookServiceImpl(BookRepository bookRepository, ExchangeRateService exchangeRateService, ModelMapper modelMapper, CategoryRepository categoryRepository) {
         this.bookRepository = bookRepository;
         this.exchangeRateService = exchangeRateService;
         this.modelMapper = modelMapper;
+        this.categoryRepository = categoryRepository;
     }
 
     public BigDecimal round(BigDecimal value) {
@@ -45,16 +51,43 @@ public class BookServiceImpl implements BookService {
         return bookDto;
     }
 
+    private List<Long> getCategoryAndSubcategoryIds(Long categoryId) {
+        List<Long> subcategoryIds = this.categoryRepository.findAllSubcategories(categoryId)
+                .stream().map(BaseEntity::getId).collect(Collectors.toCollection(ArrayList::new));
+        subcategoryIds.add(categoryId);
+        return subcategoryIds;
+    }
+
     @Override
-    public Page<BookDto> findByCategoriesId(Long categoryId, Pageable pageable, Currency currency) {
-        Page<Book> books = this.bookRepository.findByCategoriesId(categoryId, pageable);
+    public Page<BookDto> findByCategoryId(Long categoryId, Pageable pageable, Currency currency) {
+        List<Long> categoryIds = getCategoryAndSubcategoryIds(categoryId);
+        Page<Book> books = this.bookRepository.findByCategoriesIdIn(categoryIds, pageable);
         return books.map(book -> mapBookToDto(book, currency));
     }
 
     @Override
     public Page<BookDto> findBestsellersInCategory(Long categoryId, Pageable pageable, Currency currency) {
-        return this.bookRepository.findByCategoriesIdAndAverageRatingGreaterThanEqualOrderByPurchaseCountDesc(
-                categoryId, 4.0, pageable).map(book -> mapBookToDto(book, currency));
+        List<Long> categoryIds = getCategoryAndSubcategoryIds(categoryId);
+        Page<Book> books = this.bookRepository.findByCategoriesIdInAndAverageRatingGreaterThanEqualOrderByPurchaseCountDesc
+                (categoryIds, 4.0, pageable);
+        return books.map(book -> mapBookToDto(book, currency));
+    }
+
+    @Override
+    public Sort getSortByParameter(String sortBy) {
+        switch (sortBy) {
+            case "averageRatingDesc":
+                return Sort.by(Sort.Direction.DESC, "averageRating");
+            case "publicationDateDesc":
+                return Sort.by(Sort.Direction.DESC, "publicationDate");
+            case "priceAsc":
+                return Sort.by(Sort.Direction.ASC, "price");
+            case "priceDesc":
+                return Sort.by(Sort.Direction.DESC, "price");
+            case "purchaseCountDesc":
+            default:
+                return Sort.by(Sort.Direction.DESC, "purchaseCount");
+        }
     }
 
     @Override
@@ -71,5 +104,5 @@ public class BookServiceImpl implements BookService {
     }
 
 
-
 }
+
