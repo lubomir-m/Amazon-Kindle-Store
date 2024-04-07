@@ -4,7 +4,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.example.ebookstore.entities.Book;
 import org.example.ebookstore.entities.Currency;
 import org.example.ebookstore.entities.dtos.BookDto;
+import org.example.ebookstore.entities.dtos.CategoryDto;
 import org.example.ebookstore.services.interfaces.BookService;
+import org.example.ebookstore.services.interfaces.CategoryService;
 import org.example.ebookstore.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,11 +26,13 @@ import java.util.Optional;
 public class BookController {
     private final BookService bookService;
     private final UserService userService;
+    private final CategoryService categoryService;
 
     @Autowired
-    public BookController(BookService bookService, UserService userService) {
+    public BookController(BookService bookService, UserService userService, CategoryService categoryService) {
         this.bookService = bookService;
         this.userService = userService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping({"/", "/home"})
@@ -56,12 +60,36 @@ public class BookController {
     public String viewCategoryPage(@PathVariable("id") Long id,
                                    @RequestParam(defaultValue = "0") int page,
                                    Model model, HttpServletRequest request,
-                                   @RequestParam(defaultValue = "purchaseCount") String sortBy) {
+                                   @RequestParam(defaultValue = "purchaseCountDesc") String sortBy) {
+        Optional<CategoryDto> optional = this.categoryService.getCategoryDtoById(id);
+        if (optional.isEmpty()) {
+            return "error";
+        }
+
+        CategoryDto currentCategory = optional.get();
+        List<CategoryDto> directSubcategories = this.categoryService.getDirectSubcategories(id);
+        List<CategoryDto> parentCategories = this.categoryService.getParentCategories(id);
+        model.addAttribute("currentCategory", currentCategory);
+        model.addAttribute("directSubcategories", directSubcategories);
+        model.addAttribute("parentCategories", parentCategories);
+
         Currency currency = this.userService.getSelectedCurrency(request);
-        Pageable pageable = PageRequest.of(page, 16, Sort.Direction.DESC, sortBy);
+        Sort sort = this.bookService.getSortByParameter(sortBy);
+        Pageable pageable = PageRequest.of(page, 16, sort);
 
-        // TODO: check if sorting is by price ascending
+        Page<BookDto> bookDtoPage = null;
+        if (sortBy.equals("purchaseCountDesc")) {
+            bookDtoPage = this.bookService.findBestsellersInCategory(id, pageable, currency);
+        } else {
+            bookDtoPage = this.bookService.findByCategoryId(id, pageable, currency);
+        }
 
-        Page<BookDto> booksPage = this.bookService.find
+        model.addAttribute("books", bookDtoPage.getContent());
+        model.addAttribute("currentPage", bookDtoPage.getNumber());
+        model.addAttribute("totalPages", bookDtoPage.getTotalPages());
+        model.addAttribute("currentSort", sortBy);
+        model.addAttribute("numberOfBooks", bookDtoPage.getTotalElements());
+
+        return "category";
     }
 }

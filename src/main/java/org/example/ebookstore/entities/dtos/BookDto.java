@@ -93,14 +93,6 @@ public class BookDto {
         this.authors = authors;
     }
 
-    public Set<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(Set<Category> categories) {
-        this.categories = categories;
-    }
-
     public Set<Rating> getRatings() {
         return ratings;
     }
