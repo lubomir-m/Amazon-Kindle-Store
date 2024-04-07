@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class BookDto {
     private Long Id;
-    private Set<Author> authors = new HashSet<>();
+    private Set<AuthorDto> authors = new HashSet<>();
     private Set<Rating> ratings = new HashSet<>();
     private Double averageRating;
     private Long ratingsCount;
@@ -19,7 +19,7 @@ public class BookDto {
     private String description;
     private String title;
     private LocalDate publicationDate;
-    private Publisher publisher;
+    private PublisherDto publisher;
 
     private Long purchaseCount;
     private BigDecimal priceEur;
@@ -85,11 +85,11 @@ public class BookDto {
         Id = id;
     }
 
-    public Set<Author> getAuthors() {
+    public Set<AuthorDto> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(Set<Author> authors) {
+    public void setAuthors(Set<AuthorDto> authors) {
         this.authors = authors;
     }
 
@@ -149,11 +149,11 @@ public class BookDto {
         this.publicationDate = publicationDate;
     }
 
-    public Publisher getPublisher() {
+    public PublisherDto getPublisher() {
         return publisher;
     }
 
-    public void setPublisher(Publisher publisher) {
+    public void setPublisher(PublisherDto publisher) {
         this.publisher = publisher;
     }
 
