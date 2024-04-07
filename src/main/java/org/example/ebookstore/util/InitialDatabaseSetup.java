@@ -317,7 +317,7 @@ public class InitialDatabaseSetup implements CommandLineRunner {
             }
         }
 
-        List<Author> authors = new ArrayList<>(10000);
+        List<Author> authors = new ArrayList<>(13200);
         for (String firstName : firstNames) {
             for (String lastName : lastNames) {
                 StringBuilder sb = new StringBuilder();
@@ -370,9 +370,9 @@ public class InitialDatabaseSetup implements CommandLineRunner {
                 "Travel"
         };
 
-        List<Category> categoryList = new ArrayList<>(5881);
+        List<Category> categoryList = new ArrayList<>(5909);
         Category level1 = new Category();
-        level1.setName("Books");
+        level1.setName("Kindle eBooks");
         categoryList.add(level1);
 
         for (int i = 0; i < categories.length; i++) {
@@ -591,10 +591,6 @@ public class InitialDatabaseSetup implements CommandLineRunner {
                     author.addBook(book);
                 }
 
-                if (tokens.length <= 5) {
-                    System.out.println(tokens[1]);
-                    continue;
-                }
                 String categoryName = tokens[5];
                 List<Category> leafCategories = this.level2NameToLeafCategories.get(categoryName);
                 if (leafCategories == null || leafCategories.isEmpty()) {

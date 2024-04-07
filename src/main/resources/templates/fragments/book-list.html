@@ -1,10 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 
-</body>
-</html>
+<div th:fragment="book-list">
+    <div class="book" th:each="book : ${books}" th:object="${book}">
+        <a th:href="@{/books/{id}(id=*{id})}">
+            <div class="book-cover">
+                <div class="cover-title" th:text="*{title}"></div>
+                <div class="cover-authors">
+                    <span class="author" th:each="author, iterStat : *{authors}"
+                    th:text="${author.fullName} + (iterStat. ? '' : ', ')"></span>
+                </div>
+            </div>
+            <div class="book-details">
+                <div class="book-title" th:text="*{title}"></div>
+                <div class="book-authors" th:each="author, iterStat : *{authors}">
+<!--                    Add authors-->
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
