@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -89,6 +90,23 @@ public class BookController {
         model.addAttribute("totalPages", bookDtoPage.getTotalPages());
         model.addAttribute("currentSort", sortBy);
         model.addAttribute("numberOfBooks", bookDtoPage.getTotalElements());
+
+        Map<String, String> sortOptions = Map.of(
+                "purchaseCountDesc", "Best Sellers",
+                "priceAsc", "Price: Low to High",
+                "priceDesc", "Price: High to Low",
+                "averageRatingDesc", "Avg. Customer Review",
+                "publicationDateDesc", "Publication Date"
+        );
+        model.addAttribute("sortOptions", sortOptions);
+
+        int startIndex = page * pageable.getPageSize() + 1;
+        int endIndex = startIndex + pageable.getPageSize() - 1;
+        if (endIndex > bookDtoPage.getTotalElements()) {
+            endIndex = (int) bookDtoPage.getTotalElements();
+        }
+        model.addAttribute("startIndex", startIndex);
+        model.addAttribute("endIndex", endIndex);
 
         return "category";
     }
