@@ -3,6 +3,7 @@ package org.example.ebookstore.controllers;
 import jakarta.servlet.http.HttpServletRequest;
 import org.example.ebookstore.entities.Book;
 import org.example.ebookstore.entities.Currency;
+import org.example.ebookstore.entities.Review;
 import org.example.ebookstore.entities.dtos.BookDto;
 import org.example.ebookstore.entities.dtos.CategoryDto;
 import org.example.ebookstore.services.interfaces.BookService;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class BookController {
@@ -47,10 +49,15 @@ public class BookController {
     @GetMapping("/books/{id}")
     public String bookDetails(@PathVariable("id") Long id, Model model, HttpServletRequest request) {
         Currency currency = this.userService.getSelectedCurrency(request);
-        Optional<BookDto> book = this.bookService.getDto(id, currency);
-        if (book.isPresent()) {
-            model.addAttribute("book", book.get());
+        Optional<BookDto> bookDto = this.bookService.getDto(id, currency);
+        if (bookDto.isPresent()) {
+            model.addAttribute("book", bookDto.get());
             // TODO: add 8 recommended books from a similar category
+
+            List<BookDto> books = this.bookService.getRecommendedBooks(id, currency);
+            model.addAttribute("recommendedBooks", books);
+
+
             return "book-details";
         } else {
             return "error";

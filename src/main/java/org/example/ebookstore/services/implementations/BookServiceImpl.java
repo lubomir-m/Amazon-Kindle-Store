@@ -2,15 +2,19 @@ package org.example.ebookstore.services.implementations;
 
 import org.example.ebookstore.entities.BaseEntity;
 import org.example.ebookstore.entities.Book;
+import org.example.ebookstore.entities.Category;
 import org.example.ebookstore.entities.Currency;
 import org.example.ebookstore.entities.dtos.BookDto;
 import org.example.ebookstore.repositories.BookRepository;
 import org.example.ebookstore.repositories.CategoryRepository;
+import org.example.ebookstore.repositories.ReviewRepository;
 import org.example.ebookstore.services.interfaces.BookService;
 import org.example.ebookstore.services.interfaces.ExchangeRateService;
+import org.example.ebookstore.services.interfaces.PlaceholderReviewService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -28,13 +32,17 @@ public class BookServiceImpl implements BookService {
     private final ExchangeRateService exchangeRateService;
     private final ModelMapper modelMapper;
     private final CategoryRepository categoryRepository;
+    private final ReviewRepository reviewRepository;
+    private final PlaceholderReviewService placeholderReviewService;
 
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository, ExchangeRateService exchangeRateService, ModelMapper modelMapper, CategoryRepository categoryRepository) {
+    public BookServiceImpl(BookRepository bookRepository, ExchangeRateService exchangeRateService, ModelMapper modelMapper, CategoryRepository categoryRepository, ReviewRepository reviewRepository, PlaceholderReviewService placeholderReviewService) {
         this.bookRepository = bookRepository;
         this.exchangeRateService = exchangeRateService;
         this.modelMapper = modelMapper;
         this.categoryRepository = categoryRepository;
+        this.reviewRepository = reviewRepository;
+        this.placeholderReviewService = placeholderReviewService;
     }
 
     public BigDecimal round(BigDecimal value) {
@@ -127,6 +135,16 @@ public class BookServiceImpl implements BookService {
         return optional.map(book -> mapBookToDto(book, currency));
     }
 
+    @Override
+    public List<BookDto> getRecommendedBooks(Long id, Currency currency) {
+        Book book = this.bookRepository.findById(id).get();
+        Long categoryId = book.getCategories().stream().filter(c -> !c.getId().equals(1L))
+                .findFirst().map(Category::getId).get();
+        Pageable pageable = PageRequest.of(0, 8, Sort.by("purchaseCount").descending());
+        Page<Book> page = this.bookRepository.getRecommendedBooks(id, categoryId, pageable);
+        return page.getContent().stream().map(b -> mapBookToDto(b, currency))
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
 
 }
 

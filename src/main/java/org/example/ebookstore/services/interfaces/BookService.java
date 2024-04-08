@@ -19,4 +19,5 @@ public interface BookService {
     Page<BookDto> findByCategoryId(Long categoryId, Pageable pageable, Currency currency);
     Page<BookDto> findBestsellersInCategory(Long categoryId, Pageable pageable, Currency currency);
     Sort getSortByParameter(String sortBy);
+    List<BookDto> getRecommendedBooks(Long bookId, Currency currency);
 }

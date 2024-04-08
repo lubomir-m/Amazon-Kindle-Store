@@ -15,7 +15,6 @@ public class BookDto {
     private Set<AuthorDto> authors = new HashSet<>();
     private Double averageRating;
     private Long ratingsCount;
-    private Set<Review> reviews = new HashSet<>();
     private String description;
     private String title;
     private LocalDate publicationDate;
