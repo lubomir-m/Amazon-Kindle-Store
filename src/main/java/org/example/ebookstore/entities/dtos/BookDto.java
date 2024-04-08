@@ -77,14 +77,6 @@ public class BookDto {
         this.ratingsCount = ratingsCount;
     }
 
-    public Set<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(Set<Review> reviews) {
-        this.reviews = reviews;
-    }
-
     public String getDescription() {
         return description;
     }
