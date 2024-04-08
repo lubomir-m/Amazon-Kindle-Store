@@ -718,6 +718,18 @@ public class InitialDatabaseSetup implements CommandLineRunner {
                 "A blend of suspense and sentiment, this book grips you from the start, refusing to let go as it plunges into the complexities of love, loss, and the quest for truth. It's a literary odyssey that promises—and delivers—a journey for the ages.",
                 "The story unfolds with the precision of a clockmaker, each piece slotting into place with satisfying clarity. Yet, it's the clock's face—depicting the nuanced expressions of its characters—that will keep you contemplating the nature of time and legacy long after the final tick."
         };
+        String[] reviewTitles = {
+                "Reflections in the Mirror of the Soul",
+                "Unraveling Intrigue: A Journey Through Character",
+                "The Alchemy of Imagination: A Human Saga",
+                "Voices Unflinching: The Poetry of Everyday Life",
+                "Paradoxical Paths: Between Reality and Fantasy",
+                "Echoes of Unforgettable Journeys",
+                "Singing Sagas: The Tapestry of Time",
+                "Untold Depths: Navigating Narrative Waters",
+                "The Odyssey of Emotion: Suspense and Sentiment",
+                "The Clockwork of Destiny: Time's Legacy Unfolded"
+        };
         LocalDate date = LocalDate.of(2024, 4, 2);
         List<Review> reviews = new ArrayList<>();
         List<Rating> ratings = new ArrayList<>();
@@ -726,6 +738,7 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         for (int i = 0; i < 10; i++) {
             Rating rating = new Rating(users.get(i), date, 5);
             Review review = new Review(users.get(i), reviewTexts[i], date, rating);
+            review.setTitle(reviewTitles[i]);
 
             ratings.add(rating);
             reviews.add(review);

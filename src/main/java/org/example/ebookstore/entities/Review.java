@@ -11,6 +11,9 @@ public class Review extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+    @Column(nullable = false, length = 100)
+    @Size(min = 5, max = 100)
+    private String title;
     @Column(nullable = false, length = 700)
     @Size(min = 5, max = 700)
     private String text;
@@ -31,6 +34,14 @@ public class Review extends BaseEntity {
         this.text = text;
         this.submissionDate = submissionDate;
         this.rating = rating;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public User getUser() {

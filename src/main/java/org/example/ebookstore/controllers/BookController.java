@@ -50,7 +50,9 @@ public class BookController {
     }
 
     @GetMapping("/books/{id}")
-    public String bookDetails(@PathVariable("id") Long id, Model model, HttpServletRequest request) {
+    public String bookDetails(@PathVariable("id") Long id, Model model, HttpServletRequest request,
+                              @RequestParam(defaultValue = "0") int page) {
+
         Currency currency = this.userService.getSelectedCurrency(request);
         Optional<BookDto> bookDto = this.bookService.getDto(id, currency);
         if (bookDto.isPresent()) {
@@ -59,8 +61,12 @@ public class BookController {
             List<BookDto> books = this.bookService.getRecommendedBooks(id, currency);
             model.addAttribute("books", books);
 
-            List<Review> reviews = this.reviewService.getReviewsByBookId(id);
-            model.addAttribute("reviews", reviews);
+            Pageable pageable = PageRequest.of(page, 7);
+            Page<Review> reviewPage = this.reviewService.getReviewsByBookId(id, pageable);
+            model.addAttribute("reviews", reviewPage.getContent());
+            model.addAttribute("currentReviewPage", pageable.getPageNumber());
+            model.addAttribute("totalReviewPages", reviewPage.getTotalPages());
+
             return "book-details";
         } else {
             return "error";
