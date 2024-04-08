@@ -35,19 +35,23 @@
                 <div class="rating">
                     <!-- Full Stars -->
                     <span th:each="i : ${#numbers.sequence(1, *{averageRating}.intValue())}">
-        <svg class="star full-star" viewBox="..." xmlns="..."> <!-- Your SVG path here --> </svg>
+        <svg class="star full-star"><use href="#star-icon"></use></svg>
     </span>
                     <!-- Half Star -->
                     <span th:if="${(*{averageRating} % 1) >= 0.5}">
-        <svg class="star half-star" viewBox="..." xmlns="..."> <!-- Your SVG path here --> </svg>
+        <svg class="star half-star"><use href="#star-icon"></use></svg>
     </span>
                     <!-- Empty Stars -->
                     <span th:each="i : ${#numbers.sequence(*{averageRating}.intValue() + 1, 5)}">
-        <svg class="star empty-star" viewBox="..." xmlns="..."> <!-- Your SVG path here --> </svg>
+        <svg class="star empty-star"><use href="#star-icon"></use></svg>
     </span>
                     <span th:text="'   ' + *{ratingsCount} + ' ratings'"></span>
                 </div>
-
+                <div class="kindle-ebook">Kindle eBook</div>
+                <div class="price" th:text="*{selectedCurrency.symbol} +
+                ${#numbers.formatDecimal(*{selectedCurrencyPrice}, 1, 'NO_BREAK_SPACE', 2, 'POINT')}"></div>
+                <div class="available-instantly">Available instantly</div>
+                <div class="buy-now-btn">Buy Now</div>
             </div>
     </div>
 </div>

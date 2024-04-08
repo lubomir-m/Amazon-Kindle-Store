@@ -45,9 +45,33 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto mapBookToDto(Book book, Currency currency) {
+        BigDecimal price = null;
+        String code = currency.getCode();
+        if (code.equals("EUR")) {
+            price = book.getPriceEur();
+        } else if (code.equals("USD")) {
+            price = book.getPriceUsd();
+        } else if (code.equals("AUD")) {
+            price = book.getPriceAud();
+        } else if (code.equals("BRL")) {
+            price = book.getPriceBrl();
+        } else if (code.equals("INR")) {
+            price = book.getPriceInr();
+        } else if (code.equals("CNY")) {
+            price = book.getPriceCny();
+        } else if (code.equals("EGP")) {
+            price = book.getPriceEgp();
+        } else if (code.equals("NGN")) {
+            price = book.getPriceNgn();
+        } else {
+            price = book.getPriceEur();
+        }
+
+        price = round(price);
+
         BookDto bookDto = this.modelMapper.map(book, BookDto.class);
         bookDto.setSelectedCurrency(currency);
-        bookDto.setSelectedCurrencyPrice();
+        bookDto.setSelectedCurrencyPrice(price);
         return bookDto;
     }
 

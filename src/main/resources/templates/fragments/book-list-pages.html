@@ -1,10 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 
-</body>
-</html>
+<div th:fragment="book-list-pages"
+     th:with="totalPages=${totalPages}, currentPage=${currentPage}">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <!-- Previous Page Link -->
+            <li th:class="${currentPage == 0} ? 'page-item disabled' : 'page-item'">
+                <a class="page-link" th:href="${currentPage > 0} ?
+                @{/categories/{id}(id=${currentCategory.id}, page=${currentPage - 1}, sortBy=${currentSort})} :
+                '#'" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <!-- Page Numbers -->
+            <li th:class="${i == currentPage} ? 'page-item active' : 'page-item'"
+                th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                <a class="page-link" th:href="@{/categories/{id}(id=${currentCategory.id}, page=${i}, sortBy=${currentSort})}" th:text="${i + 1}">1</a>
+            </li>
+
+            <!-- Next Page Link -->
+            <li th:class="${currentPage + 1 == totalPages} ? 'page-item disabled' : 'page-item'">
+                <a class="page-link" th:href="${currentPage + 1 < totalPages} ?
+                @{/categories/{id}(id=${currentCategory.id}, page=${currentPage + 1}, sortBy=${currentSort})} :
+                '#'" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

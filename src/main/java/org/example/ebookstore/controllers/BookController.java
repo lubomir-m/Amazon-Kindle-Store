@@ -50,7 +50,7 @@ public class BookController {
         Optional<BookDto> book = this.bookService.getDto(id, currency);
         if (book.isPresent()) {
             model.addAttribute("book", book.get());
-            // TODO: add 9 recommended books from a similar category
+            // TODO: add 8 recommended books from a similar category
             return "book-details";
         } else {
             return "error";
