@@ -8,6 +8,7 @@ import org.example.ebookstore.entities.dtos.BookDto;
 import org.example.ebookstore.entities.dtos.CategoryDto;
 import org.example.ebookstore.services.interfaces.BookService;
 import org.example.ebookstore.services.interfaces.CategoryService;
+import org.example.ebookstore.services.interfaces.ReviewService;
 import org.example.ebookstore.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,12 +31,14 @@ public class BookController {
     private final BookService bookService;
     private final UserService userService;
     private final CategoryService categoryService;
+    private final ReviewService reviewService;
 
     @Autowired
-    public BookController(BookService bookService, UserService userService, CategoryService categoryService) {
+    public BookController(BookService bookService, UserService userService, CategoryService categoryService, ReviewService reviewService) {
         this.bookService = bookService;
         this.userService = userService;
         this.categoryService = categoryService;
+        this.reviewService = reviewService;
     }
 
     @GetMapping({"/", "/home"})
@@ -52,12 +55,12 @@ public class BookController {
         Optional<BookDto> bookDto = this.bookService.getDto(id, currency);
         if (bookDto.isPresent()) {
             model.addAttribute("book", bookDto.get());
-            // TODO: add 8 recommended books from a similar category
 
             List<BookDto> books = this.bookService.getRecommendedBooks(id, currency);
-            model.addAttribute("recommendedBooks", books);
+            model.addAttribute("books", books);
 
-
+            List<Review> reviews = this.reviewService.getReviewsByBookId(id);
+            model.addAttribute("reviews", reviews);
             return "book-details";
         } else {
             return "error";

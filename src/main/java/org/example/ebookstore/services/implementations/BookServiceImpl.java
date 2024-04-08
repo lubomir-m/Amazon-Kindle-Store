@@ -32,17 +32,13 @@ public class BookServiceImpl implements BookService {
     private final ExchangeRateService exchangeRateService;
     private final ModelMapper modelMapper;
     private final CategoryRepository categoryRepository;
-    private final ReviewRepository reviewRepository;
-    private final PlaceholderReviewService placeholderReviewService;
 
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository, ExchangeRateService exchangeRateService, ModelMapper modelMapper, CategoryRepository categoryRepository, ReviewRepository reviewRepository, PlaceholderReviewService placeholderReviewService) {
+    public BookServiceImpl(BookRepository bookRepository, ExchangeRateService exchangeRateService, ModelMapper modelMapper, CategoryRepository categoryRepository) {
         this.bookRepository = bookRepository;
         this.exchangeRateService = exchangeRateService;
         this.modelMapper = modelMapper;
         this.categoryRepository = categoryRepository;
-        this.reviewRepository = reviewRepository;
-        this.placeholderReviewService = placeholderReviewService;
     }
 
     public BigDecimal round(BigDecimal value) {
