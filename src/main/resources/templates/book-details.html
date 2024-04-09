@@ -10,15 +10,15 @@
 <div th:replace="~{fragments/navigation :: navigation}"></div>
 
 <div class="book" th:object="${book}">
-    <a th:href="@{/books/{id}(id=*{id})}">
-        <div class="book-cover">
-            <div class="cover-title" th:text="*{title}"></div>
-            <div class="cover-authors">
+    <div class="book-cover">
+        <div class="cover-title" th:text="*{title}"></div>
+        <div class="cover-authors">
                     <span class="author" th:each="author, iterStat : *{authors}"
                           th:text="${author.fullName} + (iterStat.last ? '' : ', ')"></span>
-            </div>
         </div>
-    </a>
+    </div>
+    <a th:href="*{imageUrl}" th:text="View Cover Image"></a>
+
     <div class="book-details">
         <div class="book-title" th:text="*{title}"></div>
         <div class="book-authors">
@@ -59,7 +59,8 @@
         </div>
         <div class="book-description" th:text="*{description}"></div>
         <div class="kindle-apps">Read with the free Kindle apps (available on iOS, Android, PC & Mac),
-            Kindle E-readers and on Kindle Cloud Reader.</div>
+            Kindle E-readers and on Kindle Cloud Reader.
+        </div>
     </div>
     <div class="purchase-container">
         <div class="price-container">
