@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
     private byte[] loadDefaultImageData() {
         try {
-            Resource resource = new ClassPathResource("src/main/resources/static/images/default-profile-picture.jpg");
+            Resource resource = new ClassPathResource("static/images/default-profile-picture.jpg");
             BufferedImage bImage = ImageIO.read(resource.getInputStream());
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ImageIO.write(bImage, "jpg", bos);

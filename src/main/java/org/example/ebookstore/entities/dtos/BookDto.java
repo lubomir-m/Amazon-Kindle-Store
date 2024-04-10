@@ -133,4 +133,5 @@ public class BookDto {
     public void setCoverColor(String coverColor) {
         this.coverColor = coverColor;
     }
+
 }

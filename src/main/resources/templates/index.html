@@ -13,25 +13,7 @@
     <div class="homepage-title">
         <h2>Amazon Kindle Store Best Sellers</h2>
     </div>
-    <div class="book-list">
-        <div class="book-item" th:each="book : ${books}" th:object="${book}">
-            <a th:href="@{/books/{id}(id=*{id})}">
-                <div class="book-cover">
-                    <div class="cover-title" th:text="*{title}"></div>
-                    <div class="cover-authors">
-                        <span th:each="author,iterStat : *{authors}">
-                            <span th:text="${author.fullName}"></span>
-                            <span th:if="${!iterStat.last}">, </span>
-                        </span>
-                    </div>
-                </div>
-                <div class="book-title" th:text="*{title}"></div>
-                <div class="book-rating" th:text="*{averageRating}"></div>
-                <div class="book-price">Get price based on what currency the user has chosen</div>
-            </a>
-
-        </div>
-    </div>
+    <div th:replace="~{fragments/book-list :: book-list}"></div>
 </div>
 
 

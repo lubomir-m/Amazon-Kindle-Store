@@ -17,42 +17,42 @@
                           th:text="${author.fullName} + (iterStat.last ? '' : ', ')"></span>
         </div>
     </div>
-    <a th:href="*{imageUrl}" th:text="View Cover Image"></a>
+    <a th:href="*{imageUrl}">View Cover Image</a>
 
     <div class="book-details">
         <div class="book-title" th:text="*{title}"></div>
         <div class="book-authors">
             <span th:text="'by '"></span>
-            <a th:href="@{authors/{id}(id=*{authors[0].id})}" th:text="*{authors[0].fullName}"></a>
+            <a th:href="@{/authors/{id}(id=*{authors[0].id})}" th:text="*{authors[0].fullName}"></a>
             <span th:if="${#lists.size(book.authors)} == 2">
                             <span th:text="' and '"></span>
-                            <a th:href="@{authors/{id}(id=*{authors[1].id})}" th:text="*{authors[1].fullName}"></a>
+                            <a th:href="@{/authors/{id}(id=*{authors[1].id})}" th:text="*{authors[1].fullName}"></a>
                     </span>
             <span th:if="${#lists.size(book.authors)} == 3">
                         <span th:text="', '"></span>
-                        <a th:href="@{authors/{id}(id=*{authors[1].id})}" th:text="*{authors[1].fullName}"></a>
+                        <a th:href="@{/authors/{id}(id=*{authors[1].id})}" th:text="*{authors[1].fullName}"></a>
                         <span th:text="', and '"></span>
-                        <a th:href="@{authors/{id}(id=*{authors[2].id})}" th:text="*{authors[2].fullName}"></a>
+                        <a th:href="@{/authors/{id}(id=*{authors[2].id})}" th:text="*{authors[2].fullName}"></a>
                     </span>
         </div>
         <div class="publisher-date">
             <span th:text="'Published by: '"></span>
-            <a th:href="@{publishers/{id}(id=*{publisher.id})}" th:text="*{publisher.name}"></a>
-            <span th:text="' | ' + ${#temporals.format(*{publicationDate}, 'MMMM d, yyyy')}"></span>
+            <a th:href="@{/publishers/{id}(id=*{publisher.id})}" th:text="*{publisher.name}"></a>
+            <span th:text="' | ' + ${#temporals.format(book.publicationDate, 'MMMM d, yyyy')}"></span>
         </div>
         <div class="kindle-ebook">Format: Kindle eBook | Available instantly</div>
         <div class="rating">
             <span th:text="${#numbers.formatDecimal(book.averageRating, 1, 'COMMA', 1, 'POINT')} + ' '"></span>
             <!-- Full Stars -->
-            <span th:each="i : ${#numbers.sequence(1, *{averageRating}.intValue())}">
+            <span th:each="i : ${#numbers.sequence(1, book.averageRating.intValue())}">
         <svg class="star full-star"><use href="#star-icon"></use></svg>
     </span>
             <!-- Half Star -->
-            <span th:if="${(*{averageRating} % 1) >= 0.5}">
+            <span th:if="${(book.averageRating % 1) >= 0.5}">
         <svg class="star half-star"><use href="#star-icon"></use></svg>
     </span>
             <!-- Empty Stars -->
-            <span th:each="i : ${#numbers.sequence(*{averageRating}.intValue() + 1, 5)}">
+            <span th:each="i : ${#numbers.sequence(book.averageRating.intValue() + 1, 5)}">
         <svg class="star empty-star"><use href="#star-icon"></use></svg>
     </span>
             <span th:text="'   ' + *{ratingsCount} + ' ratings'"></span>
@@ -65,8 +65,8 @@
     <div class="purchase-container">
         <div class="price-container">
             <div class="text">Kindle Price:</div>
-            <div class="price" th:text="*{selectedCurrency.symbol} +
-                ${#numbers.formatDecimal(*{selectedCurrencyPrice}, 1, 'NO_BREAK_SPACE', 2, 'POINT')}"></div>
+            <div class="price" th:text="${book.selectedCurrency.symbol} +
+                ${#numbers.formatDecimal(book.selectedCurrencyPrice, 1, 'COMMA', 2, 'POINT')}"></div>
             <div class="vat">Price includes VAT</div>
             <div class="text">Sold by:</div>
             <div class="publisher-name" th:text="*{publisher.name}"></div>
@@ -91,22 +91,22 @@
         <div class="book-title"><a th:href="@{/books/{id}(id=*{id})}" th:text="*{title}"></a></div>
         <div class="rating">
             <!-- Full Stars -->
-            <span th:each="i : ${#numbers.sequence(1, *{averageRating}.intValue())}">
+            <span th:each="i : ${#numbers.sequence(1, book.averageRating.intValue())}">
         <svg class="star full-star"><use href="#star-icon"></use></svg>
     </span>
             <!-- Half Star -->
-            <span th:if="${(*{averageRating} % 1) >= 0.5}">
+            <span th:if="${(book.averageRating % 1) >= 0.5}">
         <svg class="star half-star"><use href="#star-icon"></use></svg>
     </span>
             <!-- Empty Stars -->
-            <span th:each="i : ${#numbers.sequence(*{averageRating}.intValue() + 1, 5)}">
+            <span th:each="i : ${#numbers.sequence(book.averageRating.intValue() + 1, 5)}">
         <svg class="star empty-star"><use href="#star-icon"></use></svg>
     </span>
             <span th:text="' ' + *{ratingsCount}"></span>
         </div>
         <div class="kindle-ebook">Kindle eBook</div>
-        <div class="price" th:text="*{selectedCurrency.symbol} +
-                ${#numbers.formatDecimal(*{selectedCurrencyPrice}, 1, 'NO_BREAK_SPACE', 2, 'POINT')}"></div>
+        <div class="price" th:text="${book.selectedCurrency.symbol} +
+                ${#numbers.formatDecimal(book.selectedCurrencyPrice, 1, 'COMMA', 2, 'POINT')}"></div>
     </div>
 </div>
 
