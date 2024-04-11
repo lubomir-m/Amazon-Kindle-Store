@@ -15,6 +15,8 @@ public class Picture extends BaseEntity {
     @Lob
     @Column(columnDefinition = "LONGBLOB")
     private byte[] data;
+    @Column(name = "content_type", nullable = false)
+    private String contentType;
 
     public Picture() {
     }
@@ -33,5 +35,13 @@ public class Picture extends BaseEntity {
 
     public void setData(byte[] data) {
         this.data = data;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 }

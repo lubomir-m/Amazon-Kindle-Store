@@ -55,6 +55,7 @@ public class AuthorServiceImpl implements AuthorService {
                     Picture picture = new Picture();
                     picture.setData(loadDefaultImageData());
                     picture.setName("default-profile-picture");
+                    picture.setContentType("image/jpg");
                     return this.pictureRepository.save(picture);
                 });
     }

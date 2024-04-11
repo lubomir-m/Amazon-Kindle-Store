@@ -131,6 +131,7 @@ public class InitialDatabaseSetup implements CommandLineRunner {
             Picture picture = new Picture();
             picture.setName(new File(path).getName());
             picture.setData(data);
+            picture.setContentType("image/" + fileExtension);
             imageList.add(picture);
         }
     }
