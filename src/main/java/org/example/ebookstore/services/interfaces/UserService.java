@@ -12,4 +12,5 @@ public interface UserService {
     User save(User user);
     Optional<UserDto> getUserDtoByUsername(String username);
     Currency getSelectedCurrency(HttpServletRequest request);
+    void updateUserCurrency(Long userId, Currency currency);
 }

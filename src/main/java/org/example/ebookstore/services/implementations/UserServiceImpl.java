@@ -104,6 +104,16 @@ public class UserServiceImpl implements UserService {
         return getCurrencyFromCookie(request);
     }
 
+    @Override
+    public void updateUserCurrency(Long userId, Currency currency) {
+        Optional<User> optional = this.userRepository.findById(userId);
+        if (optional.isPresent()) {
+            User user = optional.get();
+            user.setSelectedCurrency(currency);
+            this.userRepository.save(user);
+        }
+    }
+
     private Currency getCurrencyFromCookie(HttpServletRequest request) {
         String code = "";
         if (request.getCookies() == null) {

@@ -5,21 +5,27 @@
     <div class="nav-row">
         <div class="nav-section left">
             <a href="/" class="navbar-brand">
-<!--                <img src="path-to-your-logo.svg" alt="AmazonKindleStore Logo">-->
+                <svg class="amazon-logo"><use href="#amazon-logo"></use></svg>
             </a>
         </div>
         <div class="nav-section center">
             <form th:action="@{/search}" method="get" class="search-form">
                 <input type="text" name="query" placeholder="Search Amazon Kindle Store">
                 <button type="submit" class="search-button">
-<!--                    <i class="fas fa-search"></i> &lt;!&ndash; Assuming you're using FontAwesome for icons &ndash;&gt;-->
+                    <svg class="search-icon"><use href="#search-icon"></use></svg>
                 </button>
             </form>
         </div>
         <div class="nav-section right">
-            <div class="currency">
-                <span>$ USD</span>
-            </div>
+            <select name="currency">
+                <th:block th:each="currency : ${allCurrencies}">
+                    <option th:value="${currency.code}"
+                            th:text="${currency.symbol + ' - ' + currency.code}"
+                            th:selected="${currency.code == 'EUR'}">
+                    </option>
+                </th:block>
+            </select>
+
             <div class="account">
                 <span sec:authorize="isAuthenticated()">Hello, <span sec:authentication="name"></span></span>
                 <span sec:authorize="!isAuthenticated()">Hello, Sign in</span>

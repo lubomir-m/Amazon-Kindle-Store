@@ -109,9 +109,9 @@ public class BookServiceImpl implements BookService {
             case "publicationDateDesc":
                 return Sort.by(Sort.Direction.DESC, "publicationDate");
             case "priceAsc":
-                return Sort.by(Sort.Direction.ASC, "price");
+                return Sort.by(Sort.Direction.ASC, "priceEur");
             case "priceDesc":
-                return Sort.by(Sort.Direction.DESC, "price");
+                return Sort.by(Sort.Direction.DESC, "priceEur");
             case "purchaseCountDesc":
             default:
                 return Sort.by(Sort.Direction.DESC, "purchaseCount");
