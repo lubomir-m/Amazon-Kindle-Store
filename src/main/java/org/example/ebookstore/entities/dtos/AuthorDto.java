@@ -7,8 +7,17 @@ public class AuthorDto {
     private String fullName;
     private String description;
     private String pictureBase64;
+    private String contentType;
 
     public AuthorDto() {
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 
     public Long getId() {

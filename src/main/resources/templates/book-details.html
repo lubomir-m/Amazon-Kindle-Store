@@ -114,7 +114,7 @@
     <div class="title" th:text="${book.authors.size() > 1 ? 'About the author' : 'About the authors'}"></div>
     <div class="author-container" th:each="author : ${book.authors}">
         <div class="picture-container">
-            <img th:src="${'data:' + author.picture.contentType + ';base64,' + T(org.apache.commons.codec.binary.Base64).encodeBase64String(author.picture.data)}"/>
+            <img th:src="${author.pictureBase64}"/>
         </div>
         <div class="description-container">
             <div class="author-name"><a th:href="@{/authors/{id}(id=${author.id})}" th:text="${author.fullName}"></a></div>

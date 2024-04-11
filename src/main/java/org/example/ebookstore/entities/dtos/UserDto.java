@@ -18,8 +18,17 @@ public class UserDto {
     private Set<Order> orders = new HashSet<>();
     private Currency selectedCurrency;
     private String pictureBase64;
+    private String contentType;
 
     public UserDto() {
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 
     public String getPictureBase64() {
