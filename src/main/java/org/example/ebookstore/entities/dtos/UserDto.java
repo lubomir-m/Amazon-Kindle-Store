@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class UserDto {
+    private Long id;
     private String username;
     private String firstName;
     private String lastName;
@@ -16,12 +17,29 @@ public class UserDto {
     private ShoppingCart shoppingCart;
     private Set<Order> orders = new HashSet<>();
     private Currency selectedCurrency;
+    private String pictureBase64;
 
     public UserDto() {
     }
 
+    public String getPictureBase64() {
+        return pictureBase64;
+    }
+
+    public void setPictureBase64(String pictureBase64) {
+        this.pictureBase64 = pictureBase64;
+    }
+
     public String getUsername() {
         return username;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setUsername(String username) {

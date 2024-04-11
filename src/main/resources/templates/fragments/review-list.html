@@ -1,5 +1,31 @@
 <html xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 
-<div th:fragment="review-list">
+<div th:fragment="review-list" class="reviews-container" id="reviews-container">
+    <div class="review" th:each="review : ${reviews}">
+        <div class="review-author">
+            <div class="picture-container">
+                <img th:src="${'data:' + review.user.picture.contentType + ';base64,' +
+            T(org.apache.commons.codec.binary.Base64).encodeBase64String(review.user.picture.data)}"/>
+            </div>
+            <div class="reviewer-name" th:text="${review.user.firstName} + ' ' + ${review.user.firstName}"></div>
+            <div class="review-rating-title">
+                <div class="review-rating">
+                    <!-- Full Stars -->
+                    <span th:each="i : ${#numbers.sequence(1, review.rating.ratingValue.intValue())}">
+        <svg class="star full-star"><use href="#star-icon"></use></svg>
+    </span>
+                    <!-- Empty Stars -->
+                    <span th:each="i : ${#numbers.sequence(review.rating.ratingValue.intValue() + 1, 5)}">
+        <svg class="star empty-star"><use href="#star-icon"></use></svg>
+    </span>
+                </div>
+                <div class="review-title" th:text="${review.title}"></div>
+                <div class="review-date" th:text="'Reviewed on' +
+                ${#temporals.format(review.submissionDate, 'MMMM d, yyyy')}"></div>
+                <div class="review-text" th:text="${review.text}"></div>
+            </div>
+        </div>
+    </div>
+
 
 </div>

@@ -18,6 +18,7 @@ public class Picture extends BaseEntity {
     @Column(name = "content_type", nullable = false)
     private String contentType;
 
+
     public Picture() {
     }
 

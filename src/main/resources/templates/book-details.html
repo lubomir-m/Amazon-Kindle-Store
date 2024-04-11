@@ -113,8 +113,9 @@
 <div class="authors-container">
     <div class="title" th:text="${book.authors.size() > 1 ? 'About the author' : 'About the authors'}"></div>
     <div class="author-container" th:each="author : ${book.authors}">
-        <div class="picture-container" th:src="${'data:' + author.picture.contentType + ';base64,' +
-        T(org.apache.commons.codec.binary.Base64).encodeBase64String(author.picture.data)}"></div>
+        <div class="picture-container">
+            <img th:src="${'data:' + author.picture.contentType + ';base64,' + T(org.apache.commons.codec.binary.Base64).encodeBase64String(author.picture.data)}"/>
+        </div>
         <div class="description-container">
             <div class="author-name"><a th:href="@{/authors/{id}(id=${author.id})}" th:text="${author.fullName}"></a></div>
             <div class="author-description" th:text="${author.description}"></div>
@@ -122,9 +123,7 @@
     </div>
 </div>
 
-<div class="reviews-container" id="reviews-container">
-
-</div>
+<div th:replace="~{fragments/review-list :: review-list}"></div>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>

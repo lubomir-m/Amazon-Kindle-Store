@@ -6,6 +6,7 @@ import org.example.ebookstore.entities.Currency;
 import org.example.ebookstore.entities.Review;
 import org.example.ebookstore.entities.dtos.BookDto;
 import org.example.ebookstore.entities.dtos.CategoryDto;
+import org.example.ebookstore.entities.dtos.ReviewDto;
 import org.example.ebookstore.services.interfaces.BookService;
 import org.example.ebookstore.services.interfaces.CategoryService;
 import org.example.ebookstore.services.interfaces.ReviewService;
@@ -62,7 +63,7 @@ public class BookController {
             model.addAttribute("books", books);
 
             Pageable pageable = PageRequest.of(page, 7);
-            Page<Review> reviewPage = this.reviewService.getReviewsByBookId(id, pageable);
+            Page<ReviewDto> reviewPage = this.reviewService.getReviewsByBookId(id, pageable);
             model.addAttribute("reviews", reviewPage.getContent());
             model.addAttribute("currentReviewPage", pageable.getPageNumber());
             model.addAttribute("totalReviewPages", reviewPage.getTotalPages());
