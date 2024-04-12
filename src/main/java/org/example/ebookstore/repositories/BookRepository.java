@@ -21,4 +21,5 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "b.id != :bookId order by b.purchaseCount desc")
     Page<Book> getRecommendedBooks(@Param("bookId") Long bookId, @Param("categoryId") Long categoryId,
                                    Pageable pageable);
+    List<Book> findFirst50000ByOrderByPurchaseCountDesc();
 }

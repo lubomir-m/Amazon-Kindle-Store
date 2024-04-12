@@ -1,5 +1,6 @@
 package org.example.ebookstore.config;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.example.ebookstore.entities.Currency;
 import org.example.ebookstore.entities.dtos.CategoryDto;
 import org.example.ebookstore.entities.dtos.UserDto;
@@ -34,6 +35,11 @@ public class GlobalControllerAdvice {
         return currencyService.getAllCurrencies();
     }
 
+    @ModelAttribute("selectedCurrency")
+    public Currency populateSelectedCurrency(HttpServletRequest request) {
+        return this.userService.getSelectedCurrency(request);
+    }
+
     @ModelAttribute("userDto")
     public UserDto addUserDto(Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated() &&
@@ -51,5 +57,15 @@ public class GlobalControllerAdvice {
     @ModelAttribute("level2Categories")
     public List<CategoryDto> populateCategories() {
         return this.categoryService.getDirectSubcategories(1L);
+    }
+
+    @ModelAttribute("currentUrl")
+    public String populateCurrentUrl(HttpServletRequest request) {
+        String url = request.getRequestURL().toString();
+        if (url.contains("change-currency")) {
+            return url.substring(0, url.indexOf("change-currency"));
+        } else {
+            return url;
+        }
     }
 }

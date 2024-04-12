@@ -24,16 +24,16 @@
         </div>
         <div class="nav-section right">
             <form action="/change-currency" method="POST">
-                <select name="currency" onchange="this.form.submit()">
+                <select name="currencyCode" onchange="this.form.submit()">
                     <th:block th:each="currency : ${allCurrencies}">
                         <option th:value="${currency.code}"
                                 th:text="${currency.symbol + ' - ' + currency.code}"
-                                th:selected="${currency.code == 'EUR'}">
+                                th:selected="${currency.code == selectedCurrency.code}">
                         </option>
                     </th:block>
                 </select>
                 <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-                <input type="hidden" name="redirectUrl" value="/current-page-url">
+                <input type="hidden" name="redirectUrl" th:value="${currentUrl}">
             </form>
 
             <div class="account">

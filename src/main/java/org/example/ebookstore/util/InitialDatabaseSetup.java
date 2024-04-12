@@ -96,7 +96,7 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         generateRoles();
         generateUsers();
         generatePlaceholderReviews();
-        generateOrders();
+        updateBookRatings();
     }
 
     public void generatePictures() throws IOException {
@@ -750,7 +750,12 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         this.reviewRepository.saveAll(reviews);
     }
 
-    public void generateOrders() {
+    public void updateBookRatings() {
+        List<Book> books = this.bookRepository.findFirst50000ByOrderByPurchaseCountDesc();
+        for (Book book : books) {
+            book.setAverageRating(4 + Math.random());
+        }
 
+        this.bookRepository.saveAll(books);
     }
 }
