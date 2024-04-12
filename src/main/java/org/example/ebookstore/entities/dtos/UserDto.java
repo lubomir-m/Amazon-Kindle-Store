@@ -13,22 +13,13 @@ public class UserDto {
     private String username;
     private String firstName;
     private String lastName;
-    private Wishlist wishlist;
-    private ShoppingCart shoppingCart;
-    private Set<Order> orders = new HashSet<>();
+    private WishlistDto wishlist;
+    private ShoppingCartDto shoppingCart;
+    private Set<OrderDto> orders = new HashSet<>();
     private Currency selectedCurrency;
     private String pictureBase64;
-    private String contentType;
 
     public UserDto() {
-    }
-
-    public String getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
     }
 
     public String getPictureBase64() {
@@ -71,27 +62,27 @@ public class UserDto {
         this.lastName = lastName;
     }
 
-    public Wishlist getWishlist() {
+    public WishlistDto getWishlist() {
         return wishlist;
     }
 
-    public void setWishlist(Wishlist wishlist) {
+    public void setWishlist(WishlistDto wishlist) {
         this.wishlist = wishlist;
     }
 
-    public ShoppingCart getShoppingCart() {
+    public ShoppingCartDto getShoppingCart() {
         return shoppingCart;
     }
 
-    public void setShoppingCart(ShoppingCart shoppingCart) {
+    public void setShoppingCart(ShoppingCartDto shoppingCart) {
         this.shoppingCart = shoppingCart;
     }
 
-    public Set<Order> getOrders() {
+    public Set<OrderDto> getOrders() {
         return orders;
     }
 
-    public void setOrders(Set<Order> orders) {
+    public void setOrders(Set<OrderDto> orders) {
         this.orders = orders;
     }
 

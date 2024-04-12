@@ -11,7 +11,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
@@ -26,11 +28,11 @@ public class HomeController {
         this.currencyService = currencyService;
     }
 
-    @GetMapping("/change-currency")
+    @PostMapping("/change-currency")
     public String changeCurrency(@RequestParam String currencyCode, HttpServletResponse response,
                                  @RequestParam(required = false) String redirectUrl,
                                  @ModelAttribute("userDto") UserDto userDto,
-                                 Authentication authentication) {
+                                 Authentication authentication, RedirectAttributes redirectAttributes) {
         if (userDto != null) {
             Optional<Currency> optional = this.currencyService.findByCodeIgnoreCase(currencyCode);
             if (optional.isPresent()) {
@@ -45,6 +47,8 @@ public class HomeController {
                 response.addCookie(cookie);
             }
         }
+
+        redirectAttributes.addFlashAttribute("status", "Currency changed successfully.");
         return "redirect:" + (redirectUrl != null ? redirectUrl : "/");
     }
 }

@@ -1,6 +1,7 @@
 package org.example.ebookstore.config;
 
 import org.example.ebookstore.entities.Currency;
+import org.example.ebookstore.entities.dtos.CategoryDto;
 import org.example.ebookstore.entities.dtos.UserDto;
 import org.example.ebookstore.services.interfaces.CategoryService;
 import org.example.ebookstore.services.interfaces.CurrencyService;
@@ -27,6 +28,7 @@ public class GlobalControllerAdvice {
         this.categoryService = categoryService;
     }
 
+    //TODO: cache this for one day
     @ModelAttribute("allCurrencies")
     public List<Currency> populateCurrencies() {
         return currencyService.getAllCurrencies();
@@ -43,5 +45,11 @@ public class GlobalControllerAdvice {
             }
         }
         return null;
+    }
+
+    //TODO: cache this for one day
+    @ModelAttribute("level2Categories")
+    public List<CategoryDto> populateCategories() {
+        return this.categoryService.getDirectSubcategories(1L);
     }
 }
