@@ -93,13 +93,6 @@ public class BookServiceImpl implements BookService {
         return books.map(book -> mapBookToDto(book, currency));
     }
 
-    @Override
-    public Page<BookDto> findBestsellersInCategory(Long categoryId, Pageable pageable, Currency currency) {
-        List<Long> categoryIds = getCategoryAndSubcategoryIds(categoryId);
-        Page<Book> books = this.bookRepository.findByCategoriesIdInAndAverageRatingGreaterThanEqualOrderByPurchaseCountDesc
-                (categoryIds, 4.0, pageable);
-        return books.map(book -> mapBookToDto(book, currency));
-    }
 
     @Override
     public Sort getSortByParameter(String sortBy) {
@@ -120,7 +113,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDto> findFirst50BestSellers(Currency currency) {
-        return this.bookRepository.findFirst50ByAverageRatingGreaterThanEqualOrderByPurchaseCountDesc(4.0)
+        return this.bookRepository.findFirst50ByAverageRatingGreaterThanEqualOrderByPurchaseCountDesc(0.1)
                 .stream().map(book -> mapBookToDto(book, currency))
                 .collect(Collectors.toList());
     }
@@ -140,6 +133,12 @@ public class BookServiceImpl implements BookService {
         Page<Book> page = this.bookRepository.getRecommendedBooks(id, categoryId, pageable);
         return page.getContent().stream().map(b -> mapBookToDto(b, currency))
                 .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    @Override
+    public Page<BookDto> findByAuthorId(Long authorId, Pageable pageable, Currency currency) {
+        Page<Book> books = this.bookRepository.findByAuthorsId(authorId, pageable);
+        return books.map(book -> mapBookToDto(book, currency));
     }
 
 }

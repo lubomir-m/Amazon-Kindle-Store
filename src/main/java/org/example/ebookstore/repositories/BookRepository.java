@@ -14,12 +14,11 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findFirst50ByAverageRatingGreaterThanEqualOrderByPurchaseCountDesc(Double avgRating);
     Page<Book> findByCategoriesIdIn(List<Long> categoryIds, Pageable pageable);
-    Page<Book> findByCategoriesIdInAndAverageRatingGreaterThanEqualOrderByPurchaseCountDesc
-            (List<Long> categoryIds, Double avgRating, Pageable pageable);
 
     @Query("select b from Book b join b.categories c where c.id = :categoryId and " +
             "b.id != :bookId order by b.purchaseCount desc")
     Page<Book> getRecommendedBooks(@Param("bookId") Long bookId, @Param("categoryId") Long categoryId,
                                    Pageable pageable);
     List<Book> findFirst50000ByOrderByPurchaseCountDesc();
+    Page<Book> findByAuthorsId(Long authorId, Pageable pageable);
 }

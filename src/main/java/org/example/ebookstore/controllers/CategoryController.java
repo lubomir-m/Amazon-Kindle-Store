@@ -6,6 +6,7 @@ import org.example.ebookstore.entities.dtos.BookDto;
 import org.example.ebookstore.entities.dtos.CategoryDto;
 import org.example.ebookstore.services.interfaces.BookService;
 import org.example.ebookstore.services.interfaces.CategoryService;
+import org.example.ebookstore.services.interfaces.CommonService;
 import org.example.ebookstore.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,12 +28,14 @@ public class CategoryController {
     private final BookService bookService;
     private final UserService userService;
     private final CategoryService categoryService;
+    private final CommonService commonService;
 
     @Autowired
-    public CategoryController(BookService bookService, UserService userService, CategoryService categoryService) {
+    public CategoryController(BookService bookService, UserService userService, CategoryService categoryService, CommonService commonService) {
         this.bookService = bookService;
         this.userService = userService;
         this.categoryService = categoryService;
+        this.commonService = commonService;
     }
 
     @GetMapping("/categories/{id}")
@@ -55,37 +58,9 @@ public class CategoryController {
         Currency currency = this.userService.getSelectedCurrency(request);
         Sort sort = this.bookService.getSortByParameter(sortBy);
         Pageable pageable = PageRequest.of(page, 16, sort);
+        Page<BookDto> bookDtoPage = this.bookService.findByCategoryId(id, pageable, currency);
 
-        Page<BookDto> bookDtoPage = null;
-        if (sortBy.equals("purchaseCountDesc")) {
-            bookDtoPage = this.bookService.findBestsellersInCategory(id, pageable, currency);
-        } else {
-            bookDtoPage = this.bookService.findByCategoryId(id, pageable, currency);
-        }
-
-        model.addAttribute("books", bookDtoPage.getContent());
-        model.addAttribute("currentPage", bookDtoPage.getNumber());
-        model.addAttribute("totalPages", bookDtoPage.getTotalPages());
-        model.addAttribute("currentSort", sortBy);
-        model.addAttribute("numberOfBooks", bookDtoPage.getTotalElements());
-
-        Map<String, String> sortOptions = Map.of(
-                "purchaseCountDesc", "Best Sellers",
-                "priceAsc", "Price: Low to High",
-                "priceDesc", "Price: High to Low",
-                "averageRatingDesc", "Avg. Customer Review",
-                "publicationDateDesc", "Publication Date"
-        );
-        model.addAttribute("sortOptions", sortOptions);
-
-        int startIndex = page * pageable.getPageSize() + 1;
-        int endIndex = startIndex + pageable.getPageSize() - 1;
-        if (endIndex > bookDtoPage.getTotalElements()) {
-            endIndex = (int) bookDtoPage.getTotalElements();
-        }
-        model.addAttribute("startIndex", startIndex);
-        model.addAttribute("endIndex", endIndex);
-
+        this.commonService.addBookPageAttributesToModel(model, bookDtoPage, pageable, page, sortBy);
         return "category";
     }
 }
