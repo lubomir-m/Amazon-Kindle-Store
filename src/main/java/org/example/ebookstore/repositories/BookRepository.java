@@ -21,4 +21,5 @@ public interface BookRepository extends JpaRepository<Book, Long> {
                                    Pageable pageable);
     List<Book> findFirst50000ByOrderByPurchaseCountDesc();
     Page<Book> findByAuthorsId(Long authorId, Pageable pageable);
+    Page<Book> findByPublisherId(Long publisherId, Pageable pageable);
 }

@@ -141,5 +141,11 @@ public class BookServiceImpl implements BookService {
         return books.map(book -> mapBookToDto(book, currency));
     }
 
+    @Override
+    public Page<BookDto> findByPublisherId(Long publisherId, Pageable pageable, Currency currency) {
+        return this.bookRepository.findByPublisherId(publisherId, pageable)
+                .map(book -> mapBookToDto(book, currency));
+    }
+
 }
 
