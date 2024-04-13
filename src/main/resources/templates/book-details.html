@@ -7,6 +7,9 @@
     <link rel="stylesheet" th:href="@{/css/custom.css}">
     <script th:src="@{/javascript/bootstrap.min.js}"></script>
     <script th:src="@{/javascript/app.js}"></script>
+    <script th:inline="javascript">
+        let bookId = [[${book.id}]];
+    </script>
 </head>
 <body>
 <div th:replace="~{fragments/navigation :: navigation}"></div>
@@ -60,6 +63,23 @@
             <span th:text="'   ' + *{ratingsCount} + ' ratings'"></span>
         </div>
         <div class="book-description" th:text="*{description}"></div>
+        <div id="ratingModal" style="display:none; position:fixed; left:50%; top:50%; transform:translate(-50%, -50%); z-index:1000; background:white; border:1px solid black; padding:20px;">
+            <div class="modal-text">Rate this eBook</div>
+            <div class="modal-details" th:text="${book.title}"></div>
+            <div>
+                <span>Rating: </span>
+                <select id="bookRating">
+                    <option value="" disabled selected>Please select a rating</option>
+                    <option value="1">1 Star</option>
+                    <option value="2">2 Stars</option>
+                    <option value="3">3 Stars</option>
+                    <option value="4">4 Stars</option>
+                    <option value="5">5 Stars</option>
+                </select>
+            </div>
+            <button onclick="submitRating()">Submit</button>
+            <button onclick="closeRatingModal()">Close</button>
+        </div>
         <div class="kindle-apps">Read with the free Kindle apps (available on iOS, Android, PC & Mac),
             Kindle E-readers and on Kindle Cloud Reader.
         </div>
