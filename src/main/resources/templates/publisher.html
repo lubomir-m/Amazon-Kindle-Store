@@ -1,10 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>AmazonKindleStore.com</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+    <script th:src="@{/javascript/bootstrap.min.js}"></script>
 </head>
 <body>
+<div th:replace="~{fragments/navigation :: navigation}"></div>
 
+<div class="publisher-name" th:text="${publisher.name}"></div>
+<div class="publisher-about">
+    <div class="publisher-logo" th:text="${publisher.name}"></div>
+    <div class="publisher-description">
+        <div class="about-the-publisher">About the publisher</div>
+        <div class="description" th:text="${publisher.description}"></div>
+    </div>
+</div>
+
+<div class="books-section" id="books-section">
+    <div th:replace="~{fragments/book-list-sorting-options :: sorting-options}"></div>
+    <div th:replace="~{fragments/book-list :: book-list}"></div>
+    <div th:replace="~{fragments/book-list-pages :: book-list-pages}"></div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

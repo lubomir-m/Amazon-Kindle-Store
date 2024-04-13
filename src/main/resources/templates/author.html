@@ -10,9 +10,22 @@
 <body>
 <div th:replace="~{fragments/navigation :: navigation}"></div>
 
+<div class="author-name" th:text="${author.fullName}"></div>
+<div class="author-about">
+    <div class="author-picture">
+        <img th:src="${author.pictureBase64}">
+    </div>
+    <div class="author-description">
+        <div class="about-the-author">About the author</div>
+        <div class="description" th:text="${author.description}"></div>
+    </div>
+</div>
 
-<div th:replace="~{fragments/book-list :: book-list}"></div>
-
+<div class="books-section" id="books-section">
+    <div th:replace="~{fragments/book-list-sorting-options :: sorting-options}"></div>
+    <div th:replace="~{fragments/book-list :: book-list}"></div>
+    <div th:replace="~{fragments/book-list-pages :: book-list-pages}"></div>
+</div>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>

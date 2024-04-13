@@ -68,6 +68,16 @@ public class HomeController {
         model.addAttribute("books", books);
         return "index";
     }
+
+    @GetMapping("/about")
+    public String viewAboutPage() {
+        return "about";
+    }
+
+    @GetMapping("/customer-service")
+    public String viewCustomerServicePage() {
+        return "customer-service";
+    }
 }
 
 
