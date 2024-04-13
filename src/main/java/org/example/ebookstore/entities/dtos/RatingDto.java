@@ -1,13 +1,5 @@
 package org.example.ebookstore.entities.dtos;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import org.example.ebookstore.entities.Book;
-import org.example.ebookstore.entities.User;
-
 import java.time.LocalDate;
 
 public class RatingDto {

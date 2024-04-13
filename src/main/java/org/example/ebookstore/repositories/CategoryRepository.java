@@ -19,7 +19,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
             "union all " +
             "select c.id, c.name, c.parent_id " +
             "from subcategories s join categories c on s.id = c.parent_id) " +
-            "select * from subcategories where id != :categoryId", nativeQuery = true)
+            "select * from subcategories s where s.id != :categoryId", nativeQuery = true)
     List<Category> findAllSubcategories(@Param("categoryId") Long categoryId);
     @Query(value = "with recursive parent_categories as (" +
             "select id, name, parent_id " +
@@ -28,6 +28,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
             "select c.id, c.name, c.parent_id " +
             "from categories c " +
             "inner join parent_categories pc on pc.parent_id = c.id) " +
-            "select * from parent_categories where id != :categoryId", nativeQuery = true)
+            "select * from parent_categories where id != :categoryId order by id asc", nativeQuery = true)
     List<Category> findAllParentCategories(@Param("categoryId") Long categoryId);
 }

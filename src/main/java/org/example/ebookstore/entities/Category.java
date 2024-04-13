@@ -3,9 +3,7 @@ package org.example.ebookstore.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "categories")
@@ -17,7 +15,7 @@ public class Category extends BaseEntity {
     @JoinColumn(name = "parent_id")
     private Category parent;
     @OneToMany(mappedBy = "parent")
-    private Set<Category> subcategories = new HashSet<>();
+    private Set<Category> subcategories = new TreeSet<>(Comparator.comparing(Category::getId));
     @ManyToMany(mappedBy = "categories")
     private Set<Book> books = new HashSet<>();
 

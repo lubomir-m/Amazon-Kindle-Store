@@ -3,16 +3,17 @@ package org.example.ebookstore.entities.dtos;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import org.example.ebookstore.entities.*;
+import org.example.ebookstore.entities.Currency;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class BookDto {
     private Long Id;
-    private Set<AuthorDto> authors = new HashSet<>();
+    private List<AuthorDto> authors = new ArrayList<>();
     private Double averageRating;
     private Long ratingsCount;
     private String description;
@@ -53,12 +54,13 @@ public class BookDto {
         Id = id;
     }
 
-    public Set<AuthorDto> getAuthors() {
+    public List<AuthorDto> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(Set<AuthorDto> authors) {
-        this.authors = authors;
+    public void setAuthors(List<AuthorDto> authors) {
+        this.authors = authors.stream().sorted(Comparator.comparing(AuthorDto::getId))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public Double getAverageRating() {
