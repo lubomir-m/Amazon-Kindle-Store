@@ -9,6 +9,7 @@ import org.example.ebookstore.services.interfaces.CurrencyService;
 import org.example.ebookstore.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.FieldError;
@@ -44,6 +45,12 @@ public class GlobalControllerAdvice {
     @ModelAttribute("selectedCurrency")
     public Currency populateSelectedCurrency(HttpServletRequest request) {
         return this.userService.getSelectedCurrency(request);
+    }
+
+    @ModelAttribute("isLoggedIn")
+    public Boolean addIsLoggedIn(Authentication authentication) {
+        return authentication != null && authentication.isAuthenticated() &&
+                !(authentication instanceof AnonymousAuthenticationToken);
     }
 
     @ModelAttribute("userDto")

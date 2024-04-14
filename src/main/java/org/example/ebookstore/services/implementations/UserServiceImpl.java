@@ -11,6 +11,7 @@ import org.example.ebookstore.entities.dtos.UserDto;
 import org.example.ebookstore.repositories.CurrencyRepository;
 import org.example.ebookstore.repositories.PictureRepository;
 import org.example.ebookstore.repositories.UserRepository;
+import org.example.ebookstore.security.CustomUserDetails;
 import org.example.ebookstore.services.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -112,6 +114,31 @@ public class UserServiceImpl implements UserService {
             user.setSelectedCurrency(currency);
             this.userRepository.save(user);
         }
+    }
+
+    @Override
+    public Long getUserId(Model model, Authentication authentication) {
+        if (!((Boolean) model.getAttribute("isLoggedIn"))) {
+            return null;
+        }
+
+        CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
+        return principal.getId();
+    }
+
+    @Override
+    public boolean hasUserPurchasedBook(Long userId, Long bookId) {
+        return false;
+    }
+
+    @Override
+    public boolean hasUserRatedBook(Long userId, Long bookId) {
+        return false;
+    }
+
+    @Override
+    public boolean hasUserReviewedBook(Long userId, Long bookId) {
+        return false;
     }
 
     private Currency getCurrencyFromCookie(HttpServletRequest request) {

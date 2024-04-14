@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.example.ebookstore.entities.Currency;
 import org.example.ebookstore.entities.User;
 import org.example.ebookstore.entities.dtos.UserDto;
+import org.springframework.security.core.Authentication;
+import org.springframework.ui.Model;
 
 import java.util.Optional;
 
@@ -13,4 +15,8 @@ public interface UserService {
     Optional<UserDto> getUserDtoByUsername(String username);
     Currency getSelectedCurrency(HttpServletRequest request);
     void updateUserCurrency(Long userId, Currency currency);
+    Long getUserId(Model model, Authentication authentication);
+    boolean hasUserPurchasedBook(Long userId, Long bookId);
+    boolean hasUserRatedBook(Long userId, Long bookId);
+    boolean hasUserReviewedBook(Long userId, Long bookId);
 }
