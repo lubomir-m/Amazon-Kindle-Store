@@ -47,7 +47,7 @@
         </div>
         <div class="kindle-ebook">Format: Kindle eBook | Available instantly</div>
         <div class="rating">
-            <span th:text="${#numbers.formatDecimal(book.averageRating, 1, 'COMMA', 1, 'POINT')} + ' '"></span>
+            <span id="averageRating" th:text="${#numbers.formatDecimal(book.averageRating, 1, 'COMMA', 1, 'POINT')} + ' '"></span>
             <!-- Full Stars -->
             <span th:each="i : ${#numbers.sequence(1, book.averageRating.intValue())}">
         <svg class="star full-star"><use href="#star-icon"></use></svg>
@@ -60,26 +60,30 @@
             <span th:each="i : ${#numbers.sequence(book.averageRating.intValue() + 1, 5)}">
         <svg class="star empty-star"><use href="#star-icon"></use></svg>
     </span>
-            <span th:text="'   ' + *{ratingsCount} + ' ratings'"></span>
+            <span>'   '</span><span id="ratingsCount" th:text="*{ratingsCount}"></span><span>' ratings'</span>
         </div>
         <div class="book-description" th:text="*{description}"></div>
-        <div id="ratingModal" style="display:none; position:fixed; left:50%; top:50%; transform:translate(-50%, -50%); z-index:1000; background:white; border:1px solid black; padding:20px;">
-            <div class="modal-text">Rate this eBook</div>
-            <div class="modal-details" th:text="${book.title}"></div>
-            <div>
-                <span>Rating: </span>
-                <select id="bookRating">
-                    <option value="" disabled selected>Please select a rating</option>
-                    <option value="1">1 Star</option>
-                    <option value="2">2 Stars</option>
-                    <option value="3">3 Stars</option>
-                    <option value="4">4 Stars</option>
-                    <option value="5">5 Stars</option>
-                </select>
+        <div class="rate-review">
+            <button onclick="openRatingModal()">Rate this eBook</button>
+            <div id="ratingModal" style="display:none; position:fixed; left:50%; top:50%; transform:translate(-50%, -50%); z-index:1000; background:white; border:1px solid black; padding:20px;">
+                <div class="modal-text">Rate this eBook</div>
+                <div class="modal-details" th:text="${book.title}"></div>
+                <div>
+                    <span>Rating: </span>
+                    <select id="bookRating">
+                        <option value="" disabled selected>Please select a rating</option>
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                </div>
+                <button onclick="submitRating()">Submit</button>
+                <button onclick="closeRatingModal()">Close</button>
             </div>
-            <button onclick="submitRating()">Submit</button>
-            <button onclick="closeRatingModal()">Close</button>
         </div>
+
         <div class="kindle-apps">Read with the free Kindle apps (available on iOS, Android, PC & Mac),
             Kindle E-readers and on Kindle Cloud Reader.
         </div>
