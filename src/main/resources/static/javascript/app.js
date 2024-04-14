@@ -15,6 +15,10 @@ function submitRating() {
         .then(response => {
             if (response.ok) {
                 return response.json();
+            } else if (response.status === 400) {
+                return response.json().then(data => {
+                    throw new Error(Object.values(data).join(", "));
+                });
             } else if (response.status === 403) {
                 throw new Error("You can only rate books that you have purchased.");
             } else if (response.status === 409) {
@@ -30,7 +34,7 @@ function submitRating() {
         })
         .catch(error => {
             console.error('Error: ', error);
-            alert(error.message);
+            document.getElementById('errorMessages').textContent = error.message;
         });
 }
 
