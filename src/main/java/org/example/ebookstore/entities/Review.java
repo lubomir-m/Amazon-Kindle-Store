@@ -42,6 +42,15 @@ public class Review extends BaseEntity {
         this.rating = rating;
     }
 
+    public Review(User user, String title, String text, LocalDate submissionDate, Rating rating, Book book) {
+        this.user = user;
+        this.title = title;
+        this.text = text;
+        this.submissionDate = submissionDate;
+        this.rating = rating;
+        this.book = book;
+    }
+
     public String getTitle() {
         return title;
     }
