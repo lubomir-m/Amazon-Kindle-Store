@@ -34,6 +34,12 @@ public class RatingController {
         if (userId == null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You have to be logged in.");
         }
+        if (!this.userService.hasUserPurchasedBook(userId, bookId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only rate books that you have purchased.");
+        }
+        if (this.userService.hasUserRatedBook(userId, bookId)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("You have already rated this book.")
+        }
 
 
     }

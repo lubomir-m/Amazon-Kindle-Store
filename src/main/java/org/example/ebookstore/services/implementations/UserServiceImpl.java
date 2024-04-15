@@ -128,17 +128,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean hasUserPurchasedBook(Long userId, Long bookId) {
-        return false;
+        return this.userRepository.hasUserPurchasedBook(userId, bookId);
     }
 
     @Override
     public boolean hasUserRatedBook(Long userId, Long bookId) {
-        return false;
+        return this.userRepository.hasUserRatedBook(userId, bookId);
     }
 
     @Override
     public boolean hasUserReviewedBook(Long userId, Long bookId) {
-        return false;
+        return this.userRepository.hasUserReviewedBook(userId, bookId);
     }
 
     private Currency getCurrencyFromCookie(HttpServletRequest request) {
