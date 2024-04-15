@@ -1,6 +1,7 @@
 package org.example.ebookstore.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
@@ -10,17 +11,22 @@ import java.time.LocalDate;
 public class Review extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @NotNull
     private User user;
     @Column(nullable = false, length = 100)
     @Size(min = 5, max = 100)
+    @NotNull
     private String title;
     @Column(nullable = false, length = 700)
     @Size(min = 5, max = 700)
+    @NotNull
     private String text;
     @Column(name = "submission_date", nullable = false)
+    @NotNull
     private LocalDate submissionDate;
     @OneToOne
     @JoinColumn(name = "rating_id", nullable = false)
+    @NotNull
     private Rating rating;
     @ManyToOne
     @JoinColumn(name = "book_id")

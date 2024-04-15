@@ -1,3 +1,23 @@
+function openLoginModal() {
+    if (!isLoggedIn) {
+        document.getElementById('loginModal').style.display = 'block';
+        openBackdrop();
+    }
+}
+
+function closeLoginModal() {
+    document.getElementById('loginModal').style.display = 'none';
+    closeBackdrop();
+}
+
+function openBackdrop() {
+    document.getElementById('modalBackdrop').style.display = 'block';
+}
+
+function closeBackdrop() {
+    document.getElementById('modalBackdrop').style.display = 'none';
+}
+
 function submitRating() {
     const rating = document.getElementById("bookRating").value;
     if (!rating) {
@@ -39,6 +59,8 @@ function submitRating() {
 }
 
 function openRatingModal() {
+
+    if ()
     document.getElementById('ratingModal').style.display = 'block';
 }
 

@@ -9,6 +9,7 @@
     <script th:src="@{/javascript/app.js}"></script>
     <script th:inline="javascript">
         let bookId = [[${book.id}]];
+        let isLoggedIn = [[${isLoggedIn}]];
     </script>
 </head>
 <body>
@@ -65,10 +66,6 @@
         <div class="book-description" th:text="*{description}"></div>
         <div class="rate-review">
             <button onclick="openRatingModal()">Rate this eBook</button>
-            <div th:if="${!isLoggedIn}" id="loginModal" style="display:none; position:fixed; left:50%; top:50%;
-            transform:translate(-50%, -50%); z-index:1000; background:white; border:1px solid black; padding:20px;">
-                Please log in to your account <a th:href="@{/users/login}"></a>.
-            </div>
             <div th:if="${isLoggedIn}" id="ratingModal" style="display:none; position:fixed; left:50%; top:50%;
             transform:translate(-50%, -50%); z-index:1000; background:white; border:1px solid black; padding:20px;">
                 <div class="modal-text">Rate this eBook</div>
@@ -89,7 +86,7 @@
                 <button onclick="closeRatingModal()">Close</button>
             </div>
             <button onclick="openReviewModal()">Review this eBook</button>
-            <div id="reviewModal" style="display:none; position:fixed; left:50%; top:50%;
+            <div th:if="${isLoggedIn}" id="reviewModal" style="display:none; position:fixed; left:50%; top:50%;
             transform:translate(-50%, -50%); z-index:1000; background:white; border:1px solid black; padding:20px;">
                 <div class="modal-text">Review this eBook</div>
                 <div class="modal-details" th:text="${book.title}"></div>
@@ -103,6 +100,15 @@
                         <option value="4">4 Stars</option>
                         <option value="5">5 Stars</option>
                     </select>
+                </div>
+                <div>
+                    <label for="reviewTitle">Review Title:</label>
+                    <input type="text" id="reviewTitle" placeholder="Enter the title of your review"
+                    style="width: 100%"/>
+                </div>
+                <div>
+                    <label for="reviewText">Review Text:</label>
+                    <textarea id="reviewText" cols="30" rows="10" placeholder="Write your review here"></textarea>
                 </div>
 
                 <div id="errorMessagesReview" style="color: red; margin-top: 10px;"></div>
