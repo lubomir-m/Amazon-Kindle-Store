@@ -29,6 +29,7 @@ public class ReviewController {
         this.ratingService = ratingService;
     }
 
+    //TODO: check this, csrf
     @PostMapping("/books/{bookId}/review")
     public ResponseEntity<?> reviewBook(@PathVariable("bookId") Long bookId,
                                         @Valid @RequestBody ReviewSubmissionDto reviewSubmissionDto,

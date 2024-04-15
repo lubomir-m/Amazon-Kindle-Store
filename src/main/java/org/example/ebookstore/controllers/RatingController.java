@@ -27,6 +27,7 @@ public class RatingController {
         this.userService = userService;
     }
 
+    //TODO: check this, csrf
     @PostMapping("/books/{bookId}/rate")
     public ResponseEntity<?> rateBook(@PathVariable("bookId") Long bookId,
                                       @Valid @RequestBody RatingSubmissionDto ratingSubmissionDto,

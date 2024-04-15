@@ -154,4 +154,14 @@ public class UserServiceImpl implements UserService {
 
         return this.currencyRepository.findByCodeIgnoreCase(code).get();
     }
+
+    @Override
+    public Optional<User> findById(Long userId) {
+        return this.userRepository.findById(userId);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return this.userRepository.findByEmail(email);
+    }
 }

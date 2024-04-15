@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
+    Optional<User> findByEmail(String email);
     List<User> findFirst10ByOrderByIdAsc();
     //TODO: check if this query works
     @Query("select exists (select 1 from Order o join o.books b " +

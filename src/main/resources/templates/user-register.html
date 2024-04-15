@@ -9,6 +9,43 @@
     <script th:src="@{/javascript/app.js}"></script>
 </head>
 <body>
+<div th:replace="~{fragments/navigation :: navigation}"></div>
 
+<div class="registration-form">
+    <div>
+        <label for="email">Email</label>
+        <input type="text" id="email">
+    </div>
+    <div>
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="At least 4 characters">
+    </div>
+    <div>
+        <label for="password">Password</label>
+        <input type="text" id="password" placeholder="At least 4 characters">
+    </div>
+    <div>
+        <label for="confirmPassword">Confirm password</label>
+        <input type="text" id="confirmPassword" placeholder="At least 4 characters">
+    </div>
+    <div>
+        <label for="firstName">First name</label>
+        <input type="text" id="firstName" placeholder="At least 2 characters">
+    </div>
+    <div>
+        <label for="lastName">Last name</label>
+        <input type="text" id="lastName" placeholder="At least 2 characters">
+    </div>
+    <div>
+        <label for="age">Age</label>
+        <input type="text" id="age">
+    </div>
+
+    <div id="errorMessagesRegistration" style="color: red; margin-top: 10px;"></div>
+    <button onclick="registerUser()">Register</button>
+</div>
+
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>
