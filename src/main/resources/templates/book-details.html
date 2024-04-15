@@ -65,7 +65,12 @@
         <div class="book-description" th:text="*{description}"></div>
         <div class="rate-review">
             <button onclick="openRatingModal()">Rate this eBook</button>
-            <div id="ratingModal" style="display:none; position:fixed; left:50%; top:50%; transform:translate(-50%, -50%); z-index:1000; background:white; border:1px solid black; padding:20px;">
+            <div th:if="${!isLoggedIn}" id="loginModal" style="display:none; position:fixed; left:50%; top:50%;
+            transform:translate(-50%, -50%); z-index:1000; background:white; border:1px solid black; padding:20px;">
+                Please log in to your account <a th:href="@{/users/login}"></a>.
+            </div>
+            <div th:if="${isLoggedIn}" id="ratingModal" style="display:none; position:fixed; left:50%; top:50%;
+            transform:translate(-50%, -50%); z-index:1000; background:white; border:1px solid black; padding:20px;">
                 <div class="modal-text">Rate this eBook</div>
                 <div class="modal-details" th:text="${book.title}"></div>
                 <div>
@@ -79,9 +84,30 @@
                         <option value="5">5 Stars</option>
                     </select>
                 </div>
-                <div id="errorMessages" style="color: red; margin-top: 10px;"></div>
+                <div id="errorMessagesRating" style="color: red; margin-top: 10px;"></div>
                 <button onclick="submitRating()">Submit</button>
                 <button onclick="closeRatingModal()">Close</button>
+            </div>
+            <button onclick="openReviewModal()">Review this eBook</button>
+            <div id="reviewModal" style="display:none; position:fixed; left:50%; top:50%;
+            transform:translate(-50%, -50%); z-index:1000; background:white; border:1px solid black; padding:20px;">
+                <div class="modal-text">Review this eBook</div>
+                <div class="modal-details" th:text="${book.title}"></div>
+                <div>
+                    <span>Rating: </span>
+                    <select id="reviewRating">
+                        <option value="" disabled selected>Please select a rating</option>
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                </div>
+
+                <div id="errorMessagesReview" style="color: red; margin-top: 10px;"></div>
+                <button onclick="submitReview()">Submit</button>
+                <button onclick="closeReviewModal()">Close</button>
             </div>
         </div>
 

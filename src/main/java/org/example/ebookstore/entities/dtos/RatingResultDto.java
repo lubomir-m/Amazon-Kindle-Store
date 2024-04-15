@@ -2,9 +2,14 @@ package org.example.ebookstore.entities.dtos;
 
 public class RatingResultDto {
     private double averageRating;
-    private int ratingsCount;
+    private long ratingsCount;
 
     public RatingResultDto() {
+    }
+
+    public RatingResultDto(double averageRating, long ratingsCount) {
+        this.averageRating = averageRating;
+        this.ratingsCount = ratingsCount;
     }
 
     public double getAverageRating() {
@@ -15,11 +20,11 @@ public class RatingResultDto {
         this.averageRating = averageRating;
     }
 
-    public int getRatingsCount() {
+    public long getRatingsCount() {
         return ratingsCount;
     }
 
-    public void setRatingsCount(int ratingsCount) {
+    public void setRatingsCount(long ratingsCount) {
         this.ratingsCount = ratingsCount;
     }
 }

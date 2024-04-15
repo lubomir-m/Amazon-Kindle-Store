@@ -31,6 +31,13 @@ public class Rating extends BaseEntity {
         this.ratingValue = ratingValue;
     }
 
+    public Rating(User user, LocalDate submissionDate, Book book, Integer ratingValue) {
+        this.user = user;
+        this.submissionDate = submissionDate;
+        this.book = book;
+        this.ratingValue = ratingValue;
+    }
+
     public Integer getRatingValue() {
         return ratingValue;
     }

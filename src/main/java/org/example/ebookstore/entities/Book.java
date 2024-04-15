@@ -117,14 +117,24 @@ public class Book extends BaseEntity {
         }
     }
 
-    public void addRatings(Rating... ratings) {
-        for (Rating rating : ratings) {
-            this.ratings.add(rating);
-        }
+    public void addRating(Rating rating) {
+        this.ratings.add(rating);
+        this.ratingsCount++;
+        this.averageRating = ((this.averageRating * (this.ratingsCount - 1))  + rating.getRatingValue()) /
+                (this.ratingsCount);
     }
-    public void removeRatings(Rating... ratings) {
-        for (Rating rating : ratings) {
+
+    public void removeRating(Rating rating) {
+        if (this.ratings.contains(rating)) {
             this.ratings.remove(rating);
+            this.ratingsCount--;
+            if (this.ratingsCount == 0) {
+                this.averageRating = 0.0;
+                return;
+            }
+
+            this.averageRating = ((this.averageRating * (this.ratingsCount + 1)) - rating.getRatingValue()) /
+                    (this.ratingsCount);
         }
     }
 

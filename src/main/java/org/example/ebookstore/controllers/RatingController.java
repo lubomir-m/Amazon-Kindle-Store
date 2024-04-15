@@ -1,6 +1,7 @@
 package org.example.ebookstore.controllers;
 
 import jakarta.validation.Valid;
+import org.example.ebookstore.entities.dtos.RatingResultDto;
 import org.example.ebookstore.entities.dtos.RatingSubmissionDto;
 import org.example.ebookstore.services.interfaces.RatingService;
 import org.example.ebookstore.services.interfaces.UserService;
@@ -38,9 +39,11 @@ public class RatingController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only rate books that you have purchased.");
         }
         if (this.userService.hasUserRatedBook(userId, bookId)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("You have already rated this book.")
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("You have already rated this book.");
         }
 
-
+        RatingResultDto result = this.ratingService.createRating(ratingSubmissionDto.getRating(),
+                userId, bookId);
+        return ResponseEntity.ok(result);
     }
 }
