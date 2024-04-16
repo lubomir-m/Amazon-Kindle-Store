@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.example.ebookstore.entities.Currency;
 import org.example.ebookstore.entities.User;
 import org.example.ebookstore.entities.dtos.UserDto;
+import org.example.ebookstore.entities.dtos.UserRegistrationDto;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 
@@ -21,4 +22,5 @@ public interface UserService {
     boolean hasUserPurchasedBook(Long userId, Long bookId);
     boolean hasUserRatedBook(Long userId, Long bookId);
     boolean hasUserReviewedBook(Long userId, Long bookId);
+    User createUser(UserRegistrationDto userRegistrationDto);
 }

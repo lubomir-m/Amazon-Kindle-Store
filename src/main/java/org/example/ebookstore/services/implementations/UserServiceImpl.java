@@ -4,13 +4,11 @@ import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.ebookstore.entities.Currency;
-import org.example.ebookstore.entities.Picture;
-import org.example.ebookstore.entities.User;
+import jakarta.transaction.Transactional;
+import org.example.ebookstore.entities.*;
 import org.example.ebookstore.entities.dtos.UserDto;
-import org.example.ebookstore.repositories.CurrencyRepository;
-import org.example.ebookstore.repositories.PictureRepository;
-import org.example.ebookstore.repositories.UserRepository;
+import org.example.ebookstore.entities.dtos.UserRegistrationDto;
+import org.example.ebookstore.repositories.*;
 import org.example.ebookstore.security.CustomUserDetails;
 import org.example.ebookstore.services.interfaces.UserService;
 import org.modelmapper.ModelMapper;
@@ -21,6 +19,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -39,13 +38,21 @@ public class UserServiceImpl implements UserService {
     private Picture defaultPicture;
     private final ModelMapper modelMapper;
     private final CurrencyRepository currencyRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
+    private final ShoppingCartRepository shoppingCartRepository;
+    private final WishlistRepository wishlistRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PictureRepository pictureRepository, ModelMapper modelMapper, CurrencyRepository currencyRepository) {
+    public UserServiceImpl(UserRepository userRepository, PictureRepository pictureRepository, ModelMapper modelMapper, CurrencyRepository currencyRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, ShoppingCartRepository shoppingCartRepository, WishlistRepository wishlistRepository) {
         this.userRepository = userRepository;
         this.pictureRepository = pictureRepository;
         this.modelMapper = modelMapper;
         this.currencyRepository = currencyRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
+        this.shoppingCartRepository = shoppingCartRepository;
+        this.wishlistRepository = wishlistRepository;
     }
 
     @Override
@@ -57,6 +64,9 @@ public class UserServiceImpl implements UserService {
     public User save(User user) {
         if (user.getPicture() == null) {
             user.setPicture(this.defaultPicture);
+        }
+        if (user.getSelectedCurrency() == null) {
+            user.setSelectedCurrency(this.currencyRepository.findByCodeIgnoreCase("EUR").get());
         }
         return this.userRepository.save(user);
     }
@@ -163,5 +173,38 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findByEmail(String email) {
         return this.userRepository.findByEmail(email);
+    }
+
+    @Override
+    @Transactional
+    public User createUser(UserRegistrationDto userRegistrationDto) {
+        if (this.userRepository.findByEmail(userRegistrationDto.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("This username is taken. Please choose a different one.");
+        }
+        if (this.userRepository.findByUsername(userRegistrationDto.getUsername()).isPresent()) {
+            throw new IllegalArgumentException("This email is taken. Please choose a different one.");
+        }
+        if (!userRegistrationDto.getPassword().equals(userRegistrationDto.getConfirmPassword())) {
+            throw new IllegalArgumentException("The provided passwords do not match.");
+        }
+
+        User user = this.modelMapper.map(userRegistrationDto, User.class);
+        Role role = this.roleRepository.findByName(Role.UserRole.USER).get();
+        user.addRole(role);
+        role.addUser(user);
+        this.roleRepository.save(role);
+
+        ShoppingCart shoppingCart = new ShoppingCart();
+        Wishlist wishlist = new Wishlist();
+        shoppingCart.setUser(user);
+        wishlist.setUser(user);
+        this.shoppingCartRepository.save(shoppingCart);
+        this.wishlistRepository.save(wishlist);
+
+        user.setShoppingCart(shoppingCart);
+        user.setWishlist(wishlist);
+        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+
+        return save(user);
     }
 }

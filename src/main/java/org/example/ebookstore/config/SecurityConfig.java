@@ -1,5 +1,6 @@
 package org.example.ebookstore.config;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,10 +28,17 @@ public class SecurityConfig {
                         .requestMatchers("/css/**", "/javascript/**", "/images/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
-                        .loginPage("/users/login")
+                        .usernameParameter("email")
                         .loginProcessingUrl("/users/login/perform_login")
-                        .defaultSuccessUrl("/", true)
-                        .failureUrl("/users/login"))
+                        .successHandler((request, response, authentication) -> {
+                            response.setContentType("application/json;charset=UTF-8");
+                            response.getWriter().write("{\"status\":\"success\"}");
+                        })
+                        .failureHandler((request, response, exception) -> {
+                            response.setContentType("application/json;charset=UTF-8");
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.getWriter().write("{\"status\":\"error\",\"message\":\"Incorrect email or password\"}");
+                        }))
                 .logout(logout -> logout
                         .logoutUrl("/users/logout")
                         .logoutSuccessUrl("/")

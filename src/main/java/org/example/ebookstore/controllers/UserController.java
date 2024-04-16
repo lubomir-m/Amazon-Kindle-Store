@@ -30,12 +30,12 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody UserRegistrationDto userRegistrationDto,
-                                          Model model) {
-        if ((boolean) model.getAttribute("isLoggedIn")) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("You are logged in.");
+    public ResponseEntity<?> registerUser(@Valid @RequestBody UserRegistrationDto userRegistrationDto) {
+        try {
+            this.userService.createUser(userRegistrationDto);
+            return ResponseEntity.ok("You have registered successfully.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
-
-        
     }
 }

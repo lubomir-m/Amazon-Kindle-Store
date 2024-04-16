@@ -24,10 +24,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> optional = this.userService.findByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<User> optional = this.userService.findByEmail(email);
         if (optional.isEmpty()) {
-            throw new UsernameNotFoundException("Cannot find user with username: " + username);
+            throw new UsernameNotFoundException("Cannot find user with email: " + email);
         }
         User user = optional.get();
 
