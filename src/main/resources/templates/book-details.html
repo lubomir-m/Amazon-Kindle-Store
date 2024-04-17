@@ -61,7 +61,8 @@
             <span th:each="i : ${#numbers.sequence(book.averageRating.intValue() + 1, 5)}">
         <svg class="star empty-star"><use href="#star-icon"></use></svg>
     </span>
-            <span>'   '</span><span id="ratingsCount" th:text="*{ratingsCount}"></span><span>' ratings'</span>
+            <span th:text="'   '"></span><span id="ratingsCount" th:text="*{ratingsCount}"></span>
+            <span th:text=" ratings"></span>
         </div>
         <div class="book-description" th:text="*{description}"></div>
         <div class="rate-review">

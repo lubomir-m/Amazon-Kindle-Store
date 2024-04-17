@@ -48,7 +48,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto mapBookToDto(Book book, Currency currency) {
+    public BigDecimal getPriceInSelectedCurrency(Book book, Currency currency) {
         BigDecimal price = null;
         String code = currency.getCode();
         if (code.equals("EUR")) {
@@ -71,8 +71,12 @@ public class BookServiceImpl implements BookService {
             price = book.getPriceEur();
         }
 
-        price = round(price);
+        return round(price);
+    }
 
+    @Override
+    public BookDto mapBookToDto(Book book, Currency currency) {
+        BigDecimal price = getPriceInSelectedCurrency(book, currency);
         BookDto bookDto = this.modelMapper.map(book, BookDto.class);
         bookDto.setSelectedCurrency(currency);
         bookDto.setSelectedCurrencyPrice(price);

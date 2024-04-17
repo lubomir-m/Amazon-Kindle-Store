@@ -76,8 +76,10 @@ public class GlobalControllerAdvice {
     @ModelAttribute("currentUrl")
     public String populateCurrentUrl(HttpServletRequest request) {
         String url = request.getRequestURL().toString();
-        if (url.contains("change-currency")) {
-            return url.substring(0, url.indexOf("change-currency"));
+        if (url.contains("change-currency/")) {
+            return url.replace("change-currency/", "");
+        } else if (url.contains("change-currency")) {
+            return url.replace("change-currency", "");
         } else {
             return url;
         }

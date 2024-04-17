@@ -21,4 +21,5 @@ public interface BookService {
     List<BookDto> getRecommendedBooks(Long bookId, Currency currency);
     Page<BookDto> findByAuthorId(Long authorId, Pageable pageable, Currency currency);
     Page<BookDto> findByPublisherId(Long publisherId, Pageable pageable, Currency currency);
+    BigDecimal getPriceInSelectedCurrency(Book book, Currency currency);
 }

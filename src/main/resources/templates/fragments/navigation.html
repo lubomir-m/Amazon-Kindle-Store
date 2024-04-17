@@ -2,8 +2,8 @@
 
 <div th:fragment="navigation">
 
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta th:if="${isLoggedIn}" name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:if="${isLoggedIn}" name="_csrf_header" th:content="${_csrf.headerName}"/>
 
     <div th:replace="~{fragments/icons :: icons}"></div>
 
@@ -44,7 +44,7 @@
                         </option>
                     </th:block>
                 </select>
-                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                <input th:if="${isLoggedIn}" type="hidden" name="_csrf" th:value="${_csrf.token}">
                 <input type="hidden" name="redirectUrl" th:value="${currentUrl}">
             </form>
 
@@ -58,7 +58,7 @@
                     <svg class="shopping-cart">
                         <use href="#shopping-cart"></use>
                     </svg>
-                    <div th:text="${userDto} ? ${userDto.shoppingCart.books.getSize()} : '0'">Number of products in
+                    <div th:text="${userDto} ? ${userDto.shoppingCart.books.size} : '0'">Number of products in
                         users cart
                     </div>
                     <div>Cart</div>
