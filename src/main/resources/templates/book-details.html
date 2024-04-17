@@ -82,8 +82,8 @@
                     </select>
                 </div>
                 <div id="errorMessagesRating" style="color: red; margin-top: 10px;"></div>
-                <button onclick="submitRating()">Submit</button>
-                <button onclick="closeRatingModal()">Close</button>
+                <button type="button" onclick="submitRating()">Submit</button>
+                <button type="button" onclick="closeRatingModal()">Close</button>
             </div>
             <button onclick="openReviewModal()">Review this eBook</button>
             <div th:if="${isLoggedIn}" id="reviewModal" style="display:none; position:fixed; left:50%; top:50%;
@@ -112,8 +112,8 @@
                 </div>
 
                 <div id="errorMessagesReview" style="color: red; margin-top: 10px;"></div>
-                <button onclick="submitReview()">Submit</button>
-                <button onclick="closeReviewModal()">Close</button>
+                <button type="button" onclick="submitReview()">Submit</button>
+                <button type="button" onclick="closeReviewModal()">Close</button>
             </div>
         </div>
 

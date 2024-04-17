@@ -10,6 +10,10 @@ function closeLoginModal() {
     closeBackdrop();
 }
 
+const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+const csrfHeaderName = document.querySelector('meta[name="_csrf_header"]')
+    .getAttribute('content');
+
 function openBackdrop() {
     document.getElementById('modalBackdrop').style.display = 'block';
 }
@@ -29,6 +33,7 @@ function submitRating() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            [csrfHeaderName]: csrfToken
         },
         body: JSON.stringify({rating: parseInt(rating)})
     })
@@ -60,7 +65,7 @@ function submitRating() {
 
 function openRatingModal() {
 
-    if (isLoggedIn){
+    if (isLoggedIn) {
         document.getElementById('ratingModal').style.display = 'block';
         openBackdrop();
     } else {
@@ -107,7 +112,8 @@ function submitReview() {
     fetch(`/books/${bookId}/review`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            [csrfHeaderName]: csrfToken
         },
         body: JSON.stringify(reviewData)
     })
@@ -136,7 +142,7 @@ function updateReviewUI(data) {
     newReview.innerHTML = `
         <div class="review-author">
             <div class="picture-container">
-                <img src="${data.reviewDto.user.pictureBase64}" />
+                <img src="${data.reviewDto.user.pictureBase64}"  alt="reviewer-picture"/>
             </div>
             <div class="reviewer-name">${data.reviewDto.user.firstName} ${data.reviewDto.user.lastName}</div>
             <div class="review-rating-title">
@@ -169,6 +175,95 @@ function generateStars(ratingValue) {
 
 function formatDate(dateStr) {
     const date = new Date(dateStr);
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const options = {year: 'numeric', month: 'long', day: 'numeric'};
     return date.toLocaleDateString(undefined, options); // Adjust locale as needed
 }
+
+//TODO: check
+document.addEventListener('DOMContentLoaded', function () {
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const email = formData.get('email');
+            const password = formData.get('password');
+
+            fetch('/users/login/perform_login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    [csrfHeaderName]: csrfToken
+                },
+                body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Login failed.");
+                    }
+                    return response.text();
+                })
+                .then(() => {
+                    window.location.href = '/';
+                })
+                .catch(error => {
+                    document.getElementById('loginFormErrors').innerText = error.message;
+                    document.getElementById('loginFormErrors').style.display = 'block';
+                });
+        });
+    }
+});
+
+function registerUser() {
+    const email = document.getElementById('email').value;
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const age = parseInt(document.getElementById('age').value);
+
+
+    if (!email || !username || !password || password !== confirmPassword ||
+        !firstName || !lastName || isNaN(age)) {
+        document.getElementById('errorMessagesRegistration').textContent = 'Please fill in all fields correctly.';
+        return;
+    }
+
+    const userData = {
+        email: email,
+        username: username,
+        password: password,
+        confirmPassword: confirmPassword,
+        firstName: firstName,
+        lastName: lastName,
+        age: age
+    };
+
+    fetch('/users/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            [csrfHeaderName]: csrfToken
+        },
+        body: JSON.stringify(userData)
+    })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(data => {
+                    throw new Error(Object.values(data).join(", "));
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert('You have registered successfully.');
+            window.location.href = '/users/login';
+        })
+        .catch(error => {
+            document.getElementById('errorMessagesRegistration').textContent = error.message;
+        });
+}
+
+
