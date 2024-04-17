@@ -22,7 +22,7 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping("/books/{bookId}/buy")
+    @PostMapping("/books/{bookId}/purchase")
     public ResponseEntity<?> buyBook(@PathVariable("bookId") Long bookId, Model model) {
         try {
             this.orderService.createOrder(bookId, model);

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,12 +20,17 @@ public class ShoppingCartController {
         this.shoppingCartService = shoppingCartService;
     }
 
+    //TODO: finish
     @GetMapping("/users/cart")
-    public String displayShoppingCartPage() {
-        return "shopping-cart";
+    public String displayShoppingCartPage(Model model) {
+        if (model.getAttribute("userDto") == null) {
+            return "user-log-in";
+        } else {
+            return "shopping-cart";
+        }
     }
 
-    @PostMapping("/carts/{userId}/books/{bookId}")
+    @PostMapping("/books/{bookId}/cart")
     public ResponseEntity<?> addBookToShoppingCart(@PathVariable("bookId") Long bookId, Model model) {
         try {
             int itemCount = this.shoppingCartService.addBookToShoppingCart(bookId, model);
@@ -34,7 +40,17 @@ public class ShoppingCartController {
         }
     }
 
-    @PostMapping("/users/cart/buyall")
+    @DeleteMapping("/books/{bookId}/cart")
+    public ResponseEntity<?> removeBookFromShoppingCart(@PathVariable("bookId") Long bookId, Model model) {
+        try {
+            int itemCount = this.shoppingCartService.removeBookFromShoppingCart(bookId, model);
+            return ResponseEntity.ok().body(itemCount);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/users/cart/checkout")
     public ResponseEntity<?> buyAllBooksInShoppingCart(Model model) {
         try {
             this.shoppingCartService.buyAllBooksInShoppingCart(model);

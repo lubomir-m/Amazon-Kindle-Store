@@ -109,4 +109,25 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         shoppingCart.clearBooksInCart();
         this.shoppingCartRepository.save(shoppingCart);
     }
+
+    @Override
+    public int removeBookFromShoppingCart(Long bookId, Model model) {
+        UserDto userDto = (UserDto) model.getAttribute("userDto");
+        if (userDto == null) {
+            throw new IllegalArgumentException("You have to be logged in.");
+        }
+        Book book = this.bookRepository.findById(bookId).get();
+        ShoppingCart shoppingCart = this.shoppingCartRepository.findById(userDto.getShoppingCart().getId()).get();
+        if (!shoppingCart.getBooks().contains(book)) {
+            throw new IllegalArgumentException("The book is not in your shopping cart.");
+        }
+
+
+        shoppingCart.removeBook(book);
+        book.removeShoppingCarts(shoppingCart);
+        this.bookRepository.save(book);
+        this.shoppingCartRepository.save(shoppingCart);
+
+        return shoppingCart.getBooks().size();
+    }
 }

@@ -38,4 +38,29 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
+
+    @GetMapping("/profile")
+    public String displayUserProfilePage(Model model) {
+
+    }
+
+    @GetMapping("/update-profile")
+    public String displayUserProfileUpdatePage(Model model) {
+
+    }
+
+    @GetMapping("/orders")
+    public String displayUserOrdersPage(Model model) {
+
+    }
+
+    @GetMapping("/ratings")
+    public String displayUserRatingsPage(Model model) {
+
+    }
+
+    @GetMapping("/reviews")
+    public String displayUserReviewsPage(Model model) {
+        
+    }
 }

@@ -11,11 +11,11 @@ import java.util.Set;
 public class UserDto {
     private Long id;
     private String username;
+    private String email;
     private String firstName;
     private String lastName;
     private WishlistDto wishlist;
     private ShoppingCartDto shoppingCart;
-    private Set<OrderDto> orders = new HashSet<>();
     private Currency selectedCurrency;
     private String pictureBase64;
 
@@ -28,6 +28,14 @@ public class UserDto {
 
     public void setPictureBase64(String pictureBase64) {
         this.pictureBase64 = pictureBase64;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUsername() {
@@ -76,14 +84,6 @@ public class UserDto {
 
     public void setShoppingCart(ShoppingCartDto shoppingCart) {
         this.shoppingCart = shoppingCart;
-    }
-
-    public Set<OrderDto> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Set<OrderDto> orders) {
-        this.orders = orders;
     }
 
     public Currency getSelectedCurrency() {
