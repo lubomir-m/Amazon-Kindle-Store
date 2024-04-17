@@ -40,4 +40,8 @@ public class ShoppingCart extends BaseEntity {
     public void removeBook(Book book) {
         this.books.remove(book);
     }
+
+    public void clearBooksInCart() {
+        this.books.clear();
+    }
 }
