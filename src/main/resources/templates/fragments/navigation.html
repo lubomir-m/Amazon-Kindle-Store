@@ -11,9 +11,17 @@
     top:0; left:0; background:rgba(0,0,0,0.5); z-index:999;"></div>
     <div th:if="${!isLoggedIn}" id="loginModal" style="display:none; position:fixed; left:50%; top:50%;
             transform:translate(-50%, -50%); z-index:1000; background:white; border:1px solid black; padding:20px;">
-        Please log in to your account <a th:href="@{/users/login}"></a>.
+        Please log in to your account <a th:href="@{/users/login}">here</a>.
         <div>
             <button onclick="closeLoginModal()">Close</button>
+        </div>
+    </div>
+    <div th:if="${isLoggedIn}" id="commonModal" style="display:none; position:fixed; left:50%; top:50%;
+            transform:translate(-50%, -50%); z-index:1000; background:white; border:1px solid black; padding:20px;">
+        <div id="commonModalText"></div>
+        <div id="commonModalErrors" style="color: red; margin-top: 10px;"></div>
+        <div>
+            <button id="commonModalCloseButton">Close</button>
         </div>
     </div>
     <div class="nav-row">

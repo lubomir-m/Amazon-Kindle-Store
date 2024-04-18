@@ -1,18 +1,20 @@
+const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+const csrfHeaderName = document.querySelector('meta[name="_csrf_header"]')
+    .getAttribute('content');
+
+
 function openLoginModal() {
     if (!isLoggedIn) {
         document.getElementById('loginModal').style.display = 'block';
         openBackdrop();
     }
-}
 
+}
 function closeLoginModal() {
     document.getElementById('loginModal').style.display = 'none';
     closeBackdrop();
-}
 
-const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-const csrfHeaderName = document.querySelector('meta[name="_csrf_header"]')
-    .getAttribute('content');
+}
 
 function openBackdrop() {
     document.getElementById('modalBackdrop').style.display = 'block';
@@ -176,7 +178,7 @@ function generateStars(ratingValue) {
 function formatDate(dateStr) {
     const date = new Date(dateStr);
     const options = {year: 'numeric', month: 'long', day: 'numeric'};
-    return date.toLocaleDateString(undefined, options); // Adjust locale as needed
+    return date.toLocaleDateString(undefined, options);
 }
 
 //TODO: check
@@ -265,5 +267,67 @@ function registerUser() {
             document.getElementById('errorMessagesRegistration').textContent = error.message;
         });
 }
+
+function openCommonModal() {
+    if (isLoggedIn) {
+        document.getElementById('commonModal').style.display = 'block';
+        openBackdrop();
+    }
+}
+
+function closeCommonModal() {
+    document.getElementById('commonModal').style.display = 'none';
+    closeBackdrop();
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const closeButton = document.getElementById('commonModalCloseButton');
+    if (closeButton) {
+        closeButton.addEventListener('click', closeCommonModal);
+    }
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const buttons = document.querySelectorAll('.buy-now-btn');
+    const modalText = document.getElementById('commonModalText');
+    const modalErrors = document.getElementById('commonModalErrors');
+
+
+    buttons.forEach(button => {
+        button.addEventListener('click', function () {
+            if (!isLoggedIn) {
+                openLoginModal();
+                return;
+            }
+
+            const bookId = this.getAttribute('data-book-id');
+            fetch(`/books/${bookId}/purchase`, {
+                method: 'POST',
+                headers: {
+                    [csrfHeaderName]: csrfToken
+                }
+            })
+                .then(response => {
+                    return response.text().then(text => {
+                        return {text: text, ok: response.ok};
+                    });
+                })
+                .then(result => {
+                    if (!result.ok) {
+                        throw new Error(result.text);
+                    }
+                    modalErrors.textContent = '';
+                    modalText.textContent = result.text;
+                    openCommonModal();
+                })
+                .catch(error => {
+                    modalText.textContent = '';
+                    modalErrors.textContent = error.message;
+                    openCommonModal();
+                });
+        });
+    });
+});
 
 
