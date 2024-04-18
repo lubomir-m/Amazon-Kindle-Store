@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,5 +47,15 @@ public class RatingController {
         RatingResultDto result = this.ratingService.createRating(ratingSubmissionDto.getRating(),
                 userId, bookId);
         return ResponseEntity.ok(result);
+    }
+
+    @DeleteMapping("/books/{bookId}/rate")
+    public ResponseEntity<?> deleteRating(@PathVariable("bookId") Long bookId, Model model) {
+        try {
+            String response = this.ratingService.deleteRating(bookId, model);
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
     }
 }

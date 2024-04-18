@@ -41,26 +41,26 @@ public class UserController {
 
     @GetMapping("/profile")
     public String displayUserProfilePage(Model model) {
-
+        return "public-profile";
     }
 
     @GetMapping("/update-profile")
     public String displayUserProfileUpdatePage(Model model) {
-
+        return "user-profile";
     }
 
     @GetMapping("/orders")
     public String displayUserOrdersPage(Model model) {
-
+        return "user-orders";
     }
 
     @GetMapping("/ratings")
     public String displayUserRatingsPage(Model model) {
-
+        return "user-ratings";
     }
 
     @GetMapping("/reviews")
     public String displayUserReviewsPage(Model model) {
-        
+        return "user-reviews";
     }
 }

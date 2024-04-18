@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
@@ -16,4 +17,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("select r from Review r left join r.book b where b.id = :bookId or b.id is null " +
             "order by r.submissionDate desc")
     Page<Review> findAllByBookId(@Param("bookId") Long bookId, Pageable pageable);
+    Optional<Review> findByRatingId(Long ratingId);
 }

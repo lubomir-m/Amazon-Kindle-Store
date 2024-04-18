@@ -23,11 +23,7 @@ public class WishlistController {
     //TODO: finish
     @GetMapping("/users/list")
     public String displayWishlistPage(Model model) {
-        if (model.getAttribute("userDto") == null) {
-            return "user-log-in";
-        } else {
-            return "wishlist";
-        }
+        return "wishlist";
     }
 
     @PostMapping("/books/{bookId}/list")
