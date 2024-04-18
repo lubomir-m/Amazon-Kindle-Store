@@ -7,10 +7,10 @@
     <title>AmazonKindleStore.com</title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/custom.css}">
-
 </head>
 <body>
 <div th:replace="~{fragments/navigation :: navigation}"></div>
+<div th:replace="~{fragments/rate-review :: rate-review}"></div>
 
 <div class="book" th:object="${book}">
     <div class="book-cover">
@@ -63,56 +63,10 @@
         </div>
         <div class="book-description" th:text="*{description}"></div>
         <div class="rate-review">
-            <button onclick="openRatingModal()">Rate this eBook</button>
-            <div th:if="${isLoggedIn}" id="ratingModal" style="display:none; position:fixed; left:50%; top:50%;
-            transform:translate(-50%, -50%); z-index:1000; background:white; border:1px solid black; padding:20px;">
-                <div class="modal-text">Rate this eBook</div>
-                <div class="modal-details" th:text="${book.title}"></div>
-                <div>
-                    <span>Rating: </span>
-                    <select id="bookRating">
-                        <option value="" disabled selected>Please select a rating</option>
-                        <option value="1">1 Star</option>
-                        <option value="2">2 Stars</option>
-                        <option value="3">3 Stars</option>
-                        <option value="4">4 Stars</option>
-                        <option value="5">5 Stars</option>
-                    </select>
-                </div>
-                <div id="errorMessagesRating" style="color: red; margin-top: 10px;"></div>
-                <button type="button" onclick="submitRating()">Submit</button>
-                <button type="button" onclick="closeRatingModal()">Close</button>
-            </div>
-            <button onclick="openReviewModal()">Review this eBook</button>
-            <div th:if="${isLoggedIn}" id="reviewModal" style="display:none; position:fixed; left:50%; top:50%;
-            transform:translate(-50%, -50%); z-index:1000; background:white; border:1px solid black; padding:20px;">
-                <div class="modal-text">Review this eBook</div>
-                <div class="modal-details" th:text="${book.title}"></div>
-                <div>
-                    <span>Rating: </span>
-                    <select id="reviewRating">
-                        <option value="" disabled selected>Please select a rating</option>
-                        <option value="1">1 Star</option>
-                        <option value="2">2 Stars</option>
-                        <option value="3">3 Stars</option>
-                        <option value="4">4 Stars</option>
-                        <option value="5">5 Stars</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="reviewTitle">Review Title:</label>
-                    <input type="text" id="reviewTitle" placeholder="Enter the title of your review"
-                    style="width: 100%"/>
-                </div>
-                <div>
-                    <label for="reviewText">Review Text:</label>
-                    <textarea id="reviewText" cols="30" rows="10" placeholder="Write your review here"></textarea>
-                </div>
+            <button class="open-rating-modal-btn btn">Rate this eBook</button>
 
-                <div id="errorMessagesReview" style="color: red; margin-top: 10px;"></div>
-                <button type="button" onclick="submitReview()">Submit</button>
-                <button type="button" onclick="closeReviewModal()">Close</button>
-            </div>
+            <button class="open-review-modal-btn btn">Review this eBook</button>
+
         </div>
 
         <div class="kindle-apps">Read with the free Kindle apps (available on iOS, Android, PC & Mac),
@@ -128,9 +82,9 @@
             <div class="text">Sold by:</div>
             <div class="publisher-name" th:text="*{publisher.name}"></div>
         </div>
-        <div class="buy-now-btn" th:data-book-id="${book.id}">Buy Now</div>
-        <div class="add-to-cart-btn" th:data-book-id="${book.id}">Add to Cart</div>
-        <div class="add-to-your-list" th:data-book-id="${book.id}">Add to Your List</div>
+        <div class="buy-now-btn btn" th:data-book-id="${book.id}">Buy Now</div>
+        <div class="add-to-cart-btn btn" th:data-book-id="${book.id}">Add to Cart</div>
+        <div class="add-to-your-list btn" th:data-book-id="${book.id}">Add to Your List</div>
     </div>
 </div>
 
