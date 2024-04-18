@@ -8,6 +8,7 @@ import org.example.ebookstore.entities.User;
 import org.example.ebookstore.entities.dtos.ReviewDto;
 import org.example.ebookstore.entities.dtos.ReviewResultDto;
 import org.example.ebookstore.entities.dtos.ReviewSubmissionDto;
+import org.example.ebookstore.entities.dtos.UserDto;
 import org.example.ebookstore.repositories.BookRepository;
 import org.example.ebookstore.repositories.RatingRepository;
 import org.example.ebookstore.repositories.ReviewRepository;
@@ -75,7 +76,10 @@ public class ReviewServiceImpl implements ReviewService {
         this.reviewRepository.save(review);
 
         ReviewDto reviewDto = this.modelMapper.map(review, ReviewDto.class);
-        return new ReviewResultDto(book.getAverageRating(), book.getRatingsCount(),
-                reviewDto);
+        UserDto userDto = this.modelMapper.map(user, UserDto.class);
+        ReviewResultDto reviewResultDto = new ReviewResultDto(book.getAverageRating(), book.getRatingsCount(),
+                userDto.getPictureBase64(), userDto.getFirstName(), userDto.getLastName(),
+                rating.getRatingValue(), reviewDto.getTitle(), reviewDto.getText(), reviewDto.getSubmissionDate());
+        return reviewResultDto;
     }
 }

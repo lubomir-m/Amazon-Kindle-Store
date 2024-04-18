@@ -18,8 +18,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select exists (select 1 from Order o join o.books b " +
             "where o.user.id = :userId and b.id = :bookId)")
     boolean hasUserPurchasedBook(@Param("userId") Long userId, @Param("bookId") Long bookId);
-    @Query(value = "select exists (select 1 from ratings where user_id = :userId and book_id = :bookId)", nativeQuery = true)
+    @Query("select exists (select 1 from Rating r where r.book.id = :bookId and r.user.id = :userId)")
     boolean hasUserRatedBook(@Param("userId") Long userId, @Param("bookId") Long bookId);
-    @Query(value = "select exists (select 1 from reviews where user_id = :userId and book_id = :bookId)", nativeQuery = true)
+    @Query("select exists (select 1 from Review r where r.user.id = :userId and r.book.id = :bookId)")
     boolean hasUserReviewedBook(@Param("userId") Long userId, @Param("bookId") Long bookId);
 }

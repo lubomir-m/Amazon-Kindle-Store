@@ -48,7 +48,7 @@ public class GlobalControllerAdvice {
     }
 
     @ModelAttribute("isLoggedIn")
-    public Boolean addIsLoggedIn(Authentication authentication) {
+    public boolean addIsLoggedIn(Authentication authentication) {
         return authentication != null && authentication.isAuthenticated() &&
                 !(authentication instanceof AnonymousAuthenticationToken);
     }

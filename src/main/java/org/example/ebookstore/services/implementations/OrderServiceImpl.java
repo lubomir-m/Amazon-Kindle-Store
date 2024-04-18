@@ -70,9 +70,10 @@ public class OrderServiceImpl implements OrderService {
 
         user.addOrder(order);
 
+        order = this.orderRepository.save(order);
         this.userService.save(user);
         this.orderItemRepository.save(orderItem);
         this.bookRepository.save(book);
-        return this.orderRepository.save(order);
+        return order;
     }
 }

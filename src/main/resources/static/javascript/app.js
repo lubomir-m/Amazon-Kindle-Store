@@ -1,6 +1,6 @@
+
 const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-const csrfHeaderName = document.querySelector('meta[name="_csrf_header"]')
-    .getAttribute('content');
+const csrfHeaderName = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
 
 function openLoginModal() {
@@ -126,6 +126,7 @@ function submitReview() {
             return response.json();
         })
         .then(data => {
+            // console.log(data);
             alert("Your review has been submitted.");
             updateReviewUI(data);
         })
@@ -144,16 +145,16 @@ function updateReviewUI(data) {
     newReview.innerHTML = `
         <div class="review-author">
             <div class="picture-container">
-                <img src="${data.reviewDto.user.pictureBase64}"  alt="reviewer-picture"/>
+                <img src="${data.pictureBase64}"  alt="reviewer-picture"/>
             </div>
-            <div class="reviewer-name">${data.reviewDto.user.firstName} ${data.reviewDto.user.lastName}</div>
+            <div class="reviewer-name">${data.firstName} ${data.lastName}</div>
             <div class="review-rating-title">
                 <div class="review-rating">
-                    ${generateStars(data.reviewDto.ratingValue)}
+                    ${generateStars(data.ratingValue)}
                 </div>
-                <div class="review-title">${data.reviewDto.title}</div>
-                <div class="review-date">Reviewed on ${formatDate(data.reviewDto.submissionDate)}</div>
-                <div class="review-text">${data.reviewDto.text}</div>
+                <div class="review-title">${data.title}</div>
+                <div class="review-date">Reviewed on ${formatDate(data.submissionDate)}</div>
+                <div class="review-text">${data.text}</div>
             </div>
         </div>
     `;

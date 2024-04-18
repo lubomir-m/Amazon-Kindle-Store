@@ -2,15 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta  name="_csrf" th:content="${_csrf.token}"/>
+    <meta  name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>AmazonKindleStore.com</title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/custom.css}">
-    <script th:src="@{/javascript/bootstrap.min.js}"></script>
-    <script th:src="@{/javascript/app.js}"></script>
-    <script th:inline="javascript">
-        let bookId = [[${book.id}]];
-        let isLoggedIn = [[${isLoggedIn}]];
-    </script>
+
 </head>
 <body>
 <div th:replace="~{fragments/navigation :: navigation}"></div>
@@ -131,9 +128,9 @@
             <div class="text">Sold by:</div>
             <div class="publisher-name" th:text="*{publisher.name}"></div>
         </div>
-        <div class="buy-now-btn">Buy Now</div>
-        <div class="add-to-cart-btn">Add to Cart</div>
-        <div class="add-to-your-list">Add to Your List</div>
+        <div class="buy-now-btn" th:data-book-id="${book.id}">Buy Now</div>
+        <div class="add-to-cart-btn" th:data-book-id="${book.id}">Add to Cart</div>
+        <div class="add-to-your-list" th:data-book-id="${book.id}">Add to Your List</div>
     </div>
 </div>
 
@@ -186,5 +183,14 @@
 <div th:replace="~{fragments/review-list :: review-list}"></div>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+
+
+<script th:inline="javascript">
+    let bookId = [[${book.id}]];
+    let isLoggedIn = [[${isLoggedIn}]];
+</script>
+<script th:src="@{/javascript/bootstrap.min.js}"></script>
+<script th:src="@{/javascript/app.js}"></script>
 </body>
 </html>
