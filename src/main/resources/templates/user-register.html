@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta  name="_csrf" th:content="${_csrf.token}"/>
+    <meta  name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>AmazonKindleStore.com</title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/custom.css}">
-    <script th:src="@{/javascript/bootstrap.min.js}"></script>
-    <script th:src="@{/javascript/app.js}"></script>
 </head>
 <body>
 <div th:replace="~{fragments/navigation :: navigation}"></div>
@@ -47,5 +47,11 @@
 
 
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<script th:inline="javascript">
+    let isLoggedIn = [[${isLoggedIn}]];
+</script>
+<script th:src="@{/javascript/bootstrap.min.js}"></script>
+<script th:src="@{/javascript/app.js}"></script>
 </body>
 </html>

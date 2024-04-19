@@ -20,10 +20,10 @@
             </div>
             <div id="errorMessagesRating" style="color: red; margin-top: 10px;"></div>
             <button th:if="${#strings.containsIgnoreCase(currentUrl, '/books/')}"
-                    type="button" id="submit-rating-btn">Submit</button>
+                    type="button" id="submit-rating-btn" th:data-book-id="${book.id}">Submit</button>
             <button th:if="${#strings.containsIgnoreCase(currentUrl, '/users/ratings') or
             #strings.containsIgnoreCase(currentUrl, '/users/reviews')}"
-                    type="button" id="update-rating-btn">Update</button>
+                    type="button" id="update-rating-btn" th:data-book-id="">Update</button>
             <button type="button" id="close-rating-btn">Close</button>
         </div>
 
@@ -55,10 +55,10 @@
 
             <div id="errorMessagesReview" style="color: red; margin-top: 10px;"></div>
             <button th:if="${#strings.containsIgnoreCase(currentUrl, '/books/')}"
-                    type="button" id="submit-review-btn">Submit</button>
+                    type="button" id="submit-review-btn" th:data-book-id="${book.id}">Submit</button>
             <button th:if="${#strings.containsIgnoreCase(currentUrl, '/users/ratings') or
             #strings.containsIgnoreCase(currentUrl, '/users/reviews')}"
-                    type="button" id="update-review-btn">Update</button>
+                    type="button" id="update-review-btn" th:data-book-id="">Update</button>
             <button type="button" id="close-review-btn">Close</button>
         </div>
     </div>
