@@ -39,11 +39,6 @@ public class UserController {
         }
     }
 
-    @GetMapping("/profile")
-    public String displayUserProfilePage(Model model) {
-        return "public-profile";
-    }
-
     @GetMapping("/update-profile")
     public String displayUserProfileUpdatePage(Model model) {
         return "user-profile";
