@@ -63,9 +63,9 @@
         </div>
         <div class="book-description" th:text="*{description}"></div>
         <div class="rate-review">
-            <button class="open-rating-modal-btn btn" th:data-book-id="${book.id}">Rate this eBook</button>
+            <button type="button" class="open-rating-modal-btn btn" th:data-book-id="${book.id}">Rate this eBook</button>
 
-            <button class="open-review-modal-btn btn" th:data-book-id="${book.id}">Review this eBook</button>
+            <button type="button" class="open-review-modal-btn btn" th:data-book-id="${book.id}">Review this eBook</button>
 
         </div>
 

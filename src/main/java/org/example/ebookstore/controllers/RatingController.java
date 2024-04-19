@@ -20,33 +20,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Controller
 public class RatingController {
     private final RatingService ratingService;
-    private final UserService userService;
 
     @Autowired
-    public RatingController(RatingService ratingService, UserService userService) {
+    public RatingController(RatingService ratingService) {
         this.ratingService = ratingService;
-        this.userService = userService;
     }
 
-    //TODO: check this, csrf
+
     @PostMapping("/books/{bookId}/rate")
     public ResponseEntity<?> rateBook(@PathVariable("bookId") Long bookId,
                                       @Valid @RequestBody RatingSubmissionDto ratingSubmissionDto,
-                                      Authentication authentication, Model model) {
-        Long userId = this.userService.getUserId(model, authentication);
-        if (userId == null) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You have to be logged in.");
+                                      Model model) {
+        try {
+            RatingResultDto result = this.ratingService.createRating(ratingSubmissionDto.getRating(),
+                    model, bookId);
+            return ResponseEntity.ok(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
-        if (!this.userService.hasUserPurchasedBook(userId, bookId)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only rate books that you have purchased.");
-        }
-        if (this.userService.hasUserRatedBook(userId, bookId)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("You have already rated this book.");
-        }
-
-        RatingResultDto result = this.ratingService.createRating(ratingSubmissionDto.getRating(),
-                userId, bookId);
-        return ResponseEntity.ok(result);
     }
 
     @DeleteMapping("/books/{bookId}/rate")

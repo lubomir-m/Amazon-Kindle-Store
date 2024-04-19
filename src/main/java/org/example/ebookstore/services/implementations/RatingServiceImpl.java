@@ -12,6 +12,9 @@ import org.example.ebookstore.repositories.RatingRepository;
 import org.example.ebookstore.repositories.ReviewRepository;
 import org.example.ebookstore.repositories.UserRepository;
 import org.example.ebookstore.services.interfaces.RatingService;
+import org.example.ebookstore.services.interfaces.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -24,17 +27,31 @@ public class RatingServiceImpl implements RatingService {
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
     private final ReviewRepository reviewRepository;
+    private final UserService userService;
 
-    public RatingServiceImpl(RatingRepository ratingRepository, UserRepository userRepository, BookRepository bookRepository, ReviewRepository reviewRepository) {
+    public RatingServiceImpl(RatingRepository ratingRepository, UserRepository userRepository, BookRepository bookRepository, ReviewRepository reviewRepository, UserService userService) {
         this.ratingRepository = ratingRepository;
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
         this.reviewRepository = reviewRepository;
+        this.userService = userService;
     }
 
     @Override
     @Transactional
-    public RatingResultDto createRating(int ratingValue, Long userId, Long bookId) {
+    public RatingResultDto createRating(int ratingValue, Model model, Long bookId) {
+        UserDto userDto = (UserDto) model.getAttribute("userDto");
+        if (userDto == null) {
+            throw new IllegalArgumentException("You have to be logged in.");
+        }
+        Long userId = userDto.getId();
+
+        if (!this.userService.hasUserPurchasedBook(userId, bookId)) {
+            throw new IllegalArgumentException("You can only rate books that you have purchased.");
+        }
+        if (this.userService.hasUserRatedBook(userId, bookId)) {
+            throw new IllegalArgumentException("You have already rated this book.");
+        }
         User user = this.userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found."));
         Book book = this.bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Book not found."));
         Rating rating = new Rating(user, LocalDate.now(), book, ratingValue);
