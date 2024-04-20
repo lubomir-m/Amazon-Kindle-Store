@@ -4,17 +4,20 @@ const csrfHeaderName = document.querySelector('meta[name="_csrf_header"]').getAt
 
 
 function openLoginModal() {
-    if (!isLoggedIn) {
         document.getElementById('loginModal').style.display = 'block';
         openBackdrop();
-    }
-
 }
+
 function closeLoginModal() {
     document.getElementById('loginModal').style.display = 'none';
     closeBackdrop();
-
 }
+
+//Close Login Modal
+document.addEventListener('DOMContentLoaded', function () {
+    let button = document.getElementById('loginModalCloseButton');
+    button.addEventListener('click', closeLoginModal);
+})
 
 function openBackdrop() {
     document.getElementById('modalBackdrop').style.display = 'block';
@@ -24,11 +27,15 @@ function closeBackdrop() {
     document.getElementById('modalBackdrop').style.display = 'none';
 }
 
-// Rate this eBook
+// Open Rating Modal
 document.addEventListener('DOMContentLoaded', function () {
     let button = document.querySelector('.open-rating-modal-btn');
     if (button) {
         button.addEventListener('click', function () {
+            if (!isLoggedIn) {
+                openLoginModal();
+                return;
+            }
             let bookId = this.getAttribute('data-book-id');
 
             fetch(`/books/${bookId}/check-rating`)
@@ -41,6 +48,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (!result.ok) {
                         throw new Error(result.text);
                     }
+                    document.getElementById('resultMessagesRating').textContent = '';
+                    document.getElementById('errorMessagesRating').textContent = '';
                     document.getElementById('ratingModal').style.display = 'block';
                     openBackdrop();
                 })
@@ -104,60 +113,99 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// Open Review Modal
+document.addEventListener('DOMContentLoaded', function () {
+    let button = document.querySelector('.open-review-modal-btn');
+    button.addEventListener('click', function () {
+        if (!isLoggedIn) {
+            openLoginModal();
+            return
+        }
 
-function openReviewModal() {
-    if (isLoggedIn) {
-        document.getElementById('reviewModal').style.display = 'block';
-        openBackdrop();
-    } else {
-        openLoginModal();
-    }
-}
+        let bookId = this.getAttribute('data-book-id');
+        const resultText = document.getElementById('resultMessagesReview');
+        const errorText = document.getElementById('errorMessagesReview');
 
-function closeReviewModal() {
-    document.getElementById('reviewModal').style.display = 'none';
-    closeBackdrop();
-}
+        fetch(`/books/${bookId}/check-review`)
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(text);
+                    });
+                }
+                return response.text();
+            })
+            .then(() => {
+                resultText.textContent = '';
+                errorText.textContent = '';
+                document.getElementById('reviewModal').style.display = 'block';
+                openBackdrop();
+            })
+            .catch(error => {
+                document.getElementById('commonModalText').textContent = '';
+                document.getElementById('commonModalErrors').textContent = error.message;
+                openCommonModal();
+            });
+    });
+});
 
-function submitReview() {
-    let reviewTitle = document.getElementById('reviewTitle').value;
-    let reviewText = document.getElementById('reviewText').value;
-    let reviewRating = document.getElementById('reviewRating').value;
+//Review Modal: Close, Submit buttons
+document.addEventListener('DOMContentLoaded', function () {
+    const closeButton = document.getElementById('close-review-btn');
+    const submitButton = document.getElementById('submit-review-btn');
+    const modal = document.getElementById('reviewModal');
+    const resultText = document.getElementById('resultMessagesReview');
+    const errorText = document.getElementById('errorMessagesReview');
 
-    if (!reviewTitle || !reviewText || reviewRating === "") {
-        document.getElementById('errorMessagesReview').innerText = 'All fields have to be filled out.';
-        return;
-    }
+    closeButton.addEventListener('click', function () {
+        modal.style.display = 'none';
+        closeBackdrop();
+    });
 
-    let reviewData = {
-        reviewTitle: reviewTitle,
-        reviewText: reviewText,
-        reviewRating: parseInt(reviewRating)
-    }
+    submitButton.addEventListener('click', function () {
+        let reviewTitle = document.getElementById('reviewTitle').value;
+        let reviewText = document.getElementById('reviewText').value;
+        let reviewRating = document.getElementById('reviewRating').value;
+        let bookId = this.getAttribute('data-book-id');
 
-    fetch(`/books/${bookId}/review`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            [csrfHeaderName]: csrfToken
-        },
-        body: JSON.stringify(reviewData)
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to submit review.');
-            }
-            return response.json();
+        if (!reviewTitle || !reviewText || reviewRating === '') {
+            errorText.textContent = 'Please fill out all required fields.';
+            return;
+        }
+
+        let reviewData = {
+            reviewTitle: reviewTitle,
+            reviewText: reviewText,
+            reviewRating: parseInt(reviewRating)
+        }
+
+        fetch(`/books/${bookId}/review`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                [csrfHeaderName]: csrfToken
+            },
+            body: JSON.stringify(reviewData)
         })
-        .then(data => {
-            // console.log(data);
-            alert("Your review has been submitted.");
-            updateReviewUI(data);
-        })
-        .catch(error => {
-            document.getElementById('errorMessagesReview').innerText = error.message;
-        });
-}
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(text);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                updateReviewUI(data);
+                errorText.textContent = ''
+                resultText.textContent = 'Your review has been submitted successfully.';
+            })
+            .catch(error => {
+                resultText.textContent = '';
+                errorText.textContent = error.message;
+            });
+    });
+});
 
 function updateReviewUI(data) {
     document.getElementById('averageRating').textContent = data.averageRating.toFixed(1);
@@ -306,6 +354,7 @@ function closeCommonModal() {
     closeBackdrop();
 }
 
+// Close Common Modal
 document.addEventListener('DOMContentLoaded', function () {
     const closeButton = document.getElementById('commonModalCloseButton');
     if (closeButton) {
@@ -314,6 +363,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+// Buy Now Buttons
 document.addEventListener('DOMContentLoaded', function () {
     const buttons = document.querySelectorAll('.buy-now-btn');
     const modalText = document.getElementById('commonModalText');
