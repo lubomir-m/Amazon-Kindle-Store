@@ -21,7 +21,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -53,7 +56,11 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public ReviewResultDto createReview(ReviewSubmissionDto reviewSubmissionDto, Long userId, Long bookId) {
+    public ReviewResultDto createReview(ReviewSubmissionDto reviewSubmissionDto, Model model, Long bookId) {
+        checkReviewCreation(model, bookId);
+        UserDto userDto = (UserDto) model.getAttribute("userDto");
+        Long userId = userDto.getId();
+
         User user = this.userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found."));
         Book book = this.bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Book not found."));
         Rating rating = null;
@@ -76,10 +83,48 @@ public class ReviewServiceImpl implements ReviewService {
         this.reviewRepository.save(review);
 
         ReviewDto reviewDto = this.modelMapper.map(review, ReviewDto.class);
-        UserDto userDto = this.modelMapper.map(user, UserDto.class);
         ReviewResultDto reviewResultDto = new ReviewResultDto(book.getAverageRating(), book.getRatingsCount(),
                 userDto.getPictureBase64(), userDto.getFirstName(), userDto.getLastName(),
                 rating.getRatingValue(), reviewDto.getTitle(), reviewDto.getText(), reviewDto.getSubmissionDate());
         return reviewResultDto;
+    }
+
+    @Override
+    public void checkReviewCreation(Model model, Long bookId) {
+        UserDto userDto = (UserDto) model.getAttribute("userDto");
+        if (userDto == null) {
+            throw new IllegalArgumentException("You have to be logged in.");
+        }
+        Long userId = userDto.getId();
+        if (!this.userService.hasUserPurchasedBook(userId, bookId)) {
+            throw new IllegalArgumentException("You can only review books that you have purchased.");
+        }
+        if (this.userService.hasUserReviewedBook(userId, bookId)) {
+            throw new IllegalArgumentException("You have already reviewed this book.");
+        }
+    }
+
+    @Override
+    @Transactional
+    public String deleteReview(Model model, Long bookId) {
+        UserDto userDto = (UserDto) model.getAttribute("userDto");
+        if (userDto == null) {
+            throw new IllegalArgumentException("You have to be logged in.");
+        }
+        Long userId = userDto.getId();
+
+        Review review = this.reviewRepository.findByUserIdAndBookId(userId, bookId).orElseThrow(() ->
+                new IllegalArgumentException("Review not found."));
+        Book book = review.getBook();
+        Rating rating = review.getRating();
+
+        book.removeReviews(review);
+        book.removeRating(rating);
+
+        this.bookRepository.save(book);
+        this.ratingRepository.delete(rating);
+        this.reviewRepository.delete(review);
+
+        return "The review and the rating associated with it were deleted.";
     }
 }

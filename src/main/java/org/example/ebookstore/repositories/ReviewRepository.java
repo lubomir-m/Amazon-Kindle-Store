@@ -18,4 +18,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             "order by r.submissionDate desc")
     Page<Review> findAllByBookId(@Param("bookId") Long bookId, Pageable pageable);
     Optional<Review> findByRatingId(Long ratingId);
+    Optional<Review> findByUserIdAndBookId(Long userId, Long bookId);
 }

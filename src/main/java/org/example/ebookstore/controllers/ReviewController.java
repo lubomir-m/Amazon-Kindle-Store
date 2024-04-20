@@ -12,9 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class ReviewController {
@@ -29,23 +27,35 @@ public class ReviewController {
         this.ratingService = ratingService;
     }
 
-    //TODO: check this, csrf
+    @GetMapping("/books/{bookId}/check-review")
+    public ResponseEntity<?> checkReviewCreation(@PathVariable("bookId") Long bookId, Model model) {
+        try {
+            this.reviewService.checkReviewCreation(model, bookId);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
+
     @PostMapping("/books/{bookId}/review")
     public ResponseEntity<?> reviewBook(@PathVariable("bookId") Long bookId,
                                         @Valid @RequestBody ReviewSubmissionDto reviewSubmissionDto,
-                                        Authentication authentication, Model model) {
-        Long userId = this.userService.getUserId(model, authentication);
-        if (userId == null) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You have to be logged in.");
+                                        Model model) {
+        try {
+            ReviewResultDto result = this.reviewService.createReview(reviewSubmissionDto, model, bookId);
+            return ResponseEntity.ok(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
-        if (!this.userService.hasUserPurchasedBook(userId, bookId)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only review books that you have purchased.");
-        }
-        if (this.userService.hasUserReviewedBook(userId, bookId)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("You have already reviewed this book.");
-        }
+    }
 
-        ReviewResultDto result = this.reviewService.createReview(reviewSubmissionDto, userId, bookId);
-        return ResponseEntity.ok(result);
+    @DeleteMapping("/books/{bookId}/review")
+    public ResponseEntity<?> deleteReview(@PathVariable("bookId") Long bookId, Model model) {
+        try {
+            String response = this.reviewService.deleteReview(model, bookId);
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
     }
 }
