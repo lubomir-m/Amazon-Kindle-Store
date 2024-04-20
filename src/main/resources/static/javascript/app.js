@@ -24,62 +24,86 @@ function closeBackdrop() {
     document.getElementById('modalBackdrop').style.display = 'none';
 }
 
-function submitRating() {
-    const rating = document.getElementById("bookRating").value;
-    if (!rating) {
-        alert("Please select a rating before submitting.");
-        return;
-    }
+// Rate this eBook
+document.addEventListener('DOMContentLoaded', function () {
+    let button = document.querySelector('.open-rating-modal-btn');
+    if (button) {
+        button.addEventListener('click', function () {
+            let bookId = this.getAttribute('data-book-id');
 
-    fetch(`/books/${bookId}/rate`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            [csrfHeaderName]: csrfToken
-        },
-        body: JSON.stringify({rating: parseInt(rating)})
-    })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else if (response.status === 400) {
-                return response.json().then(data => {
-                    throw new Error(Object.values(data).join(", "));
+            fetch(`/books/${bookId}/check-rating`)
+                .then(response => {
+                    return response.text().then(text => {
+                        return {text: text, ok: response.ok};
+                    });
+                })
+                .then(result => {
+                    if (!result.ok) {
+                        throw new Error(result.text);
+                    }
+                    document.getElementById('ratingModal').style.display = 'block';
+                    openBackdrop();
+                })
+                .catch(error => {
+                    document.getElementById('commonModalText').textContent = '';
+                    document.getElementById('commonModalErrors').textContent = error.message;
+                    openCommonModal();
                 });
-            } else if (response.status === 403) {
-                throw new Error("You can only rate books that you have purchased.");
-            } else if (response.status === 409) {
-                throw new Error("You have already rated this book.");
-            } else {
-                throw new Error("An unexpected error occurred.")
-            }
-        })
-        .then(data => {
-            alert("Your rating has been submitted.");
-            document.getElementById('averageRating').textContent = data.averageRating.toFixed(1);
-            document.getElementById('ratingsCount').textContent = data.ratingsCount;
-        })
-        .catch(error => {
-            console.error('Error: ', error);
-            document.getElementById('errorMessages').textContent = error.message;
         });
-}
-
-function openRatingModal() {
-
-    if (isLoggedIn) {
-        document.getElementById('ratingModal').style.display = 'block';
-        openBackdrop();
-    } else {
-        openLoginModal();
     }
+});
 
-}
+// Rating Modal: Close, Submit buttons
+document.addEventListener('DOMContentLoaded', function () {
+    let closeButton = document.getElementById('close-rating-btn');
+    let submitButton = document.getElementById('submit-rating-btn');
+    const modal = document.getElementById('ratingModal');
+    const resultText = document.getElementById('resultMessagesRating');
+    const errorText = document.getElementById('errorMessagesRating');
 
-function closeRatingModal() {
-    document.getElementById('ratingModal').style.display = 'none';
-    closeBackdrop();
-}
+    closeButton.addEventListener('click', function () {
+        modal.style.display = 'none';
+        closeBackdrop();
+    });
+
+    submitButton.addEventListener('click', function () {
+        let rating = document.getElementById('bookRating').value;
+        if (rating === '') {
+            errorText.textContent = 'Please select a rating.';
+            return;
+        }
+
+        let ratingData = {rating: rating};
+        let bookId = this.getAttribute('data-book-id');
+        fetch(`/books/${bookId}/rate`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                [csrfHeaderName]: csrfToken
+            },
+            body: JSON.stringify(ratingData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(text);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                errorText.textContent = '';
+                resultText.textContent = 'Your rating has been submitted successfully.';
+                document.getElementById('averageRating').textContent = data.avererageRating.toFixed(1);
+                document.getElementById('ratingsCount').textContent = data.ratingsCount;
+            })
+            .catch(error => {
+                resultText.textContent = '';
+                errorText.textContent = error.message;
+            });
+    });
+});
+
 
 function openReviewModal() {
     if (isLoggedIn) {
@@ -182,7 +206,7 @@ function formatDate(dateStr) {
     return date.toLocaleDateString(undefined, options);
 }
 
-//TODO: check
+//TODO: check // Login Form
 document.addEventListener('DOMContentLoaded', function () {
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
@@ -217,6 +241,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+//TODO: check // Registration Form
 function registerUser() {
     const email = document.getElementById('email').value;
     const username = document.getElementById('username').value;

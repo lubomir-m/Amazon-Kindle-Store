@@ -18,7 +18,10 @@
                     <option value="5">5 Stars</option>
                 </select>
             </div>
+
             <div id="errorMessagesRating" style="color: red; margin-top: 10px;"></div>
+            <div id="resultMessagesRating"></div>
+
             <button th:if="${#strings.containsIgnoreCase(currentUrl, '/books/')}"
                     type="button" id="submit-rating-btn" th:data-book-id="${book.id}">Submit</button>
             <button th:if="${#strings.containsIgnoreCase(currentUrl, '/users/ratings') or
@@ -54,6 +57,8 @@
             </div>
 
             <div id="errorMessagesReview" style="color: red; margin-top: 10px;"></div>
+            <div id="resultMessagesReview"></div>
+
             <button th:if="${#strings.containsIgnoreCase(currentUrl, '/books/')}"
                     type="button" id="submit-review-btn" th:data-book-id="${book.id}">Submit</button>
             <button th:if="${#strings.containsIgnoreCase(currentUrl, '/users/ratings') or
