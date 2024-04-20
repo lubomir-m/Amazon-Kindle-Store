@@ -1,7 +1,6 @@
 package org.example.ebookstore.entities.dtos;
 
 public class RatingResultDto {
-    private String message;
     private double averageRating;
     private long ratingsCount;
 
@@ -11,14 +10,6 @@ public class RatingResultDto {
     public RatingResultDto(double averageRating, long ratingsCount) {
         this.averageRating = averageRating;
         this.ratingsCount = ratingsCount;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public double getAverageRating() {

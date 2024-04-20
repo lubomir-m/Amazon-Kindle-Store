@@ -40,18 +40,10 @@ public class RatingServiceImpl implements RatingService {
     @Override
     @Transactional
     public RatingResultDto createRating(int ratingValue, Model model, Long bookId) {
+        checkRatingCreation(model, bookId);
         UserDto userDto = (UserDto) model.getAttribute("userDto");
-        if (userDto == null) {
-            throw new IllegalArgumentException("You have to be logged in.");
-        }
         Long userId = userDto.getId();
 
-        if (!this.userService.hasUserPurchasedBook(userId, bookId)) {
-            throw new IllegalArgumentException("You can only rate books that you have purchased.");
-        }
-        if (this.userService.hasUserRatedBook(userId, bookId)) {
-            throw new IllegalArgumentException("You have already rated this book.");
-        }
         User user = this.userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found."));
         Book book = this.bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Book not found."));
         Rating rating = new Rating(user, LocalDate.now(), book, ratingValue);
@@ -88,5 +80,21 @@ public class RatingServiceImpl implements RatingService {
         this.ratingRepository.delete(rating);
 
         return "The rating was deleted.";
+    }
+
+    @Override
+    public void checkRatingCreation(Model model, Long bookId) {
+        UserDto userDto = (UserDto) model.getAttribute("userDto");
+        if (userDto == null) {
+            throw new IllegalArgumentException("You have to be logged in.");
+        }
+        Long userId = userDto.getId();
+
+        if (!this.userService.hasUserPurchasedBook(userId, bookId)) {
+            throw new IllegalArgumentException("You can only rate books that you have purchased.");
+        }
+        if (this.userService.hasUserRatedBook(userId, bookId)) {
+            throw new IllegalArgumentException("You have already rated this book.");
+        }
     }
 }
