@@ -82,9 +82,10 @@
             <div class="text">Sold by:</div>
             <div class="publisher-name" th:text="*{publisher.name}"></div>
         </div>
+
         <div class="buy-now-btn btn" th:data-book-id="${book.id}">Buy Now</div>
         <div class="add-to-cart-btn btn" th:data-book-id="${book.id}">Add to Cart</div>
-        <div class="add-to-your-list btn" th:data-book-id="${book.id}">Add to Your List</div>
+        <div class="add-to-your-list-btn btn" th:data-book-id="${book.id}">Add to Your List</div>
     </div>
 </div>
 

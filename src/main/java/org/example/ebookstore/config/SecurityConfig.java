@@ -21,6 +21,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/change-currency"))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/", "/home", "/users/login", "/users/register", "/about", "/contact",
                                 "/books/*", "/publishers/*", "/authors/*", "categories/*", "/change-currency",

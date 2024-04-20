@@ -406,4 +406,85 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// Add to Cart Button
+document.addEventListener('DOMContentLoaded', function () {
+    let button = document.querySelector('.add-to-cart-btn');
+    const modalText = document.getElementById('commonModalText');
+    const modalErrors = document.getElementById('commonModalErrors');
+
+    button.addEventListener('click', function () {
+        if (!isLoggedIn) {
+            openLoginModal();
+            return;
+        }
+
+        let bookId = button.getAttribute('data-book-id');
+        fetch(`/books/${bookId}/cart`, {
+            method: 'POST',
+            headers: {
+                [csrfHeaderName]: csrfToken
+            }
+        })
+            .then(response => {
+                return response.text().then(text => {
+                    return {text: text, ok: response.ok};
+                });
+            })
+            .then(result => {
+                if (!result.ok) {
+                    throw new Error(result.text);
+                }
+                modalErrors.textContent = '';
+                modalText.textContent = 'The book was added to your shopping cart.';
+                document.getElementById('numberOfBooksInCart').textContent = result.text;
+                openCommonModal();
+            })
+            .catch(error => {
+                modalText.textContent = '';
+                modalErrors.textContent = error.message;
+                openCommonModal();
+            });
+    });
+});
+
+// Add to Your List Button
+document.addEventListener('DOMContentLoaded', function () {
+    let button = document.querySelector('.add-to-your-list-btn');
+    const modalText = document.getElementById('commonModalText');
+    const modalErrors = document.getElementById('commonModalErrors');
+
+    button.addEventListener('click', function () {
+        if (!isLoggedIn) {
+            openLoginModal();
+            return;
+        }
+
+        let bookId = button.getAttribute('data-book-id');
+        fetch(`/books/${bookId}/list`, {
+            method: 'POST',
+            headers: {
+                [csrfHeaderName]: csrfToken
+            }
+        })
+            .then(response => {
+                return response.text().then(text => {
+                    return {text: text, ok: response.ok};
+                });
+            })
+            .then(result => {
+                if (!result.ok) {
+                    throw new Error(result.text);
+                }
+                modalErrors.textContent = '';
+                modalText.textContent = result.text;
+                openCommonModal();
+            })
+            .catch(error => {
+                modalText.textContent = '';
+                modalErrors.textContent = error.message;
+                openCommonModal();
+            });
+    });
+});
+
 

@@ -73,17 +73,20 @@ public class GlobalControllerAdvice {
     }
 
     //TODO: fix this
-    @ModelAttribute("currentUrl")
-    public String populateCurrentUrl(HttpServletRequest request) {
-        String url = request.getRequestURL().toString();
-        if (url.contains("change-currency/")) {
-            return url.replace("change-currency/", "");
-        } else if (url.contains("change-currency")) {
-            return url.replace("change-currency", "");
-        } else {
-            return url;
-        }
-    }
+//    @ModelAttribute("currentUrl")
+//    public String populateCurrentUrl(HttpServletRequest request) {
+//        String url = request.getRequestURL().toString();
+//        System.out.println("Current URL:" + url);
+//        if (url.contains("change-currency/")) {
+//            return url.replace("change-currency/", "");
+//        } else if (url.contains("change-currency")) {
+//            return url.replace("change-currency", "");
+//        } else {
+//            return url;
+//        }
+//
+//
+//    }
 
     //TODO: check
     @ExceptionHandler(MethodArgumentNotValidException.class)

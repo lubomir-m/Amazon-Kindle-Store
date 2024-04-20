@@ -37,7 +37,6 @@ public class HomeController {
 
     @PostMapping("/change-currency")
     public String changeCurrency(@RequestParam String currencyCode, HttpServletResponse response,
-                                 @ModelAttribute("currentUrl") String redirectUrl,
                                  @ModelAttribute("userDto") UserDto userDto,
                                  Authentication authentication, RedirectAttributes redirectAttributes) {
         if (userDto != null) {
@@ -55,10 +54,8 @@ public class HomeController {
             response.addCookie(cookie);
         }
 
-        System.out.println("Current URL: " + redirectUrl);
-
         redirectAttributes.addFlashAttribute("status", "Currency changed successfully.");
-        return "redirect:" + redirectUrl;
+        return "redirect:/";
     }
 
     @GetMapping({"/", "/home"})

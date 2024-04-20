@@ -10,7 +10,7 @@
             transform:translate(-50%, -50%); z-index:1000; background:white; border:1px solid black; padding:20px;">
         Please log in to your account <a th:href="@{/users/login}">here</a>.
         <div>
-            <button type="button" id="loginModalCloseButton">Close</button>
+            <button type="button" id="loginModalCloseButton" class="btn">Close</button>
         </div>
     </div>
     <div th:if="${isLoggedIn}" id="commonModal" style="display:none; position:fixed; left:50%; top:50%;
@@ -18,7 +18,7 @@
         <div id="commonModalText"></div>
         <div id="commonModalErrors" style="color: red; margin-top: 10px;"></div>
         <div>
-            <button type="button" id="commonModalCloseButton">Close</button>
+            <button type="button" id="commonModalCloseButton" class="btn">Close</button>
         </div>
     </div>
     <div class="nav-row">
@@ -32,7 +32,7 @@
         <div class="nav-section center">
             <form th:action="@{/search}" method="get" class="search-form">
                 <input type="text" name="query" placeholder="Search Amazon Kindle Store">
-                <button type="submit" class="search-button">
+                <button type="submit" class="search-button btn" >
                     <svg class="search-icon">
                         <use href="#search-icon"></use>
                     </svg>
@@ -50,7 +50,7 @@
                     </th:block>
                 </select>
                 <input th:if="${isLoggedIn}" type="hidden" name="_csrf" th:value="${_csrf.token}">
-                <input type="hidden" name="redirectUrl" th:value="${currentUrl}">
+                <input type="hidden" name="redirectUrl" th:value="@{/}">
             </form>
 
             <div class="account">
@@ -63,8 +63,8 @@
                     <svg class="shopping-cart">
                         <use href="#shopping-cart"></use>
                     </svg>
-                    <div th:text="${userDto} ? ${userDto.shoppingCart.books.size} : '0'">Number of products in
-                        users cart
+                    <div id="numberOfBooksInCart" th:text="${userDto} ? ${userDto.shoppingCart.books.size} : '0'">
+                        Number of products in user's cart
                     </div>
                     <div>Cart</div>
                 </a>
@@ -78,10 +78,11 @@
             <div class="dropdown">
                 <a th:href="@{/categories/1(page = 0, sortBy = 'purchaseCountDesc')}" class="dropbtn">Categories</a>
                 <div class="dropdown-content">
-                    <a th:each="category : ${level2Categories}"
-                       th:text="${category.name}"
-                       th:href="@{/categories/{id}(id=${category.id})}">
-                    </a>
+                    <div th:each="category : ${level2Categories}">
+                        <a th:text="${category.name}"
+                           th:href="@{/categories/{id}(id=${category.id})}">
+                        </a>
+                    </div>
                 </div>
             </div>
             <a th:href="@{/categories/1(page = 0, sortBy = 'purchaseCountDesc')}">Best Sellers</a>
