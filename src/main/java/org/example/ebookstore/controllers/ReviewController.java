@@ -58,4 +58,16 @@ public class ReviewController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
+
+    @PutMapping("/books/{bookId}/review/")
+    public ResponseEntity<?> updateReview(@PathVariable Long bookId,
+                                          @Valid @RequestBody ReviewSubmissionDto reviewSubmissionDto,
+                                          Model model) {
+        try {
+            this.reviewService.updateReview(reviewSubmissionDto, model, bookId);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
 }

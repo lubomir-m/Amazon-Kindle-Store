@@ -7,6 +7,7 @@ import org.example.ebookstore.entities.Review;
 import org.example.ebookstore.entities.User;
 import org.example.ebookstore.entities.dtos.RatingDto;
 import org.example.ebookstore.entities.dtos.RatingResultDto;
+import org.example.ebookstore.entities.dtos.RatingSubmissionDto;
 import org.example.ebookstore.entities.dtos.UserDto;
 import org.example.ebookstore.repositories.BookRepository;
 import org.example.ebookstore.repositories.RatingRepository;
@@ -108,5 +109,27 @@ public class RatingServiceImpl implements RatingService {
     public Page<RatingDto> findByUserId(Long userId, Pageable pageable) {
         return this.ratingRepository.findByUserIdOrderBySubmissionDateDesc(userId, pageable)
                 .map(rating -> this.modelMapper.map(rating, RatingDto.class));
+    }
+
+    @Override
+    public void updateRating(RatingSubmissionDto ratingSubmissionDto, Model model, Long bookId) {
+        UserDto userDto = (UserDto) model.getAttribute("userDto");
+        if (userDto == null) {
+            throw new IllegalArgumentException("You have to be logged in.");
+        }
+        Long userId = userDto.getId();
+
+        Rating rating = this.ratingRepository.findByUserIdAndBookId(userId, bookId)
+                .orElseThrow(() -> new IllegalArgumentException("Rating not found."));
+        Book book = this.bookRepository.findById(bookId).orElseThrow(() ->
+                new IllegalArgumentException("Book not found."));
+
+        book.removeRating(rating);
+        rating.setRatingValue(ratingSubmissionDto.getRating());
+        rating.setSubmissionDate(LocalDate.now());
+
+        book.addRating(rating);
+        this.ratingRepository.save(rating);
+        this.bookRepository.save(book);
     }
 }

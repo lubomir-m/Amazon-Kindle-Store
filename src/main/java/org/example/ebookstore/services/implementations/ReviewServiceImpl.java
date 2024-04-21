@@ -133,4 +133,39 @@ public class ReviewServiceImpl implements ReviewService {
         return this.reviewRepository.findByUserIdOrderBySubmissionDateDesc(userId, pageable)
                 .map(review -> this.modelMapper.map(review, ReviewDto.class));
     }
+
+    @Override
+    public void updateReview(ReviewSubmissionDto reviewSubmissionDto, Model model, Long bookId) {
+        UserDto userDto = (UserDto) model.getAttribute("userDto");
+        if (userDto == null) {
+            throw new IllegalArgumentException("User not found.");
+        }
+        Long userId = userDto.getId();
+
+        User user = this.userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found."));
+        Book book = this.bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Book not found."));
+        Rating rating = null;
+        if (this.userService.hasUserRatedBook(userId, bookId)) {
+            rating = this.ratingRepository.findByUserIdAndBookId(userId, bookId).orElseThrow(() ->
+                    new IllegalArgumentException("Rating not found."));
+            book.removeRating(rating);
+            rating.setRatingValue(reviewSubmissionDto.getReviewRating());
+            rating.setSubmissionDate(LocalDate.now());
+        } else {
+            throw new IllegalArgumentException("Rating not found.");
+        }
+
+        Review review = this.reviewRepository.findByUserIdAndBookId(user.getId(), book.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Review not found."));
+
+        review.setRating(rating);
+        review.setTitle(reviewSubmissionDto.getReviewTitle());
+        review.setText(reviewSubmissionDto.getReviewText());
+        review.setSubmissionDate(LocalDate.now());
+
+        book.addRating(rating);
+        this.bookRepository.save(book);
+        this.ratingRepository.save(rating);
+        this.reviewRepository.save(review);
+    }
 }

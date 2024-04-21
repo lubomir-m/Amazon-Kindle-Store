@@ -16,4 +16,5 @@ public interface ReviewService {
     void checkReviewCreation(Model model, Long bookId);
     String deleteReview(Model model, Long bookId);
     Page<ReviewDto> findByUserId(Long userId, Pageable pageable);
+    void updateReview(ReviewSubmissionDto reviewSubmissionDto, Model model, Long bookId);
 }

@@ -20,7 +20,7 @@
             </div>
 
             <div id="errorMessagesRating" style="color: red; margin-top: 10px;"></div>
-            <div id="resultMessagesRating"></div>
+            <div id="resultMessagesRating" style="color: green; margin-top: 10px;"></div>
 
             <button th:if="${#strings.containsIgnoreCase(currentUrl, '/books/')}"
                     type="button" id="submit-rating-btn" th:data-book-id="${book.id}">Submit</button>
@@ -57,7 +57,7 @@
             </div>
 
             <div id="errorMessagesReview" style="color: red; margin-top: 10px;"></div>
-            <div id="resultMessagesReview"></div>
+            <div id="resultMessagesReview" style="color: green; margin-top: 10px;"></div>
 
             <button th:if="${#strings.containsIgnoreCase(currentUrl, '/books/')}"
                     type="button" id="submit-review-btn" th:data-book-id="${book.id}">Submit</button>

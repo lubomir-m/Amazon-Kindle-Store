@@ -3,6 +3,8 @@ package org.example.ebookstore.controllers;
 import jakarta.validation.Valid;
 import org.example.ebookstore.entities.dtos.RatingResultDto;
 import org.example.ebookstore.entities.dtos.RatingSubmissionDto;
+import org.example.ebookstore.entities.dtos.ReviewResultDto;
+import org.example.ebookstore.entities.dtos.ReviewSubmissionDto;
 import org.example.ebookstore.services.interfaces.RatingService;
 import org.example.ebookstore.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,18 @@ public class RatingController {
         try {
             String response = this.ratingService.deleteRating(bookId, model);
             return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/books/{bookId}/rate/")
+    public ResponseEntity<?> updateRating(@PathVariable Long bookId,
+                                          @Valid @RequestBody RatingSubmissionDto ratingSubmissionDto,
+                                          Model model) {
+        try {
+            this.ratingService.updateRating(ratingSubmissionDto, model, bookId);
+            return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
