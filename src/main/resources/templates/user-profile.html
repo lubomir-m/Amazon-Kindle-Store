@@ -9,6 +9,17 @@
     <link rel="stylesheet" th:href="@{/css/custom.css}">
 </head>
 <body>
+<div th:replace="~{fragments/navigation :: navigation}"></div>
+
+
+<div><a th:href="@{/users/books}">Your eBooks</a></div>
+<div><a th:href="@{/users/orders}">Your Orders</a></div>
+<div><a th:href="@{/users/ratings}">Your Ratings</a></div>
+<div><a th:href="@{/users/reviews}">Your Reviews</a></div>
+<div><a th:href="@{/users/list}">Your List</a></div>
+<div><a th:href="@{/users/cart}">Your Shopping Cart</a></div>
+
+
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 

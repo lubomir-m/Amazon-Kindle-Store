@@ -39,7 +39,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/update-profile")
+    @GetMapping("/profile")
     public String displayUserProfileUpdatePage(Model model) {
         return "user-profile";
     }

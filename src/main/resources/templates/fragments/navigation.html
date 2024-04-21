@@ -57,6 +57,15 @@
                 <span sec:authorize="isAuthenticated()">Hello, <span th:text="${userDto.firstName}"></span></span>
                 <span sec:authorize="!isAuthenticated()">Hello, sign in</span>
                 <div>Your Account</div>
+                <div class="account-dropdown">
+                    <div><a th:href="@{/users/profile}">Your Account</a></div>
+                    <div><a th:href="@{/users/books}">Your eBooks</a></div>
+                    <div><a th:href="@{/users/orders}">Your Orders</a></div>
+                    <div><a th:href="@{/users/ratings}">Your Ratings</a></div>
+                    <div><a th:href="@{/users/reviews}">Your Reviews</a></div>
+                    <div><a th:href="@{/users/list}">Your List</a></div>
+                    <div><a th:href="@{/users/cart}">Your Shopping Cart</a></div>
+                </div>
             </div>
             <div class="cart">
                 <a th:href="@{/cart}">
