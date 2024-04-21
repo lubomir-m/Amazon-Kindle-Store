@@ -22,4 +22,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findFirst50000ByOrderByPurchaseCountDesc();
     Page<Book> findByAuthorsId(Long authorId, Pageable pageable);
     Page<Book> findByPublisherId(Long publisherId, Pageable pageable);
+    @Query("select b from Book b join b.orders o where o.user.id = :userId " +
+            "order by o.dateTime desc")
+    Page<Book> findByUserId(@Param("userId") Long userId, Pageable pageable);
 }

@@ -1,27 +1,39 @@
 package org.example.ebookstore.controllers;
 
 import jakarta.validation.Valid;
-import org.example.ebookstore.entities.dtos.UserRegistrationDto;
-import org.example.ebookstore.services.interfaces.UserService;
+import org.example.ebookstore.entities.Currency;
+import org.example.ebookstore.entities.dtos.*;
+import org.example.ebookstore.services.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    private final CommonService commonService;
+    private final BookService bookService;
+    private final RatingService ratingService;
+    private final ReviewService reviewService;
+    private final OrderService orderService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, CommonService commonService, BookService bookService, RatingService ratingService, ReviewService reviewService, OrderService orderService) {
         this.userService = userService;
+        this.commonService = commonService;
+        this.bookService = bookService;
+        this.ratingService = ratingService;
+        this.reviewService = reviewService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/register")
@@ -44,13 +56,52 @@ public class UserController {
         return "user-profile";
     }
 
+    @GetMapping("/books")
+    public String displayUserBooksPage(Model model,
+                                       @RequestParam(defaultValue = "0") int page) {
+        UserDto userDto = (UserDto) model.getAttribute("userDto");
+        if (userDto == null) {
+            return "error";
+        }
+        Long userId = userDto.getId();
+        Currency currency = userDto.getSelectedCurrency();
+        Pageable pageable = PageRequest.of(page, 16);
+        Page<BookDto> bookDtoPage = this.bookService.findByUserId(userId, pageable, currency);
+
+        this.commonService.addItemAttributesToModel(model, bookDtoPage, pageable, page);
+
+        return "user-books";
+    }
+
     @GetMapping("/orders")
-    public String displayUserOrdersPage(Model model) {
+    public String displayUserOrdersPage(Model model,
+                                        @RequestParam(defaultValue = "0") int page) {
+        UserDto userDto = (UserDto) model.getAttribute("userDto");
+        if (userDto == null) {
+            return "error";
+        }
+        Long userId = userDto.getId();
+        Pageable pageable = PageRequest.of(page, 16);
+        Page<OrderDto> orderDtoPage = this.orderService.findByUserId(userId, pageable);
+
+        this.commonService.addItemAttributesToModel(model, orderDtoPage, pageable, page);
+
         return "user-orders";
     }
 
     @GetMapping("/ratings")
-    public String displayUserRatingsPage(Model model) {
+    public String displayUserRatingsPage(Model model,
+                                         @RequestParam(defaultValue = "0") int page) {
+        UserDto userDto = (UserDto) model.getAttribute("userDto");
+        if (userDto == null) {
+            return "error";
+        }
+        Long userId = userDto.getId();
+        Pageable pageable = PageRequest.of(page, 16);
+        Page<RatingDto> ratingDtoPage = this.ratingService.findByUserId(userId, pageable);
+
+        this.commonService.addItemAttributesToModel(model, ratingDtoPage, pageable, page);
+        
         return "user-ratings";
     }
 

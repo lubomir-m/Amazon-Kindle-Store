@@ -56,7 +56,7 @@ public class CategoryController {
         model.addAttribute("parentCategories", parentCategories);
 
         Currency currency = this.userService.getSelectedCurrency(request);
-        Sort sort = this.bookService.getSortByParameter(sortBy);
+        Sort sort = this.commonService.getSortByParameter(sortBy);
         Pageable pageable = PageRequest.of(page, 16, sort);
         Page<BookDto> bookDtoPage = this.bookService.findByCategoryId(id, pageable, currency);
 

@@ -5,6 +5,7 @@ import org.example.ebookstore.entities.Book;
 import org.example.ebookstore.entities.Rating;
 import org.example.ebookstore.entities.Review;
 import org.example.ebookstore.entities.User;
+import org.example.ebookstore.entities.dtos.RatingDto;
 import org.example.ebookstore.entities.dtos.RatingResultDto;
 import org.example.ebookstore.entities.dtos.UserDto;
 import org.example.ebookstore.repositories.BookRepository;
@@ -13,6 +14,9 @@ import org.example.ebookstore.repositories.ReviewRepository;
 import org.example.ebookstore.repositories.UserRepository;
 import org.example.ebookstore.services.interfaces.RatingService;
 import org.example.ebookstore.services.interfaces.UserService;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -28,13 +32,15 @@ public class RatingServiceImpl implements RatingService {
     private final BookRepository bookRepository;
     private final ReviewRepository reviewRepository;
     private final UserService userService;
+    private final ModelMapper modelMapper;
 
-    public RatingServiceImpl(RatingRepository ratingRepository, UserRepository userRepository, BookRepository bookRepository, ReviewRepository reviewRepository, UserService userService) {
+    public RatingServiceImpl(RatingRepository ratingRepository, UserRepository userRepository, BookRepository bookRepository, ReviewRepository reviewRepository, UserService userService, ModelMapper modelMapper) {
         this.ratingRepository = ratingRepository;
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
         this.reviewRepository = reviewRepository;
         this.userService = userService;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -96,5 +102,11 @@ public class RatingServiceImpl implements RatingService {
         if (this.userService.hasUserRatedBook(userId, bookId)) {
             throw new IllegalArgumentException("You have already rated this book.");
         }
+    }
+
+    @Override
+    public Page<RatingDto> findByUserId(Long userId, Pageable pageable) {
+        return this.ratingRepository.findByUserIdOrderBySubmissionDateDesc(userId, pageable)
+                .map(rating -> this.modelMapper.map(rating, RatingDto.class));
     }
 }

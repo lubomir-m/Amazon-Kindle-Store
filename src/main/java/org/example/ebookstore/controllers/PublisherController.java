@@ -46,7 +46,7 @@ public class PublisherController {
         PublisherDto publisher = optional.get();
         model.addAttribute("publisher", publisher);
 
-        Sort sort = this.bookService.getSortByParameter(sortBy);
+        Sort sort = this.commonService.getSortByParameter(sortBy);
         Pageable pageable = PageRequest.of(page, 16, sort);
         Currency currency = this.userService.getSelectedCurrency(request);
         Page<BookDto> bookDtoPage = this.bookService.findByPublisherId(id, pageable, currency);

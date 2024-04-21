@@ -17,9 +17,9 @@ public interface BookService {
     Optional<BookDto> getDto(Long id, Currency currency);
     BookDto mapBookToDto(Book book, Currency currency);
     Page<BookDto> findByCategoryId(Long categoryId, Pageable pageable, Currency currency);
-    Sort getSortByParameter(String sortBy);
     List<BookDto> getRecommendedBooks(Long bookId, Currency currency);
     Page<BookDto> findByAuthorId(Long authorId, Pageable pageable, Currency currency);
     Page<BookDto> findByPublisherId(Long publisherId, Pageable pageable, Currency currency);
     BigDecimal getPriceInSelectedCurrency(Book book, Currency currency);
+    Page<BookDto> findByUserId(Long userId, Pageable pageable, Currency currency);
 }

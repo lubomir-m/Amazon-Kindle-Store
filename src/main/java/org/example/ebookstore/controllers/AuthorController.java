@@ -48,7 +48,7 @@ public class AuthorController {
         AuthorDto author = optional.get();
         model.addAttribute("author", author);
 
-        Sort sort = this.bookService.getSortByParameter(sortBy);
+        Sort sort = this.commonService.getSortByParameter(sortBy);
         Pageable pageable = PageRequest.of(page, 16, sort);
         Currency currency = this.userService.getSelectedCurrency(request);
         Page<BookDto> bookDtoPage = this.bookService.findByAuthorId(id, pageable, currency);

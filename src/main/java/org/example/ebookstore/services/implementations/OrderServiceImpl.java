@@ -1,12 +1,16 @@
 package org.example.ebookstore.services.implementations;
 
 import org.example.ebookstore.entities.*;
+import org.example.ebookstore.entities.dtos.OrderDto;
 import org.example.ebookstore.entities.dtos.UserDto;
 import org.example.ebookstore.repositories.*;
 import org.example.ebookstore.services.interfaces.BookService;
 import org.example.ebookstore.services.interfaces.OrderService;
 import org.example.ebookstore.services.interfaces.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -22,15 +26,17 @@ public class OrderServiceImpl implements OrderService {
     private final OrderItemRepository orderItemRepository;
     private final BookRepository bookRepository;
     private final ExchangeRateRepository exchangeRateRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, UserService userService, BookService bookService, OrderItemRepository orderItemRepository, BookRepository bookRepository, ExchangeRateRepository exchangeRateRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, UserService userService, BookService bookService, OrderItemRepository orderItemRepository, BookRepository bookRepository, ExchangeRateRepository exchangeRateRepository, ModelMapper modelMapper) {
         this.orderRepository = orderRepository;
         this.userService = userService;
         this.bookService = bookService;
         this.orderItemRepository = orderItemRepository;
         this.bookRepository = bookRepository;
         this.exchangeRateRepository = exchangeRateRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -75,5 +81,11 @@ public class OrderServiceImpl implements OrderService {
         this.orderItemRepository.save(orderItem);
         this.bookRepository.save(book);
         return order;
+    }
+
+    @Override
+    public Page<OrderDto> findByUserId(Long userId, Pageable pageable) {
+        return this.orderRepository.findByUserIdOrderByDateTimeDesc(userId, pageable)
+                .map(order -> this.modelMapper.map(order, OrderDto.class));
     }
 }

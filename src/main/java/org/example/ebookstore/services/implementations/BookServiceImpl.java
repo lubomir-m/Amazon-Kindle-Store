@@ -97,24 +97,6 @@ public class BookServiceImpl implements BookService {
         return books.map(book -> mapBookToDto(book, currency));
     }
 
-
-    @Override
-    public Sort getSortByParameter(String sortBy) {
-        switch (sortBy) {
-            case "averageRatingDesc":
-                return Sort.by(Sort.Direction.DESC, "averageRating");
-            case "publicationDateDesc":
-                return Sort.by(Sort.Direction.DESC, "publicationDate");
-            case "priceAsc":
-                return Sort.by(Sort.Direction.ASC, "priceEur");
-            case "priceDesc":
-                return Sort.by(Sort.Direction.DESC, "priceEur");
-            case "purchaseCountDesc":
-            default:
-                return Sort.by(Sort.Direction.DESC, "purchaseCount");
-        }
-    }
-
     @Override
     public List<BookDto> findFirst50BestSellers(Currency currency) {
         return this.bookRepository.findFirst50ByAverageRatingGreaterThanEqualOrderByPurchaseCountDesc(0.1)
@@ -151,5 +133,10 @@ public class BookServiceImpl implements BookService {
                 .map(book -> mapBookToDto(book, currency));
     }
 
+    @Override
+    public Page<BookDto> findByUserId(Long userId, Pageable pageable, Currency currency) {
+        return this.bookRepository.findByUserId(userId, pageable)
+                .map(book -> mapBookToDto(book, currency));
+    }
 }
 
