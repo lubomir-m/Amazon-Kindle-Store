@@ -127,4 +127,10 @@ public class ReviewServiceImpl implements ReviewService {
 
         return "The review and the rating associated with it were deleted.";
     }
+
+    @Override
+    public Page<ReviewDto> findByUserId(Long userId, Pageable pageable) {
+        return this.reviewRepository.findByUserIdOrderBySubmissionDateDesc(userId, pageable)
+                .map(review -> this.modelMapper.map(review, ReviewDto.class));
+    }
 }

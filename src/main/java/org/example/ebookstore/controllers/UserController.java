@@ -101,12 +101,23 @@ public class UserController {
         Page<RatingDto> ratingDtoPage = this.ratingService.findByUserId(userId, pageable);
 
         this.commonService.addItemAttributesToModel(model, ratingDtoPage, pageable, page);
-        
+
         return "user-ratings";
     }
 
     @GetMapping("/reviews")
-    public String displayUserReviewsPage(Model model) {
+    public String displayUserReviewsPage(Model model,
+                                         @RequestParam(defaultValue = "0") int page) {
+        UserDto userDto = (UserDto) model.getAttribute("userDto");
+        if (userDto == null) {
+            return "error";
+        }
+        Long userId = userDto.getId();
+        Pageable pageable = PageRequest.of(page, 16);
+        Page<ReviewDto> reviewDtoPage = this.reviewService.findByUserId(userId, pageable);
+
+        this.commonService.addItemAttributesToModel(model, reviewDtoPage, pageable, page);
+
         return "user-reviews";
     }
 }
