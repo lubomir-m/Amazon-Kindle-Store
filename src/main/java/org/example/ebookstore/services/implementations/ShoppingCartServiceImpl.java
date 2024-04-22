@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -70,7 +71,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Currency currency = (Currency) model.getAttribute("selectedCurrency");
         User user = this.userService.findById(userId).get();
         ShoppingCart shoppingCart = user.getShoppingCart();
-        Set<Book> books = shoppingCart.getBooks();
+        List<Book> books = shoppingCart.getBooks();
         if (books.isEmpty()) {
             throw new IllegalArgumentException("Your shopping cart is empty.");
         }

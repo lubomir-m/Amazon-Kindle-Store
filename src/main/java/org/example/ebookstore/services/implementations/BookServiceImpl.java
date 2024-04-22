@@ -138,5 +138,17 @@ public class BookServiceImpl implements BookService {
         return this.bookRepository.findByUserId(userId, pageable)
                 .map(book -> mapBookToDto(book, currency));
     }
+
+    @Override
+    public Page<BookDto> findByShoppingCartId(Long cartId, Pageable pageable, Currency currency) {
+        return this.bookRepository.findByShoppingCartsId(cartId, pageable)
+                .map(book -> mapBookToDto(book, currency));
+    }
+
+    @Override
+    public Page<BookDto> findByWishlistId(Long wishlistId, Pageable pageable, Currency currency) {
+        return this.bookRepository.findByWishlistsId(wishlistId, pageable)
+                .map(book -> mapBookToDto(book, currency));
+    }
 }
 

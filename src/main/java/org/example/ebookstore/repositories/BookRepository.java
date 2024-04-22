@@ -25,4 +25,6 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query("select b from Book b join b.orders o where o.user.id = :userId " +
             "order by o.dateTime desc")
     Page<Book> findByUserId(@Param("userId") Long userId, Pageable pageable);
+    Page<Book> findByShoppingCartsId(Long cartId, Pageable pageable);
+    Page<Book> findByWishlistsId(Long wishlistId, Pageable pageable);
 }

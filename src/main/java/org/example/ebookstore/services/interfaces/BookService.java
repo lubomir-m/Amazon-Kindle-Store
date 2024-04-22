@@ -22,4 +22,6 @@ public interface BookService {
     Page<BookDto> findByPublisherId(Long publisherId, Pageable pageable, Currency currency);
     BigDecimal getPriceInSelectedCurrency(Book book, Currency currency);
     Page<BookDto> findByUserId(Long userId, Pageable pageable, Currency currency);
+    Page<BookDto> findByShoppingCartId(Long cartId, Pageable pageable, Currency currency);
+    Page<BookDto> findByWishlistId(Long wishlistId, Pageable pageable, Currency currency);
 }
