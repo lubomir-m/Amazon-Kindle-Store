@@ -511,6 +511,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+
+    //TODO: mark the review as deleted on the page
     const deleteButtons = document.querySelectorAll('.delete-review-btn');
     deleteButtons.forEach(button => {
         button.addEventListener('click', function () {
@@ -602,6 +604,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    //TODO: mark rating as deleted on the page
     const deleteButtons = document.querySelectorAll('.delete-rating-btn');
     deleteButtons.forEach(button => {
         button.addEventListener('click', function () {
@@ -670,4 +673,53 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     });
 });
+
+
+// Checkout Button
+document.addEventListener('DOMContentLoaded', function () {
+    const checkoutButton = document.querySelector('.checkout-btn');
+    const commonModalCloseButton = document.getElementById('commonModalCloseButton');
+    let checkoutSuccess = false;
+
+    checkoutButton.addEventListener('click', function () {
+        const modalText = document.getElementById('commonModalText');
+        const modalErrors = document.getElementById('commonModalErrors');
+
+        fetch(`/users/cart/checkout` , {
+            method: 'POST',
+            headers: {
+                [csrfHeaderName]: csrfToken
+            }
+        })
+            .then(response => {
+                return response.text().then(text => {
+                    return {text: text, ok: response.ok};
+                });
+            })
+            .then(result => {
+                if (!result.ok) {
+                    throw new Error(result.text);
+                }
+                modalErrors.textContent = '';
+                modalText.textContent = result.text;
+                checkoutSuccess = true;
+                openCommonModal();
+            })
+            .catch(error => {
+                modalText.textContent = '';
+                modalErrors.textContent = error.message;
+                checkoutSuccess = false;
+                openCommonModal();
+            });
+    });
+
+    commonModalCloseButton.addEventListener('click', function () {
+        if (checkoutSuccess) {
+            window.location.href = '/users/books';
+        }
+    });
+});
+
+
+// Delete buttons for the cart and wishlist
 

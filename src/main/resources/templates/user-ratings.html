@@ -19,7 +19,7 @@
 </div>
 
 <div class="ratings-list">
-    <div class="rating" th:each="rating : ${items}">
+    <div class="rating" th:each="rating : ${items}" th:id="${rating.book.id}">
         <div class="rating-details">
             <div class="rating-title" th:text="${rating.book.title}"></div>
             <div class="rating-stars">
@@ -37,7 +37,8 @@
         </div>
 
         <div class="item-buttons">
-            <div class="update-rating-btn btn" th:data-book-id="${rating.book.id}">Update</div>
+            <div class="update-rating-btn btn" th:data-book-id="${rating.book.id}"
+            th:data-rating="${rating.ratingValue}">Update</div>
             <div class="delete-rating-btn btn" th:data-book-id="${rating.book.id}">Delete</div>
         </div>
     </div>
