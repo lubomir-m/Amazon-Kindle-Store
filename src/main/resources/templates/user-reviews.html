@@ -19,7 +19,7 @@
 </div>
 
 <div class="reviews-list">
-    <div class="review" th:each="review : ${items}">
+    <div class="review" th:each="review : ${items}" th:id="${review.book.id}">
         <div class="review-details">
             <div class="review-book-title" th:text="${review.book.title}"></div>
             <div class="review-stars">
