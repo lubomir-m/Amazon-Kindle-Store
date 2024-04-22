@@ -512,7 +512,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
-    //TODO: mark the review as deleted on the page
     const deleteButtons = document.querySelectorAll('.delete-review-btn');
     deleteButtons.forEach(button => {
         button.addEventListener('click', function () {
@@ -535,6 +534,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (!result.ok) {
                         throw new Error(result.text);
                     }
+                    document.getElementById(bookId).textContent = 'This review was deleted.';
                     modalErrors.textContent = '';
                     modalText.textContent = result.text;
                     openCommonModal();
@@ -604,7 +604,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    //TODO: mark rating as deleted on the page
+
     const deleteButtons = document.querySelectorAll('.delete-rating-btn');
     deleteButtons.forEach(button => {
         button.addEventListener('click', function () {
@@ -627,6 +627,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (!result.ok) {
                         throw new Error(result.text);
                     }
+                    document.getElementById(bookId).textContent = 'This rating was deleted.';
                     modalErrors.textContent = '';
                     modalText.textContent = result.text;
                     openCommonModal();
@@ -722,4 +723,69 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // Delete buttons for the cart and wishlist
+document.addEventListener('DOMContentLoaded', function () {
+    const modalText = document.getElementById('commonModalText');
+    const modalErrors = document.getElementById('commonModalErrors');
+    const deleteButtonsCart = document.querySelectorAll('.delete-from-cart-btn');
+    const deleteButtonsList = document.querySelectorAll('.delete-from-list-btn');
 
+    deleteButtonsCart.forEach(button => {
+        button.addEventListener('click', function () {
+            const bookId = this.getAttribute('data-book-id');
+            const bookTitle = this.getAttribute('data-book-title');
+
+            fetch(`/books/${bookId}/cart`, {
+                method: 'DELETE',
+                headers: {
+                    [csrfHeaderName]: csrfToken
+                }
+            })
+                .then(response => {
+                    return response.text().then(text => {
+                        return {text: text, ok: response.ok};
+                    });
+                })
+                .then(result => {
+                    if (!result.ok) {
+                        throw new Error(result.text);
+                    }
+                    document.getElementById(bookId).textContent = `You have deleted from your Cart the eBook '${bookTitle}'.`;
+                })
+                .catch(error => {
+                    modalText.textContent = '';
+                    modalErrors.textContent = error.message;
+                    openCommonModal();
+                });
+        });
+    });
+
+    deleteButtonsList.forEach(button => {
+        button.addEventListener('click', function () {
+            const bookId = this.getAttribute('data-book-id');
+            const bookTitle = this.getAttribute('data-book-title');
+
+            fetch(`/books/${bookId}/list`, {
+                method: 'DELETE',
+                headers: {
+                    [csrfHeaderName]: csrfToken
+                }
+            })
+                .then(response => {
+                    return response.text().then(text => {
+                        return {text: text, ok: response.ok};
+                    });
+                })
+                .then(result => {
+                    if (!result.ok) {
+                        throw new Error(result.text);
+                    }
+                    document.getElementById(bookId).textContent = `You have deleted from your List the eBook '${bookTitle}'.`;
+                })
+                .catch(error => {
+                    modalText.textContent = '';
+                    modalErrors.textContent = error.message;
+                    openCommonModal();
+                });
+        });
+    });
+});

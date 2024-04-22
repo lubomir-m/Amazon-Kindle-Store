@@ -1,5 +1,6 @@
 package org.example.ebookstore.services.implementations;
 
+import jakarta.transaction.Transactional;
 import org.example.ebookstore.entities.*;
 import org.example.ebookstore.entities.dtos.UserDto;
 import org.example.ebookstore.repositories.*;
@@ -60,6 +61,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
+    @Transactional
     public void buyAllBooksInShoppingCart(Model model) {
         UserDto userDto = (UserDto) model.getAttribute("userDto");
         if (userDto == null) {
@@ -86,7 +88,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
         for (Book book : books) {
             BigDecimal priceInSelectedCurrency = this.bookService.getPriceInSelectedCurrency(book, currency);
-            totalOrderPrice.add(priceInSelectedCurrency);
+            totalOrderPrice = totalOrderPrice.add(priceInSelectedCurrency);
 
             OrderItem orderItem = new OrderItem();
             orderItem.setBook(book);
@@ -103,10 +105,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         order.setTotalPrice(this.bookService.round(totalOrderPrice));
         user.addOrder(order);
 
+        this.orderRepository.save(order);
         this.userService.save(user);
         this.orderItemRepository.saveAll(order.getOrderItems());
         this.bookRepository.saveAll(shoppingCart.getBooks());
-        this.orderRepository.save(order);
+
         shoppingCart.clearBooksInCart();
         this.shoppingCartRepository.save(shoppingCart);
     }

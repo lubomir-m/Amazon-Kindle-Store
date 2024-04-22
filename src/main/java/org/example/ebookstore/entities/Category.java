@@ -15,7 +15,7 @@ public class Category extends BaseEntity {
     @JoinColumn(name = "parent_id")
     private Category parent;
     @OneToMany(mappedBy = "parent")
-    private Set<Category> subcategories = new TreeSet<>(Comparator.comparing(Category::getId));
+    private Set<Category> subcategories = new HashSet<>();
     @ManyToMany(mappedBy = "categories")
     private Set<Book> books = new HashSet<>();
 
