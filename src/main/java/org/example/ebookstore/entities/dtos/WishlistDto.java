@@ -1,19 +1,13 @@
 package org.example.ebookstore.entities.dtos;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToOne;
 import org.example.ebookstore.entities.Book;
-import org.example.ebookstore.entities.User;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class WishlistDto {
     private Long id;
     private UserDto user;
-    private Set<BookDto> books = new HashSet<>();
+    private List<Book> books = new ArrayList<>();
 
     public WishlistDto() {
     }
@@ -34,11 +28,11 @@ public class WishlistDto {
         this.user = user;
     }
 
-    public Set<BookDto> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(Set<BookDto> books) {
+    public void setBooks(List<Book> books) {
         this.books = books;
     }
 }

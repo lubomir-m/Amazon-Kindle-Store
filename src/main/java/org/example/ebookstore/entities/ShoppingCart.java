@@ -2,9 +2,7 @@ package org.example.ebookstore.entities;
 
 import jakarta.persistence.*;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "shopping_carts")
@@ -18,7 +16,8 @@ public class ShoppingCart extends BaseEntity {
             joinColumns = @JoinColumn(name = "shopping_cart_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id")
     )
-    private Set<Book> books = new HashSet<>();
+    @OrderColumn(name = "insertion_order")
+    private List<Book> books = new ArrayList<>();
 
     public ShoppingCart() {
     }
@@ -31,12 +30,18 @@ public class ShoppingCart extends BaseEntity {
         this.user = user;
     }
 
-    public Set<Book> getBooks() {
-        return Collections.unmodifiableSet(this.books);
+    public List<Book> getBooks() {
+        return Collections.unmodifiableList(this.books);
     }
+
     public void addBook(Book book) {
+        if (this.books.contains(book)) {
+            return;
+        }
+
         this.books.add(book);
     }
+
     public void removeBook(Book book) {
         this.books.remove(book);
     }
