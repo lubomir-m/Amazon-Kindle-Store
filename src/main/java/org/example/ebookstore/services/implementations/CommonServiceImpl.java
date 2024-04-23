@@ -33,6 +33,9 @@ public class CommonServiceImpl implements CommonService {
 
         int startIndex = page * pageable.getPageSize() + 1;
         int endIndex = startIndex + pageable.getPageSize() - 1;
+        if (bookDtoPage.getTotalElements() == 0) {
+            startIndex = 0;
+        }
         if (endIndex > bookDtoPage.getTotalElements()) {
             endIndex = (int) bookDtoPage.getTotalElements();
         }
@@ -66,6 +69,9 @@ public class CommonServiceImpl implements CommonService {
 
         int startIndex = page * pageable.getPageSize() + 1;
         int endIndex = startIndex + pageable.getPageSize() - 1;
+        if (itemPage.getTotalElements() == 0) {
+            startIndex = 0;
+        }
         if (endIndex > itemPage.getTotalElements()) {
             endIndex = (int) itemPage.getTotalElements();
         }

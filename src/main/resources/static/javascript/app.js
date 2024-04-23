@@ -534,6 +534,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (!result.ok) {
                         throw new Error(result.text);
                     }
+                    updateResultCount();
                     document.getElementById(bookId).textContent = 'This review was deleted.';
                     modalErrors.textContent = '';
                     modalText.textContent = result.text;
@@ -627,6 +628,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (!result.ok) {
                         throw new Error(result.text);
                     }
+                    updateResultCount();
                     document.getElementById(bookId).textContent = 'This rating was deleted.';
                     modalErrors.textContent = '';
                     modalText.textContent = result.text;
@@ -749,6 +751,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (!result.ok) {
                         throw new Error(result.text);
                     }
+
+                    updateResultCount();
+                    let numberOfBooksInCart = document.getElementById('numberOfBooksInCart');
+                    if (parseInt(numberOfBooksInCart.textContent) >= 1) {
+                        numberOfBooksInCart.textContent = (parseInt(numberOfBooksInCart.textContent) - 1).toString();
+                    }
                     document.getElementById(bookId).textContent = `You have deleted from your Cart the eBook '${bookTitle}'.`;
                 })
                 .catch(error => {
@@ -779,6 +787,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (!result.ok) {
                         throw new Error(result.text);
                     }
+                    updateResultCount();
                     document.getElementById(bookId).textContent = `You have deleted from your List the eBook '${bookTitle}'.`;
                 })
                 .catch(error => {
@@ -789,3 +798,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+function updateResultCount() {
+    let startIndex = document.getElementById('startIndex');
+    let endIndex = document.getElementById('endIndex');
+    let numberOfItems = document.getElementById('numberOfItems');
+
+    if (endIndex.textContent === '1') {
+        startIndex.textContent = endIndex.textContent = numberOfItems.textContent = '0';
+    } else if (parseInt(endIndex.textContent) >= 2) {
+        endIndex.textContent = (parseInt(endIndex.textContent) - 1).toString();
+        numberOfItems.textContent = (parseInt(numberOfItems.textContent) - 1).toString();
+    }
+}
