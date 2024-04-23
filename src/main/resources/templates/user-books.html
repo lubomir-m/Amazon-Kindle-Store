@@ -125,8 +125,8 @@
                 </li>
 
                 <!-- Next Page Link -->
-                <li th:class="${currentPage + 1 == totalPages} ? 'page-item disabled' : 'page-item'">
-                    <a class="page-link" th:href="${currentPage + 1 < totalPages} ?
+                <li th:class="${currentPage + 1 >= totalPages} ? 'page-item disabled' : 'page-item'">
+                    <a class="page-link" th:href="${currentPage + 1 <= totalPages} ?
                 @{/users/books(page=${currentPage + 1})} :
                 '#'">
                         <span>Next ></span>

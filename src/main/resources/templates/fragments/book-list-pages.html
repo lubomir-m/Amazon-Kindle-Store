@@ -6,14 +6,16 @@
         <ul class="pagination">
             <!-- Previous Page Link -->
             <li th:class="${currentPage == 0} ? 'page-item disabled' : 'page-item'">
-                <a class="page-link" th:href="${currentPage > 0} ? @{/categories/{id}(id=${currentCategory.id}, page=${currentPage - 1}, sortBy=${currentSort})} : '#'" aria-label="Previous">
+                <a class="page-link" th:href="${currentPage > 0} ? @{/categories/{id}(id=${currentCategory.id},
+                page=${currentPage - 1}, sortBy=${currentSort})} : '#'" >
                     <span>< Previous</span>
                 </a>
             </li>
 
             <!-- First Page Link -->
             <li th:if="${currentPage >= 1}" th:class="${currentPage >= 1} ? 'page-item' : 'page-item disabled'">
-                <a class="page-link" th:href="@{/categories/{id}(id=${currentCategory.id}, page=0, sortBy=${currentSort})}">1</a>
+                <a class="page-link" th:href="@{/categories/{id}(id=${currentCategory.id}, page=0,
+                sortBy=${currentSort})}">1</a>
             </li>
 
             <!-- Ellipsis before current page range -->
@@ -23,7 +25,8 @@
 
             <!-- Page Numbers: Current Page - 1 -->
             <li th:if="${currentPage >= 2}" class="page-item">
-                <a class="page-link" th:href="@{/categories/{id}(id=${currentCategory.id}, page=${currentPage - 1}, sortBy=${currentSort})}" th:text="${currentPage}"></a>
+                <a class="page-link" th:href="@{/categories/{id}(id=${currentCategory.id}, page=${currentPage - 1},
+                sortBy=${currentSort})}" th:text="${currentPage}"></a>
             </li>
 
             <!-- Current Page -->
@@ -33,7 +36,8 @@
 
             <!-- Page Numbers: Current Page + 1 -->
             <li th:if="${currentPage + 1 < totalPages - 1}" class="page-item">
-                <a class="page-link" th:href="@{/categories/{id}(id=${currentCategory.id}, page=${currentPage + 1}, sortBy=${currentSort})}" th:text="${currentPage + 2}"></a>
+                <a class="page-link" th:href="@{/categories/{id}(id=${currentCategory.id}, page=${currentPage + 1},
+                sortBy=${currentSort})}" th:text="${currentPage + 2}"></a>
             </li>
 
             <!-- Ellipsis after current page range -->
@@ -42,13 +46,17 @@
             </li>
 
             <!-- Last Page Link -->
-            <li th:if="${totalPages > 1} and ${currentPage + 2 <= totalPages}" th:class="${currentPage + 1 == totalPages} ? 'page-item active' : 'page-item'">
-                <a class="page-link" th:href="@{/categories/{id}(id=${currentCategory.id}, page=${totalPages - 1}, sortBy=${currentSort})}" th:text="${totalPages}"></a>
+            <li th:if="${totalPages > 1} and ${currentPage + 2 <= totalPages}" th:class="${currentPage + 1 == totalPages} ?
+            'page-item active' : 'page-item'">
+                <a class="page-link" th:href="@{/categories/{id}(id=${currentCategory.id}, page=${totalPages - 1},
+                sortBy=${currentSort})}" th:text="${totalPages}"></a>
             </li>
 
             <!-- Next Page Link -->
-            <li th:class="${currentPage + 1 == totalPages} ? 'page-item disabled' : 'page-item'">
-                <a class="page-link" th:href="${currentPage + 1 < totalPages} ? @{/categories/{id}(id=${currentCategory.id}, page=${currentPage + 1}, sortBy=${currentSort})} : '#'" aria-label="Next">
+            <li th:class="${currentPage + 1 >= totalPages} ? 'page-item disabled' : 'page-item'">
+                <a class="page-link" th:href="${currentPage + 1 <= totalPages} ?
+                @{/categories/{id}(id=${currentCategory.id}, page=${currentPage + 1},
+                sortBy=${currentSort})} : '#'">
                     <span>Next ></span>
                 </a>
             </li>

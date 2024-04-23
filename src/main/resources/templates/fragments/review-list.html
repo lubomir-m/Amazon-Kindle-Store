@@ -35,7 +35,7 @@
                 <!-- Previous Page Link -->
                 <li th:class="${currentPage == 0} ? 'page-item disabled' : 'page-item'">
                     <a class="page-link" th:href="${currentPage > 0} ? @{/books/{id}(id=${book.id},
-                    page=${currentPage - 1})} + '#reviews-container' : '#'" aria-label="Previous">
+                    page=${currentPage - 1})} + '#reviews-container' : '#'" >
                         <span>< Previous</span>
                     </a>
                 </li>
@@ -73,15 +73,16 @@
                 </li>
 
                 <!-- Last Page Link -->
-                <li th:if="${totalPages > 1} and ${currentPage + 2 <= totalPages}" th:class="${currentPage + 1 == totalPages} ? 'page-item active' : 'page-item'">
+                <li th:if="${totalPages > 1} and ${currentPage + 2 <= totalPages}" th:class="${currentPage + 1 == totalPages} ?
+                'page-item active' : 'page-item'">
                     <a class="page-link" th:href="@{/books/{id}(id=${book.id}, page=${totalPages - 1})}
                     + '#reviews-container'" th:text="${totalPages}"></a>
                 </li>
 
                 <!-- Next Page Link -->
-                <li th:class="${currentPage + 1 == totalPages} ? 'page-item disabled' : 'page-item'">
-                    <a class="page-link" th:href="${currentPage + 1 < totalPages} ?
-                    @{/books/{id}(id=${book.id}, page=${currentPage + 1})}  + '#reviews-container' : '#'" aria-label="Next">
+                <li th:class="${currentPage + 1 >= totalPages} ? 'page-item disabled' : 'page-item'">
+                    <a class="page-link" th:href="${currentPage + 1 <= totalPages} ?
+                    @{/books/{id}(id=${book.id}, page=${currentPage + 1})}  + '#reviews-container' : '#'" >
                         <span>Next ></span>
                     </a>
                 </li>

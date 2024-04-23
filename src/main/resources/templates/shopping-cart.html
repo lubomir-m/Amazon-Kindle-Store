@@ -12,8 +12,13 @@
 <div th:replace="~{fragments/navigation :: navigation}"></div>
 
 <div class="sorting-options">
-    <div class="result-count" th:text="${startIndex} + '-' + ${endIndex} + ' of ' + ${numberOfItems} + ' results'">
-        Results Count
+    <div class="result-count">
+        <span id="startIndex" th:text="${startIndex}"></span>
+        <span>-</span>
+        <span id="endIndex" th:text="${endIndex}"></span>
+        <span> of </span>
+        <span id="numberOfItems" th:text="${numberOfItems}"></span>
+        <span> results</span>
     </div>
 
     <div class="checkout-btn btn">Checkout</div>
@@ -128,8 +133,8 @@
             </li>
 
             <!-- Next Page Link -->
-            <li th:class="${currentPage + 1 == totalPages} ? 'page-item disabled' : 'page-item'">
-                <a class="page-link" th:href="${currentPage + 1 < totalPages} ?
+            <li th:class="${currentPage + 1 >= totalPages} ? 'page-item disabled' : 'page-item'">
+                <a class="page-link" th:href="${currentPage + 1 <= totalPages} ?
                 @{/users/cart(page=${currentPage + 1})} :
                 '#'">
                     <span>Next ></span>
