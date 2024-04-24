@@ -25,4 +25,9 @@ public class CurrencyServiceImpl implements CurrencyService {
     public Optional<Currency> findByCodeIgnoreCase(String code) {
         return this.currencyRepository.findByCodeIgnoreCase(code);
     }
+
+    @Override
+    public List<Currency> findAllExceptEuro() {
+        return this.currencyRepository.findByIdNot(1L);
+    }
 }

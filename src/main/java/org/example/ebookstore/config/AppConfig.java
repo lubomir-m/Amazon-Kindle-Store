@@ -13,17 +13,20 @@ import org.modelmapper.TypeMap;
 import org.modelmapper.spi.MappingContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.util.Base64;
 
 @Configuration
 @EnableScheduling
+@EnableAspectJAutoProxy
 public class AppConfig {
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
 
+        //TODO: check
         // Converter from byte[] to Base64 encoded string
         Converter<byte[], String> toBase64String = ctx -> Base64.getEncoder().encodeToString(ctx.getSource());
 

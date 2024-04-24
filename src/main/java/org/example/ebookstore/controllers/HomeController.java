@@ -6,9 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.ebookstore.entities.Currency;
 import org.example.ebookstore.entities.dtos.BookDto;
 import org.example.ebookstore.entities.dtos.UserDto;
-import org.example.ebookstore.services.interfaces.BookService;
-import org.example.ebookstore.services.interfaces.CurrencyService;
-import org.example.ebookstore.services.interfaces.UserService;
+import org.example.ebookstore.services.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -19,7 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -27,18 +29,22 @@ public class HomeController {
     private final UserService userService;
     private final CurrencyService currencyService;
     private final BookService bookService;
+    private final ScheduledTasksService scheduledTasksService;
+    private final ExchangeRateService exchangeRateService;
 
     @Autowired
-    public HomeController(UserService userService, CurrencyService currencyService, BookService bookService) {
+    public HomeController(UserService userService, CurrencyService currencyService, BookService bookService, ScheduledTasksService scheduledTasksService, ExchangeRateService exchangeRateService) {
         this.userService = userService;
         this.currencyService = currencyService;
         this.bookService = bookService;
+        this.scheduledTasksService = scheduledTasksService;
+        this.exchangeRateService = exchangeRateService;
     }
 
     @PostMapping("/change-currency")
     public String changeCurrency(@RequestParam String currencyCode, HttpServletResponse response,
                                  @ModelAttribute("userDto") UserDto userDto,
-                                 Authentication authentication, RedirectAttributes redirectAttributes) {
+                                 RedirectAttributes redirectAttributes) {
         if (userDto != null) {
             Optional<Currency> optional = this.currencyService.findByCodeIgnoreCase(currencyCode);
             if (optional.isPresent()) {
@@ -74,6 +80,23 @@ public class HomeController {
     @GetMapping("/customer-service")
     public String viewCustomerServicePage() {
         return "customer-service";
+    }
+
+    @GetMapping("/fx-rates")
+    public String viewFxRatesPage(Model model) {
+        LocalDate lastUpdated = this.scheduledTasksService.getLastFxRatesUpdateDate();
+        List<Currency> currencies = this.currencyService.findAllExceptEuro();
+        Map<Currency, BigDecimal> latestRates = new LinkedHashMap<>();
+
+        for (Currency currency : currencies) {
+            BigDecimal rate = this.exchangeRateService.getLatestRate(currency.getCode()).get();
+            latestRates.put(currency, rate);
+        }
+
+        model.addAttribute("lastUpdated", lastUpdated);
+        model.addAttribute("latestRates", latestRates);
+
+        return "fx-rates";
     }
 }
 

@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface CurrencyService {
     List<Currency> getAllCurrencies();
     Optional<Currency> findByCodeIgnoreCase(String code);
+    List<Currency> findAllExceptEuro();
 }

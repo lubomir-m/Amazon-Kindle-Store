@@ -12,11 +12,11 @@ public class PerformanceLog extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    @Column(name = "request_url")
+    @Column(name = "request_url", nullable = false)
     private String requestUrl;
-    @Column(name = "duration_ms")
+    @Column(name = "duration_ms", nullable = false)
     private Integer durationMs;
-    @Column(name = "status_code")
+    @Column(name = "status_code", nullable = false)
     private Integer statusCode;
 
     public PerformanceLog() {
