@@ -2,10 +2,14 @@ package org.example.ebookstore.services.implementations;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import jakarta.transaction.Transactional;
+import org.example.ebookstore.entities.ScheduledTaskAudit;
+import org.example.ebookstore.repositories.ScheduledTaskAuditRepository;
 import org.example.ebookstore.services.interfaces.BookService;
 import org.example.ebookstore.services.interfaces.ExchangeRateService;
 import org.example.ebookstore.services.interfaces.ScheduledTasksService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +22,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,20 +31,27 @@ import java.util.Map;
 public class ScheduledTasksServiceImpl implements ScheduledTasksService {
     private final ExchangeRateService exchangeRateService;
     private final BookService bookService;
+    private final ScheduledTaskAuditRepository scheduledTaskAuditRepository;
 
     @Autowired
-    public ScheduledTasksServiceImpl(ExchangeRateService exchangeRateService, BookService bookService) {
+    public ScheduledTasksServiceImpl(ExchangeRateService exchangeRateService, BookService bookService, ScheduledTaskAuditRepository scheduledTaskAuditRepository) {
         this.exchangeRateService = exchangeRateService;
         this.bookService = bookService;
+        this.scheduledTaskAuditRepository = scheduledTaskAuditRepository;
     }
 
     @Override
     @Scheduled(cron = "0 0 0 * * *")
+    @Transactional
     public void getLatestFxRatesAndUpdateBookPrices() {
         try {
             Map<String, BigDecimal> rates = getLatestFxRates();
             this.exchangeRateService.addLatestExchangeRates(rates);
             this.bookService.updateFxPricesOfAllBooks();
+
+            ScheduledTaskAudit task = this.scheduledTaskAuditRepository.findById(1L).get();
+            task.setLastRunDate(LocalDate.now());
+            this.scheduledTaskAuditRepository.save(task);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -72,7 +84,8 @@ public class ScheduledTasksServiceImpl implements ScheduledTasksService {
     }
 
     @Override
-    @Scheduled(cron = "0 0 3 * * ?")
+    @Scheduled(cron = "0 0 3 * * *")
+    @Transactional
     public void backupDatabase() {
         String dbName = "ebook_store";
         String dbUser = "root";
@@ -92,11 +105,26 @@ public class ScheduledTasksServiceImpl implements ScheduledTasksService {
 
             if (processComplete == 0) {
                 System.out.println("Backup created successfully");
+                ScheduledTaskAudit task = this.scheduledTaskAuditRepository.findById(2L).get();
+                task.setLastRunDate(LocalDate.now());
+                this.scheduledTaskAuditRepository.save(task);
             } else {
                 System.out.println("Could not create the backup");
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public LocalDate getLastFxRatesUpdateDate() {
+        return this.scheduledTaskAuditRepository.findById(1L)
+                .map(ScheduledTaskAudit::getLastRunDate).orElse(LocalDate.MIN);
+    }
+
+    @Override
+    public LocalDate getLastBackupDate() {
+        return this.scheduledTaskAuditRepository.findById(2L)
+                .map(ScheduledTaskAudit::getLastRunDate).orElse(LocalDate.MIN);
     }
 }

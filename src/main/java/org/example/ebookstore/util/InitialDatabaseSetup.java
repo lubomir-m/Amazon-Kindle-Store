@@ -9,6 +9,7 @@ import org.example.ebookstore.services.interfaces.ExchangeRateService;
 import org.example.ebookstore.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +25,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Component
+@Order(1)
 public class InitialDatabaseSetup implements CommandLineRunner {
     private final PublisherRepository publisherRepository;
     private final AuthorRepository authorRepository;
@@ -50,9 +52,10 @@ public class InitialDatabaseSetup implements CommandLineRunner {
     private final ExchangeRateService exchangeRateService;
     private final BookService bookService;
     private ResourceLoader resourceLoader;
+    private final ScheduledTaskAuditRepository scheduledTaskAuditRepository;
 
     @Autowired
-    public InitialDatabaseSetup(ResourceLoader resourceLoader, PublisherRepository publisherRepository, AuthorRepository authorRepository, CategoryRepository categoryRepository, BookRepository bookRepository, CurrencyRepository currencyRepository, ExchangeRateRepository exchangeRateRepository, RoleRepository roleRepository, RatingRepository ratingRepository, ReviewRepository reviewRepository, WishlistRepository wishlistRepository, ShoppingCartRepository shoppingCartRepository, UserRepository userRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, PasswordEncoder passwordEncoder, UserService userService, AuthorService authorService, PictureRepository pictureRepository, ExchangeRateService exchangeRateService, BookService bookService) {
+    public InitialDatabaseSetup(ResourceLoader resourceLoader, PublisherRepository publisherRepository, AuthorRepository authorRepository, CategoryRepository categoryRepository, BookRepository bookRepository, CurrencyRepository currencyRepository, ExchangeRateRepository exchangeRateRepository, RoleRepository roleRepository, RatingRepository ratingRepository, ReviewRepository reviewRepository, WishlistRepository wishlistRepository, ShoppingCartRepository shoppingCartRepository, UserRepository userRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, PasswordEncoder passwordEncoder, UserService userService, AuthorService authorService, PictureRepository pictureRepository, ExchangeRateService exchangeRateService, BookService bookService, ScheduledTaskAuditRepository scheduledTaskAuditRepository) {
         this.publisherRepository = publisherRepository;
         this.authorRepository = authorRepository;
         this.categoryRepository = categoryRepository;
@@ -74,6 +77,7 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         this.exchangeRateService = exchangeRateService;
         this.bookService = bookService;
         this.resourceLoader = resourceLoader;
+        this.scheduledTaskAuditRepository = scheduledTaskAuditRepository;
     }
 
     @Override
@@ -96,6 +100,7 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         generateRoles();
         generateUsers();
         generatePlaceholderReviews();
+        generateScheduledTasks();
     }
 
     public void generatePictures() throws IOException {
@@ -111,15 +116,13 @@ public class InitialDatabaseSetup implements CommandLineRunner {
     }
 
     public void saveImagesToList(List<String> paths, List<Picture> imageList) throws IOException {
-//        for (String path : paths) {
-//            BufferedImage bImage = ImageIO.read(new File(path));
         for (String path : paths) {
             File file = new File(path);
             System.out.println("Reading image from path: " + file.getAbsolutePath());
             BufferedImage bImage = ImageIO.read(file);
             if (bImage == null) {
                 System.out.println("Failed to read image file: " + file.getAbsolutePath());
-                continue; // Skip this file and continue with the loop
+                continue;
             }
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -141,7 +144,7 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         }
         int lastIndex = path.lastIndexOf('.');
         if (lastIndex == -1) {
-            return ""; // empty extension
+            return "";
         }
         return path.substring(lastIndex + 1);
     }
@@ -747,5 +750,14 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         this.userRepository.saveAll(users);
         this.ratingRepository.saveAll(ratings);
         this.reviewRepository.saveAll(reviews);
+    }
+
+    public void generateScheduledTasks() {
+        LocalDate date = LocalDate.of(2024, 4, 2);
+        ScheduledTaskAudit task1 = new ScheduledTaskAudit("FxRateUpdate", date);
+        this.scheduledTaskAuditRepository.save(task1);
+
+        ScheduledTaskAudit task2 = new ScheduledTaskAudit("DatabaseBackup", date);
+        this.scheduledTaskAuditRepository.save(task2);
     }
 }
