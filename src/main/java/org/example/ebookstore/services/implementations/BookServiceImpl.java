@@ -5,9 +5,7 @@ import org.example.ebookstore.entities.Book;
 import org.example.ebookstore.entities.Category;
 import org.example.ebookstore.entities.Currency;
 import org.example.ebookstore.entities.dtos.BookDto;
-import org.example.ebookstore.repositories.BookRepository;
-import org.example.ebookstore.repositories.CategoryRepository;
-import org.example.ebookstore.repositories.ReviewRepository;
+import org.example.ebookstore.repositories.*;
 import org.example.ebookstore.services.interfaces.BookService;
 import org.example.ebookstore.services.interfaces.ExchangeRateService;
 import org.example.ebookstore.services.interfaces.PlaceholderReviewService;
@@ -21,9 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,13 +28,17 @@ public class BookServiceImpl implements BookService {
     private final ExchangeRateService exchangeRateService;
     private final ModelMapper modelMapper;
     private final CategoryRepository categoryRepository;
+    private final ExchangeRateRepository exchangeRateRepository;
+    private final CurrencyRepository currencyRepository;
 
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository, ExchangeRateService exchangeRateService, ModelMapper modelMapper, CategoryRepository categoryRepository) {
+    public BookServiceImpl(BookRepository bookRepository, ExchangeRateService exchangeRateService, ModelMapper modelMapper, CategoryRepository categoryRepository, ExchangeRateRepository exchangeRateRepository, CurrencyRepository currencyRepository) {
         this.bookRepository = bookRepository;
         this.exchangeRateService = exchangeRateService;
         this.modelMapper = modelMapper;
         this.categoryRepository = categoryRepository;
+        this.exchangeRateRepository = exchangeRateRepository;
+        this.currencyRepository = currencyRepository;
     }
 
     public BigDecimal round(BigDecimal value) {
@@ -149,6 +149,31 @@ public class BookServiceImpl implements BookService {
     public Page<BookDto> findByWishlistId(Long wishlistId, Pageable pageable, Currency currency) {
         return this.bookRepository.findByWishlistsId(wishlistId, pageable)
                 .map(book -> mapBookToDto(book, currency));
+    }
+
+    @Override
+    public void updateFxPricesOfAllBooks() {
+        BigDecimal usdRate = this.exchangeRateService.getLatestRate("USD").get();
+        BigDecimal audRate = this.exchangeRateService.getLatestRate("AUD").get();
+        BigDecimal brlRate = this.exchangeRateService.getLatestRate("BRL").get();
+        BigDecimal inrRate = this.exchangeRateService.getLatestRate("INR").get();
+        BigDecimal cnyRate = this.exchangeRateService.getLatestRate("CNY").get();
+        BigDecimal egpRate = this.exchangeRateService.getLatestRate("EGP").get();
+        BigDecimal ngnRate = this.exchangeRateService.getLatestRate("NGN").get();
+        List<Book> books = this.bookRepository.findAll();
+
+        for (Book book : books) {
+            BigDecimal priceEur = book.getPriceEur();
+            book.setPriceUsd(round(priceEur.multiply(usdRate)));
+            book.setPriceAud(round(priceEur.multiply(audRate)));
+            book.setPriceBrl(round(priceEur.multiply(brlRate)));
+            book.setPriceInr(round(priceEur.multiply(inrRate)));
+            book.setPriceCny(round(priceEur.multiply(cnyRate)));
+            book.setPriceEgp(round(priceEur.multiply(egpRate)));
+            book.setPriceNgn(round(priceEur.multiply(ngnRate)));
+        }
+
+        this.bookRepository.saveAll(books);
     }
 }
 

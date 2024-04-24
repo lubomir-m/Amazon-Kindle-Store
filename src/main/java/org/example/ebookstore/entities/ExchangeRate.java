@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Table(name = "exchange_rates")
 public class ExchangeRate extends BaseEntity {
     @ManyToOne
-    @JoinColumn(name = "currency_from_id")
+    @JoinColumn(name = "currency_from_id", nullable = false)
     private Currency currencyFrom;
     @Column(nullable = false)
     private LocalDate validityDate;

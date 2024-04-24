@@ -96,7 +96,6 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         generateRoles();
         generateUsers();
         generatePlaceholderReviews();
-        updateBookRatings();
     }
 
     public void generatePictures() throws IOException {
@@ -534,8 +533,8 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         String line;
         List<Author> authorList = this.authorRepository.findAll();
 
-        BigDecimal usdRate = this.exchangeRateService.getLatestRate("usd").get();
-        BigDecimal audRate = this.exchangeRateService.getLatestRate("aud").get();
+        BigDecimal usdRate = this.exchangeRateService.getLatestRate("USD").get();
+        BigDecimal audRate = this.exchangeRateService.getLatestRate("AUD").get();
         BigDecimal brlRate = this.exchangeRateService.getLatestRate("BRL").get();
         BigDecimal inrRate = this.exchangeRateService.getLatestRate("INR").get();
         BigDecimal cnyRate = this.exchangeRateService.getLatestRate("CNY").get();
@@ -616,7 +615,7 @@ public class InitialDatabaseSetup implements CommandLineRunner {
                 book.setPriceEgp(this.bookService.round(priceEur.multiply(egpRate)));
                 book.setPriceNgn(this.bookService.round(priceEur.multiply(ngnRate)));
 
-                book.setAverageRating(5.0 * Math.random());
+                book.setAverageRating(4.0 + Math.random());
                 book.setRatingsCount(random.nextLong(100000));
                 int publicationDay = 1 + random.nextInt(26);
                 int publicationMonth = 1 + random.nextInt(12);
@@ -748,14 +747,5 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         this.userRepository.saveAll(users);
         this.ratingRepository.saveAll(ratings);
         this.reviewRepository.saveAll(reviews);
-    }
-
-    public void updateBookRatings() {
-        List<Book> books = this.bookRepository.findFirst50000ByOrderByPurchaseCountDesc();
-        for (Book book : books) {
-            book.setAverageRating(4 + Math.random());
-        }
-
-        this.bookRepository.saveAll(books);
     }
 }
