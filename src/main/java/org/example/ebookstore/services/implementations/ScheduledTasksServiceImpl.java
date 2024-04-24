@@ -96,7 +96,7 @@ public class ScheduledTasksServiceImpl implements ScheduledTasksService {
         String dateStr = formatter.format(new Date());
 
 
-        String executeCmd = "mysqldump -u " + dbUser + " -p" + dbPass + " " + dbName + " -r " + filePath + "/"
+        String executeCmd = "/usr/local/mysql/bin/mysqldump -u " + dbUser + " -p" + dbPass + " " + dbName + " -r " + filePath + "/"
                 + dbName + "_" + dateStr + ".sql";
 
         try {
