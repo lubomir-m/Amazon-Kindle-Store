@@ -15,3 +15,137 @@
 .dropdown:hover .dropdown-content {
     display: block;
 }
+
+.book-details {
+    text-align: center; /* Center the details text */
+    /* Additional styling as needed */
+}
+
+@media (min-width: 1200px) {
+    .book-list .book {
+        /* Adjust flex basis and max-width to fit 7 items per row */
+        flex: 0 0 14.28%;
+        max-width: 14.28%;
+    }
+}
+
+.book-cover {
+    height: auto; /* remove fixed height */
+    padding-top: 160%; /* 5:8 aspect ratio (for a more book-like appearance) */
+    position: relative; /* keep position relative for absolute children */
+    width: 100%; /* full width of its parent */
+    background-color: #ddd; /* Temporary background color */
+    margin-bottom: 15px; /* space between rows */
+}
+
+/* Position the cover-title and cover-authors within book-cover */
+.cover-title, .cover-authors {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 5%; /* Reduce padding to prevent text from touching the edges */
+}
+
+/* Style cover title with more emphasis and multiple lines */
+.cover-title {
+    font-size: 1.5em; /* Larger font size */
+    font-weight: bold;
+    height: calc(1.2em * 4); /* Height based on line height and number of lines */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    margin-bottom: 0.5em; /* space between title and authors */
+}
+
+/* Style cover authors with less emphasis */
+.cover-authors {
+    font-size: 1em;
+    height: calc(1.2em * 3); /* Height based on line height and number of lines */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    margin-top: 0.5em; /* space between title and authors */
+}
+
+/* Ensure that there is no extra margin on the row, which can affect the alignment */
+.book-list .row {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+/* Ensure the book elements don't have excessive padding */
+.book-list .book {
+    padding-right: 0.25rem; /* Small padding to create gutters */
+    padding-left: 0.25rem; /* Small padding to create gutters */
+}
+
+
+.book-title {
+    font-size: 1em;
+    margin-bottom: 0.5em;
+}
+
+.price {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+}
+
+.star {
+    width: 1em;
+    height: 1em;
+    margin-right: 2px;
+    vertical-align: middle;
+}
+
+.full-star {
+    fill: #ffd700;
+}
+
+.half-star {
+    fill: url(#half-star-gradient);
+}
+
+.empty-star {
+    fill: #ccc;
+}
+
+.full-star use {
+    fill: #ffd700;
+}
+
+.half-star use {
+    fill: url(#half-star-gradient);
+}
+
+.empty-star use {
+    fill: #ccc;
+}
+
+.rating span {
+    font-size: 0.8em;
+    color: #666;
+    margin-left: 4px;
+}
+
+.container.my-3 {
+    padding-right: 15px; /* Standard padding, adjust if necessary */
+    padding-left: 15px; /* Standard padding, adjust if necessary */
+}
+
+
+
+
