@@ -16,75 +16,77 @@
     display: block;
 }
 
+.container.my-3 {
+    padding-left: 1rem; /* Slight padding on the sides */
+    padding-right: 1rem;
+    max-width: 100%; /* This will stretch the container to the full width of its parent */
+}
+
 .book-details {
     text-align: center; /* Center the details text */
     /* Additional styling as needed */
 }
 
+.book {
+    margin-bottom: 15px; /* Space between book items */
+}
+
 @media (min-width: 1200px) {
-    .book-list .book {
-        /* Adjust flex basis and max-width to fit 7 items per row */
+    .book {
         flex: 0 0 14.28%;
         max-width: 14.28%;
     }
 }
 
+/* Adjust the flex-basis and max-width of the books to ensure 7 items per row and reduce side margins */
+@media (min-width: 1200px) {
+    .book-list .book {
+        flex: 0 0 calc(100% / 7 - 10px); /* Adjust the calculation to reduce side margins */
+        max-width: calc(100% / 7 - 10px); /* Same as flex-basis, to maintain 7 items per row */
+    }
+}
+
+.row {
+    margin-right: -15px; /* Right margin on row for negative gutter */
+    margin-left: -15px; /* Left margin on row for negative gutter */
+}
+
 .book-cover {
-    height: auto; /* remove fixed height */
-    padding-top: 160%; /* 5:8 aspect ratio (for a more book-like appearance) */
-    position: relative; /* keep position relative for absolute children */
-    width: 100%; /* full width of its parent */
-    background-color: #ddd; /* Temporary background color */
-    margin-bottom: 15px; /* space between rows */
+    position: relative;
+    background-color: #ddd; /* Placeholder color, change as needed */
+    color: black; /* Set the text color to black */
+    overflow: hidden; /* Ensures content that exceeds the bounds is not shown */
+    padding-top: 160%; /* Controls the aspect ratio of the cover */
+    margin-bottom: 15px; /* Space between rows */
 }
 
-/* Position the cover-title and cover-authors within book-cover */
-.cover-title, .cover-authors {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 5%; /* Reduce padding to prevent text from touching the edges */
+/* Override the anchor tag color within the book cover to black */
+.book-cover a {
+    color: black; /* This will make the text color black instead of blue */
+    text-decoration: none; /* Optionally remove the underline from links */
 }
 
-/* Style cover title with more emphasis and multiple lines */
+/* Adjustments for the cover title and authors to ensure they do not overlap */
 .cover-title {
-    font-size: 1.5em; /* Larger font size */
+    position: absolute;
+    top: 10%; /* Centralize vertically */
+    left: 10%; /* Padding from the left */
+    right: 10%; /* Padding from the right */
+    font-size: 1.5em; /* Adjust font-size as needed */
     font-weight: bold;
-    height: calc(1.2em * 4); /* Height based on line height and number of lines */
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    margin-bottom: 0.5em; /* space between title and authors */
+    text-align: center; /* Center the text horizontally */
+    line-height: 1.2em; /* Adjust line height to manage text spacing */
+    max-height: 100%; /* Allow the title to take up as much space as needed */
+    /*display: -webkit-box;*/
+    /*-webkit-line-clamp: 4; !* Number of lines to show *!*/
+    /*-webkit-box-orient: vertical;*/
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Add ellipsis when text overflows */
 }
 
-/* Style cover authors with less emphasis */
-.cover-authors {
-    font-size: 1em;
-    height: calc(1.2em * 3); /* Height based on line height and number of lines */
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    margin-top: 0.5em; /* space between title and authors */
-}
-
-/* Ensure that there is no extra margin on the row, which can affect the alignment */
 .book-list .row {
-    margin-right: 0;
-    margin-left: 0;
-}
-
-/* Ensure the book elements don't have excessive padding */
-.book-list .book {
-    padding-right: 0.25rem; /* Small padding to create gutters */
-    padding-left: 0.25rem; /* Small padding to create gutters */
+    margin-right: auto; /* Auto margin to center the row content */
+    margin-left: auto; /* Auto margin to center the row content */
 }
 
 
@@ -140,12 +142,3 @@
     color: #666;
     margin-left: 4px;
 }
-
-.container.my-3 {
-    padding-right: 15px; /* Standard padding, adjust if necessary */
-    padding-left: 15px; /* Standard padding, adjust if necessary */
-}
-
-
-
-

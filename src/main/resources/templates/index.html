@@ -21,10 +21,6 @@
             <a th:href="@{/books/{id}(id=*{id})}">
                 <div class="book-cover" th:style="'background-color:' + *{coverColor}">
                     <div class="cover-title" th:text="*{title}"></div>
-                    <div class="cover-authors">
-                    <span class="author" th:each="author, iterStat : *{authors}"
-                          th:text="${author.fullName} + (iterStat.last ? '' : ', ')"></span>
-                    </div>
                 </div>
             </a>
             <div class="book-details">
