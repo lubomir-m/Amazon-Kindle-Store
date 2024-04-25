@@ -13,8 +13,9 @@ import java.util.Optional;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
+    //TODO: cache this for one month
     List<Review> findFirst10ByOrderByIdAsc();
-    @Query("select r from Review r left join r.book b where b.id = :bookId or b.id is null " +
+    @Query("select r from Review r left join r.book b where b.id = :bookId " +
             "order by r.submissionDate desc")
     Page<Review> findAllByBookId(@Param("bookId") Long bookId, Pageable pageable);
     Optional<Review> findByRatingId(Long ratingId);

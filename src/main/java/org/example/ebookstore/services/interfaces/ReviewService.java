@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import java.util.List;
 
 public interface ReviewService {
+    List<ReviewDto> getPlaceholderReviews(int count);
     Page<ReviewDto> getReviewsByBookId(Long bookId, Pageable pageable);
     ReviewResultDto createReview(ReviewSubmissionDto reviewSubmissionDto, Model model, Long bookId);
     void checkReviewCreation(Model model, Long bookId);

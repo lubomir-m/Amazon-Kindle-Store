@@ -22,10 +22,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class BookController {
@@ -53,10 +51,15 @@ public class BookController {
 
             List<BookDto> books = this.bookService.getRecommendedBooks(id, currency);
             model.addAttribute("books", books);
+            Pageable pageable = PageRequest.of(page, 10);
 
-            Pageable pageable = PageRequest.of(page, 7);
             Page<ReviewDto> reviewPage = this.reviewService.getReviewsByBookId(id, pageable);
-            model.addAttribute("reviews", reviewPage.getContent());
+            List<ReviewDto> reviews = new ArrayList<>(reviewPage.getContent());
+            int placeholderCount = 10 - reviews.size();
+            List<ReviewDto> placeholderReviews = this.reviewService.getPlaceholderReviews(placeholderCount);
+            reviews.addAll(placeholderReviews);
+
+            model.addAttribute("reviews", reviews);
             model.addAttribute("currentReviewPage", pageable.getPageNumber());
             model.addAttribute("totalReviewPages", reviewPage.getTotalPages());
 

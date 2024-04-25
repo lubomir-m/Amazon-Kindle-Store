@@ -27,7 +27,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -167,5 +170,14 @@ public class ReviewServiceImpl implements ReviewService {
         this.bookRepository.save(book);
         this.ratingRepository.save(rating);
         this.reviewRepository.save(review);
+    }
+
+    @Override
+    public List<ReviewDto> getPlaceholderReviews(int count) {
+        List<Review> allPlaceholders = this.reviewRepository.findFirst10ByOrderByIdAsc();
+        Collections.shuffle(allPlaceholders);
+        return allPlaceholders.subList(0, count).stream().map(review ->
+                this.modelMapper.map(review, ReviewDto.class))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 }
