@@ -16,11 +16,17 @@
         <h2>Amazon Kindle Store Best Sellers</h2>
     </div>
 
-    <div class="book-list row" >
-        <div class="book col-6 col-md-4 col-lg-3 col-xl-1 mb-4" th:each="book : ${books}" th:object="${book}">
+    <div class="book-list row row-cols-3 row-cols-xl-7" >
+        <div class="book" th:each="book : ${books}" th:object="${book}">
             <a th:href="@{/books/{id}(id=*{id})}">
                 <div class="book-cover" th:style="'background-color:' + *{coverColor}">
                     <div class="cover-title" th:text="*{title}"></div>
+                    <div class="cover-authors">
+                    <span class="author" th:each="author, iterStat : *{authors}"
+                          th:text="${author.fullName}">
+                        <span th:unless="${iterStat.last}">, </span>
+                    </span>
+                    </div>
                 </div>
             </a>
             <div class="book-details">
