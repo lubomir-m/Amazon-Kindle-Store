@@ -23,47 +23,63 @@
     color: black; /* Set the text color to black */
     overflow: hidden;
     text-overflow: ellipsis;
-    padding-top: 160%; /* Controls the aspect ratio of the cover */
     margin-bottom: 15px;
 
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    height: 400px;
+    max-height: 400px;
+}
+
+.book-cover, .book-cover > * {
+    box-sizing: border-box;
 }
 
 /* Adjustments for the cover title and authors to ensure they do not overlap */
 .cover-title {
-    padding: 10%;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    margin: 10%;
     font-size: 1.3em; /* Adjust font-size as needed */
     font-weight: bold;
     text-align: center; /* Center the text horizontally */
-    line-height: 1.2em; /* Adjust line height to manage text spacing */
+    line-height: 1.4em; /* Adjust line height to manage text spacing */
+    max-height: 7em;
     overflow: hidden; /* Hide overflow */
     text-overflow: ellipsis;
-    flex-grow: 3;
 }
 
 .cover-authors {
-    padding: 10%;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    margin: 10%;
     font-size: 1.1em; /* Adjust font-size as needed */
     font-weight: bold;
     text-align: center; /* Center the text horizontally */
-    line-height: 1.2em; /* Adjust line height to manage text spacing */
+    line-height: 1.2em;
+    max-height: 3.6em;
     overflow: hidden; /* Hide overflow */
     text-overflow: ellipsis;
-    flex-grow: 3;
 }
 
-
-/* Override the anchor tag color within the book cover to black */
-.book-cover a {
-    color: black; /* This will make the text color black instead of blue */
-    text-decoration: none; /* Optionally remove the underline from links */
+.book a {
+    color: black;
+    text-decoration: none;
 }
-
 
 .book-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     font-size: 1em;
+    line-height: 1.1em;
+    max-height: 2.2em;
     margin-bottom: 0.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .price {
@@ -77,40 +93,26 @@
     align-items: center;
 }
 
-.rating span {
-    font-size: 0.8em;
-    color: #666;
-    margin-left: 4px;
-}
-
 .star {
-    width: 1em;
+    width: 1em; /* Set the size of the stars */
     height: 1em;
-    margin-right: 2px;
-    vertical-align: middle;
+    display: inline-block;
 }
 
-.full-star {
-    fill: #ffd700;
-}
-
-.half-star {
-    fill: url(#half-star-gradient);
-}
-
-.empty-star {
-    fill: #ccc;
+.full-star use,
+.half-star use,
+.empty-star use {
+    pointer-events: none; /* This prevents the SVG use element from capturing clicks */
 }
 
 .full-star use {
-    fill: #ffd700;
+    fill: #ffd700; /* gold color */
 }
 
 .half-star use {
-    fill: url(#half-star-gradient);
+    fill: url(#half-star-gradient); /* reference to the defined gradient */
 }
 
 .empty-star use {
-    fill: #ccc;
+    fill: #ccc; /* light gray color */
 }
-

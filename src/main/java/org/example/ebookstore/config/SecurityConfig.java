@@ -28,7 +28,7 @@ public class SecurityConfig {
                                 "/books/*", "/publishers/*", "/authors/*", "categories/*", "/change-currency",
                                 "/change-currency/*")
                         .permitAll()
-                        .requestMatchers("/css/**", "/javascript/**", "/images/**").permitAll()
+                        .requestMatchers("/css/**", "/javascript/**", "/images/**", "/icons/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
                         .usernameParameter("email")
