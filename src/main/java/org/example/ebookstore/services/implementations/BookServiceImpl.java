@@ -80,6 +80,16 @@ public class BookServiceImpl implements BookService {
         BookDto bookDto = this.modelMapper.map(book, BookDto.class);
         bookDto.setSelectedCurrency(currency);
         bookDto.setSelectedCurrencyPrice(price);
+        double rating = book.getAverageRating();
+
+        int fullStars = (int) rating;
+        int halfStar = (rating - fullStars >= 0.5) ? 1 : 0;
+        int emptyStars = 5 - (fullStars + halfStar);
+
+        bookDto.setFullStars(fullStars);
+        bookDto.setHalfStar(halfStar);
+        bookDto.setEmptyStars(emptyStars);
+
         return bookDto;
     }
 

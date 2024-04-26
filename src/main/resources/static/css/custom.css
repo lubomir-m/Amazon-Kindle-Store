@@ -99,20 +99,3 @@
     display: inline-block;
 }
 
-.full-star use,
-.half-star use,
-.empty-star use {
-    pointer-events: none; /* This prevents the SVG use element from capturing clicks */
-}
-
-.full-star use {
-    fill: #ffd700; /* gold color */
-}
-
-.half-star use {
-    fill: url(#half-star-gradient); /* reference to the defined gradient */
-}
-
-.empty-star use {
-    fill: #ccc; /* light gray color */
-}

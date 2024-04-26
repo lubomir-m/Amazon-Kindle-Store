@@ -27,6 +27,10 @@ public class BookDto {
     private BigDecimal selectedCurrencyPrice;
     private Currency selectedCurrency;
 
+    private int fullStars;
+    private int halfStar;
+    private int emptyStars;
+
     public BookDto() {
     }
 
@@ -136,4 +140,28 @@ public class BookDto {
         this.coverColor = coverColor;
     }
 
+
+    public int getFullStars() {
+        return fullStars;
+    }
+
+    public void setFullStars(int fullStars) {
+        this.fullStars = fullStars;
+    }
+
+    public int getHalfStar() {
+        return halfStar;
+    }
+
+    public void setHalfStar(int halfStar) {
+        this.halfStar = halfStar;
+    }
+
+    public int getEmptyStars() {
+        return emptyStars;
+    }
+
+    public void setEmptyStars(int emptyStars) {
+        this.emptyStars = emptyStars;
+    }
 }
