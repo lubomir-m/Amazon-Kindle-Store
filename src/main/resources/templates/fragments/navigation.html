@@ -23,26 +23,24 @@
     </div>
 
     <div class="container-fluid">
-        <div class="nav-row row">
-            <div class="nav-section left col-2">
+        <div class="nav-row row align-items-end">
+            <div class="nav-section left col-auto">
                 <a href="/" class="navbar-brand">
                     <svg class="amazon-logo">
                         <use href="#amazon-logo"></use>
                     </svg>
                 </a>
             </div>
-            <div class="nav-section center col-6">
+            <div class="nav-section center col">
                 <form th:action="@{/search}" method="get" class="search-form">
                     <input type="text" name="query" placeholder="Search Amazon Kindle Store">
                     <button type="submit" class="search-button btn">
-                        <svg class="search-icon">
-                            <use href="#search-icon"></use>
-                        </svg>
+                            <img class="search-icon" th:src="@{/icons/search.png}">
                     </button>
                 </form>
             </div>
 
-            <form class="col-2" action="/change-currency" method="POST">
+            <form class="col-1" action="/change-currency" method="POST">
                 <select name="currencyCode" onchange="this.form.submit()">
                     <th:block th:each="currency : ${allCurrencies}">
                         <option th:value="${currency.code}"
@@ -55,10 +53,15 @@
                 <input type="hidden" name="redirectUrl" th:value="@{/}">
             </form>
 
-            <div class="account col-2 dropdown">
+            <div class="account col-auto dropdown">
                 <span sec:authorize="isAuthenticated()">Hello, <span th:text="${userDto.firstName}"></span></span>
                 <span sec:authorize="!isAuthenticated()">Hello, sign in</span>
-                <div>Your Account</div>
+                <div>
+                    Your Account
+                    <svg class="down-arrow">
+                        <use href="#down-arrow"></use>
+                    </svg>
+                </div>
                 <div class="dropdown-account">
                     <div><a th:href="@{/users/profile}">Your Account</a></div>
                     <div><a th:href="@{/users/books}">Your eBooks</a></div>
@@ -69,18 +72,20 @@
                     <div><a th:href="@{/users/cart}">Your Shopping Cart</a></div>
                 </div>
             </div>
-            <div class="cart col-2">
-                <a th:href="@{/cart}">
-                    <svg class="shopping-cart">
-                        <use href="#shopping-cart"></use>
-                    </svg>
+            <div class="cart col-auto">
+                <div class="cart-div" th:href="@{/cart}">
+                    <div class="cart-icon">
+                        <svg class="shopping-cart">
+                            <use href="#shopping-cart"></use>
+                        </svg>
+                    </div>
                     <div class="number-of-books-in-cart">
                         <div id="numberOfBooksInCart" th:text="${userDto} ? ${userDto.shoppingCart.books.size} : '0'">
                             Number of products in user's cart
                         </div>
                         <div>Cart</div>
                     </div>
-                </a>
+                </div>
             </div>
         </div>
 
@@ -90,7 +95,12 @@
                 <div class="row justify-content-start">
                     <div class="dropdown col-auto">
                         <a th:href="@{/categories/1(page = 0, sortBy = 'purchaseCountDesc')}"
-                           class="dropbtn">Categories</a>
+                           class="dropbtn">
+                            Categories
+                            <svg class="down-arrow">
+                                <use href="#down-arrow"></use>
+                            </svg>
+                        </a>
                         <div class="dropdown-categories">
                             <div th:each="category : ${level2Categories}">
                                 <a th:text="${category.name}"
