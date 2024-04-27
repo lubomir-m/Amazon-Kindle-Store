@@ -1,6 +1,6 @@
-.dropdown {
+.dropdwn {
     position: relative;
-    display: inline-block;
+    /*display: inline-block;*/
 }
 
 .dropdown-account {
@@ -10,6 +10,48 @@
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
+}
+
+.dropdown-categories {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    width: 400px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.categories-list {
+    padding: 1em;
+    font-size: 0.8em;
+}
+
+.book-category {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.nav-section  a {
+    color: white;
+    text-decoration: none; /* Removes underline from links */
+}
+
+/* Hover effect for links */
+.nav-section a:hover {
+    color: #ff9900; /* Amazon's signature orange color for hover */
+}
+
+.dropdwn:hover .dropdown-categories, .dropdwn:hover .dropdown-account {
+    display: block;
+}
+
+.dropdown-categories a {
+    color: black; /* Replace with the color you want for the text */
+}
+
+/* You may also need to set a hover state if it's not changing correctly */
+.dropdown-categories a:hover {
+    color: #ff9900; /* Replace with the color you want on hover */
 }
 
 .amazon-logo {
@@ -32,28 +74,74 @@
     height: 12px;
 }
 
-.dropdown-categories {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-.dropdown:hover .dropdown-categories, .dropdown:hover .dropdown-account {
-    display: block;
-}
-
 .number-of-books-in-cart {
+    margin-left: 5px;
     display: flex;
     flex-direction: column;
+    text-align: center;
 }
 
 .cart-div {
     display: flex;
     flex-direction: row;
 }
+
+.nav-row {
+    align-items: center; /* Align items vertically */
+    padding-top: 10px; /* Add top padding */
+    padding-bottom: 10px; /* Add bottom padding */
+}
+
+.nav-section.center {
+    flex-grow: 1; /* Allow this section to fill the space */
+}
+
+.search-form input[type="text"] {
+    width: 100%; /* Make the search box take the full width of its parent */
+    /* If you use Bootstrap, consider using the form-control class */
+}
+
+.nav-row:first-child {
+    background-color: #131921; /* Dark background for the top row */
+    color: white; /* White text color */
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+/* Style for the second navigation row */
+.nav-row:nth-child(2) {
+    background-color: #232f3e; /* Slightly lighter background for the second row */
+    color: white; /* White text color */
+}
+
+/* General text color for links in the nav bar */
+
+
+/* Styling for the search box */
+.search-form input[type="text"] {
+    background-color: white; /* White background for input */
+    color: black; /* Black text color */
+    border-radius: 4px; /* Rounded corners */
+    padding: 8px 12px; /* Spacing inside the input */
+    margin-right: 2px; /* Spacing between input and button */
+    border: 1px solid #ccc; /* Light border around the input */
+}
+
+/* Styling for the search button */
+.search-button {
+    background-color: #febd69; /* Amazon's button color */
+    border-radius: 4px; /* Rounded corners */
+    border: none; /* Remove border */
+}
+
+/* If you don't have a hover image, you can simply change the background color */
+.search-button:hover {
+    background-color: #febd69; /* Lighter shade for hover, replace with the color you prefer */
+}
+
+
+
+
 
 
 /* Homepage styling */

@@ -23,7 +23,7 @@
     </div>
 
     <div class="container-fluid">
-        <div class="nav-row row align-items-end">
+        <div class="nav-row row align-items-center">
             <div class="nav-section left col-auto">
                 <a href="/" class="navbar-brand">
                     <svg class="amazon-logo">
@@ -32,9 +32,9 @@
                 </a>
             </div>
             <div class="nav-section center col">
-                <form th:action="@{/search}" method="get" class="search-form">
-                    <input type="text" name="query" placeholder="Search Amazon Kindle Store">
-                    <button type="submit" class="search-button btn">
+                <form th:action="@{/search}" method="get" class="search-form row">
+                    <input type="text" name="query" placeholder="Search Amazon Kindle Store" class="col">
+                    <button type="submit" class="search-button btn col-auto">
                             <img class="search-icon" th:src="@{/icons/search.png}">
                     </button>
                 </form>
@@ -53,7 +53,7 @@
                 <input type="hidden" name="redirectUrl" th:value="@{/}">
             </form>
 
-            <div class="account col-auto dropdown">
+            <div class="account col-auto dropdwn">
                 <span sec:authorize="isAuthenticated()">Hello, <span th:text="${userDto.firstName}"></span></span>
                 <span sec:authorize="!isAuthenticated()">Hello, sign in</span>
                 <div>
@@ -90,10 +90,10 @@
         </div>
 
 
-        <div class="nav-row row">
+        <div class="nav-row row align-items-center">
             <div class="nav-section left col-6">
                 <div class="row justify-content-start">
-                    <div class="dropdown col-auto">
+                    <div class="dropdwn col-auto">
                         <a th:href="@{/categories/1(page = 0, sortBy = 'purchaseCountDesc')}"
                            class="dropbtn">
                             Categories
@@ -102,10 +102,12 @@
                             </svg>
                         </a>
                         <div class="dropdown-categories">
-                            <div th:each="category : ${level2Categories}">
-                                <a th:text="${category.name}"
-                                   th:href="@{/categories/{id}(id=${category.id})}">
-                                </a>
+                            <div class="row row-cols-2 categories-list">
+                                <div class="book-category" th:each="category : ${level2Categories}">
+                                    <a th:text="${category.name}"
+                                       th:href="@{/categories/{id}(id=${category.id})}">
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
