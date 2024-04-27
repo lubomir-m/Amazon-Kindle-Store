@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-    List<Book> findFirst50ByAverageRatingGreaterThanEqualOrderByPurchaseCountDesc(Double avgRating);
+    List<Book> findFirst54ByAverageRatingGreaterThanEqualOrderByPurchaseCountDesc(Double avgRating);
     Page<Book> findByCategoriesIdIn(List<Long> categoryIds, Pageable pageable);
 
     @Query("select b from Book b join b.categories c where c.id = :categoryId and " +

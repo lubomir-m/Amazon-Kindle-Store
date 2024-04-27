@@ -67,7 +67,7 @@ public class HomeController {
     @GetMapping({"/", "/home"})
     public String viewHomepage(Model model, HttpServletRequest request) {
         Currency currency = this.userService.getSelectedCurrency(request);
-        List<BookDto> books = this.bookService.findFirst50BestSellers(currency);
+        List<BookDto> books = this.bookService.findFirst54BestSellers(currency);
         model.addAttribute("books", books);
         return "index";
     }

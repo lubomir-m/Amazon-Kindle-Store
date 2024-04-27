@@ -108,8 +108,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> findFirst50BestSellers(Currency currency) {
-        return this.bookRepository.findFirst50ByAverageRatingGreaterThanEqualOrderByPurchaseCountDesc(0.1)
+    public List<BookDto> findFirst54BestSellers(Currency currency) {
+        return this.bookRepository.findFirst54ByAverageRatingGreaterThanEqualOrderByPurchaseCountDesc(0.1)
                 .stream().map(book -> mapBookToDto(book, currency))
                 .collect(Collectors.toList());
     }

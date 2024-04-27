@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface BookService {
     BigDecimal round(BigDecimal value);
-    List<BookDto> findFirst50BestSellers(Currency currency);
+    List<BookDto> findFirst54BestSellers(Currency currency);
     Optional<BookDto> getDto(Long id, Currency currency);
     BookDto mapBookToDto(Book book, Currency currency);
     Page<BookDto> findByCategoryId(Long categoryId, Pageable pageable, Currency currency);

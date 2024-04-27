@@ -33,17 +33,19 @@
                 </div>
                 <div class="rating">
                     <!-- Full Stars -->
-                    <span th:each="i : ${#numbers.sequence(1, book.averageRating.intValue())}">
-        <svg class="star full-star"><use href="#star-icon"></use></svg>
+                    <span th:each="i : ${#numbers.sequence(1, book.fullStars)}">
+        <img class="star" th:src="@{/stars/full-star.jpeg}" alt="Full Star">
     </span>
                     <!-- Half Star -->
-                    <span th:if="${(book.averageRating % 1) >= 0.5}">
-        <svg class="star half-star"><use href="#star-icon"></use></svg>
+                    <span th:if="${book.halfStar == 1}">
+        <img class="star" th:src="@{/stars/half-star.png}" alt="Half Star">
     </span>
                     <!-- Empty Stars -->
-                    <span th:each="i : ${#numbers.sequence(book.averageRating.intValue() + 1, 5)}">
-        <svg class="star empty-star"><use href="#star-icon"></use></svg>
+                    <span th:if="${book.emptyStars > 0}">
+                        <span th:each="i : ${#numbers.sequence(1, book.emptyStars)}">
+        <img class="star" th:src="@{/stars/empty-star.png}" alt="Empty Star">
     </span>
+                    </span>
                     <span th:text="'   ' + ${book.ratingsCount} + ' ratings'"></span>
                 </div>
                 <div class="kindle-ebook">Kindle eBook</div>
