@@ -1,10 +1,10 @@
 <html xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 
-<div th:fragment="sorting-options">
-    <div class="result-count" th:text="${startIndex} + '-' + ${endIndex} + ' of ' + ${numberOfBooks} + ' results'">
+<div th:fragment="sorting-options" class="sorting-options row justify-content-between align-content-center">
+    <div class="result-count col-auto" th:text="${startIndex} + '-' + ${endIndex} + ' of ' + ${numberOfBooks} + ' results'">
         Results Count
     </div>
-    <select id="sortOptions" onchange="location = this.value">
+    <select class="col-auto" id="sortOptions" onchange="location = this.value">
         <option th:each="option : ${sortOptions.entrySet()}"
         th:value="@{/categories/{id}(id=${currentCategory.id}, page = 0, sortBy = ${option.key})}"
         th:text="${option.value}"

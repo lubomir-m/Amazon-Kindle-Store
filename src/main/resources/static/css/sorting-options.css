@@ -1,0 +1,9 @@
+#sortOptions {
+    margin-right: 12px;
+}
+
+.sorting-options {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid black;
+}

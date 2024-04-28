@@ -1,3 +1,7 @@
+.book-list {
+    margin: 12px;
+}
+
 .book-cover {
     position: relative;
     background-color: #ddd; /* Placeholder color, change as needed */
@@ -11,6 +15,8 @@
 }
 
 .book-cover a {
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
