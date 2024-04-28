@@ -5,16 +5,26 @@
     <meta  name="_csrf" th:content="${_csrf.token}"/>
     <meta  name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>AmazonKindleStore.com</title>
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/custom.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/navigation.css}">
+    <link rel="stylesheet" th:href="@{/css/book-list.css}">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
 </head>
 <body>
 <div th:replace="~{fragments/navigation :: navigation}"></div>
 
 <div th:replace="~{fragments/book-list-sorting-options :: sorting-options}"></div>
-<div th:replace="~{fragments/sidebar :: sidebar}"></div>
-<div th:replace="~{fragments/book-list :: book-list}"></div>
-<div th:replace="~{fragments/book-list-pages :: book-list-pages}"></div>
+
+<div class="main-container container-fluid">
+    <div class="row">
+        <div class="sidebar col-2" th:insert="~{fragments/sidebar :: sidebar}"></div>
+        <div class="books-pages col-10">
+            <div class="book-list row" th:insert="~{fragments/book-list :: book-list}"></div>
+            <div class="row align-content-center" th:insert="~{fragments/book-list-pages :: book-list-pages}"></div>
+        </div>
+    </div>
+</div>
+
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 

@@ -1,58 +1,60 @@
 <html xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 
 <div th:fragment="book-list">
-    <div class="book" th:each="book : ${books}" th:object="${book}">
-        <a th:href="@{/books/{id}(id=*{id})}">
-            <div class="book-cover">
+    <div class="book row" th:each="book : ${books}" th:object="${book}">
+
+        <div class="book-cover col-2" th:style="'background-color:' + *{coverColor}">
+            <a th:href="@{/books/{id}(id=*{id})}">
                 <div class="cover-title" th:text="*{title}"></div>
-                <div class="cover-authors" >
+                <div class="cover-authors">
                     <div class="author" th:each="author : *{authors}" th:text="${author.fullName}"></div>
                 </div>
-            </div>
-        </a>
-            <div class="book-details">
-                <div class="book-title"><a th:href="@{/books/{id}(id=*{id})}" th:text="*{title}"></a></div>
-                <div class="book-authors">
-                    <span th:text="'by '"></span>
-                    <a th:href="@{/authors/{id}(id=*{authors[0].id})}" th:text="*{authors[0].fullName}"></a>
-                    <span th:if="${#lists.size(book.authors)} == 2">
+            </a>
+        </div>
+
+        <div class="book-details col-10">
+            <div class="book-title"><a th:href="@{/books/{id}(id=*{id})}" th:text="*{title}"></a></div>
+            <div class="book-authors">
+                <span th:text="'by '"></span>
+                <a th:href="@{/authors/{id}(id=*{authors[0].id})}" th:text="*{authors[0].fullName}"></a>
+                <span th:if="${#lists.size(book.authors)} == 2">
                             <span th:text="' and '"></span>
                             <a th:href="@{/authors/{id}(id=*{authors[1].id})}" th:text="*{authors[1].fullName}"></a>
                     </span>
-                    <span th:if="${#lists.size(book.authors)} == 3">
+                <span th:if="${#lists.size(book.authors)} == 3">
                         <span th:text="', '"></span>
                         <a th:href="@{/authors/{id}(id=*{authors[1].id})}" th:text="*{authors[1].fullName}"></a>
                         <span th:text="', and '"></span>
                         <a th:href="@{/authors/{id}(id=*{authors[2].id})}" th:text="*{authors[2].fullName}"></a>
                     </span>
-                </div>
-                <div class="publisher-date">
-                    <span th:text="'Published by: '"></span>
-                    <a th:href="@{/publishers/{id}(id=*{publisher.id})}" th:text="*{publisher.name}"></a>
-                    <span th:text="' | ' + ${#temporals.format(book.publicationDate, 'MMMM d, yyyy')}"></span>
-                </div>
-                <div class="rating">
-                    <!-- Full Stars -->
-                    <span th:each="i : ${#numbers.sequence(1, book.fullStars)}">
+            </div>
+            <div class="publisher-date">
+                <span th:text="'Published by: '"></span>
+                <a th:href="@{/publishers/{id}(id=*{publisher.id})}" th:text="*{publisher.name}"></a>
+                <span th:text="' | ' + ${#temporals.format(book.publicationDate, 'MMMM d, yyyy')}"></span>
+            </div>
+            <div class="rating">
+                <!-- Full Stars -->
+                <span th:each="i : ${#numbers.sequence(1, book.fullStars)}">
         <img class="star" th:src="@{/stars/full-star.jpeg}" alt="Full Star">
     </span>
-                    <!-- Half Star -->
-                    <span th:if="${book.halfStar == 1}">
+                <!-- Half Star -->
+                <span th:if="${book.halfStar == 1}">
         <img class="star" th:src="@{/stars/half-star.png}" alt="Half Star">
     </span>
-                    <!-- Empty Stars -->
-                    <span th:if="${book.emptyStars > 0}">
+                <!-- Empty Stars -->
+                <span th:if="${book.emptyStars > 0}">
                         <span th:each="i : ${#numbers.sequence(1, book.emptyStars)}">
         <img class="star" th:src="@{/stars/empty-star.png}" alt="Empty Star">
     </span>
                     </span>
-                    <span th:text="'   ' + ${book.ratingsCount} + ' ratings'"></span>
-                </div>
-                <div class="kindle-ebook">Kindle eBook</div>
-                <div class="price" th:text="${book.selectedCurrency.symbol} +
-                ${#numbers.formatDecimal(book.selectedCurrencyPrice, 1, 'COMMA', 2, 'POINT')}"></div>
-                <div class="available-instantly">Available instantly</div>
-                <div class="buy-now-btn btn" th:data-book-id="${book.id}">Buy Now</div>
+                <span th:text="'   ' + ${book.ratingsCount} + ' ratings'"></span>
             </div>
+            <div class="kindle-ebook">Kindle eBook</div>
+            <div class="price" th:text="${book.selectedCurrency.symbol} +
+                ${#numbers.formatDecimal(book.selectedCurrencyPrice, 1, 'COMMA', 2, 'POINT')}"></div>
+            <div class="available-instantly">Available instantly</div>
+            <div class="buy-now-btn btn" th:data-book-id="${book.id}">Buy Now</div>
+        </div>
     </div>
 </div>
