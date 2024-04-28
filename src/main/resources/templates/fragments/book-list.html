@@ -48,7 +48,7 @@
         <img class="star" th:src="@{/stars/empty-star.png}" alt="Empty Star">
     </span>
                     </span>
-                <span th:text="'   ' + ${book.ratingsCount} + ' ratings'"></span>
+                <span class="number-of-ratings" th:text="${book.ratingsCount} + ' ratings'"></span>
             </div>
             <div class="kindle-ebook">Kindle eBook</div>
             <div class="price" th:text="${book.selectedCurrency.symbol} +
