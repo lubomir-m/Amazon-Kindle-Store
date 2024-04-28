@@ -22,9 +22,9 @@
         </div>
     </div>
 
-    <div class="container-fluid">
+    <div class="nav-container container-fluid">
         <div class="nav-row row align-items-center">
-            <div class="nav-section left col-auto">
+            <div class="nav-section left col-auto logo-div">
                 <a href="/" class="navbar-brand">
                     <svg class="amazon-logo">
                         <use href="#amazon-logo"></use>
@@ -54,13 +54,17 @@
             </form>
 
             <div class="account col-auto dropdwn">
-                <span sec:authorize="isAuthenticated()">Hello, <span th:text="${userDto.firstName}"></span></span>
-                <span sec:authorize="!isAuthenticated()">Hello, sign in</span>
-                <div>
-                    Your Account
-                    <svg class="down-arrow">
-                        <use href="#down-arrow"></use>
-                    </svg>
+                <div class="your-account">
+                    <a th:href="@{/users/profile}">
+                        <div>
+                            <span sec:authorize="isAuthenticated()">Hello, <span th:text="${userDto.firstName}"></span></span>
+                            <span sec:authorize="!isAuthenticated()">Hello, sign in</span>
+                        </div>
+                        Your Account
+                        <svg class="down-arrow">
+                            <use href="#down-arrow"></use>
+                        </svg>
+                    </a>
                 </div>
                 <div class="dropdown-account">
                     <div><a th:href="@{/users/profile}">Your Account</a></div>
@@ -73,7 +77,7 @@
                 </div>
             </div>
             <div class="cart col-auto">
-                <div class="cart-div" th:href="@{/cart}">
+                <a class="cart-div" th:href="@{/cart}">
                     <div class="cart-icon">
                         <svg class="shopping-cart">
                             <use href="#shopping-cart"></use>
@@ -85,7 +89,7 @@
                         </div>
                         <div>Cart</div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
 
