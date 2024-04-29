@@ -1,0 +1,206 @@
+.main-container {
+    margin-top: 15px;
+}
+
+.main-container > div {
+    margin-left: 15px;
+    margin-right: 15px;
+    border-bottom: 3px solid #BBBFBF;
+    padding-bottom: 15px;
+}
+
+.book {
+    margin-bottom: 15px;
+}
+
+.book-details {
+    margin-top: 12px;
+}
+
+.book-cover-image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.purchase-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.price-container {
+    border: 6px solid #BBBFBF;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 40px;
+}
+
+.book-cover {
+    position: relative;
+    background-color: #ddd; /* Placeholder color, change as needed */
+    color: black; /* Set the text color to black */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 15px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 400px;
+    max-height: 400px;
+    max-width: 300px;
+}
+
+.book-cover a {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.book-cover, .book-cover > * {
+    box-sizing: border-box;
+}
+
+/* Adjustments for the cover title and authors to ensure they do not overlap */
+.cover-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    margin: 10%;
+    font-size: 1.3em; /* Adjust font-size as needed */
+    font-weight: bold;
+    text-align: center; /* Center the text horizontally */
+    line-height: 1.4em; /* Adjust line height to manage text spacing */
+    max-height: 7em;
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis;
+}
+
+.cover-authors {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    margin: 10%;
+    font-size: 1.1em; /* Adjust font-size as needed */
+    font-weight: bold;
+    text-align: center; /* Center the text horizontally */
+    line-height: 1.2em;
+    max-height: 3.6em;
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis;
+}
+
+.book a {
+    color: black;
+    text-decoration: none;
+}
+
+.book-authors a, .publisher-date a {
+    color: #017185; /* Similar to the official Amazon link color */
+    text-decoration: none; /* No underline */
+}
+
+.book-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    font-size: 1.3em;
+    line-height: 1.1em;
+    max-height: 2.2em;
+    margin-bottom: 0.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.star {
+    width: 1em; /* Set the size of the stars */
+    height: 1em;
+    display: inline-block;
+}
+
+.price {
+    font-size: 1.5em; /* Larger font for price */
+    color: black; /* Amazon's price color */
+    font-weight: bold;
+    margin: 0.5em 0; /* Space above and below the price */
+}
+
+.rating {
+    /* Adjust your rating stars and count to be in-line and centered */
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.rating span {
+    /* Adjust the span containing the text to align it properly */
+    display: flex;
+    align-items: center;
+    white-space: nowrap; /* Prevents the text from wrapping */
+}
+
+.number-of-ratings {
+    margin-left: 10px;
+    color: #017185;
+}
+
+.available-instantly{
+    color: #565959; /* Color for secondary information */
+    font-size: 0.9em;
+}
+
+.kindle-ebook {
+    color: #017185;
+    font-size: 0.9em;
+}
+
+
+
+.buy-now-btn, .add-to-cart-btn, .add-to-your-list-btn {
+    border: none;
+    color: black;
+    font-weight: bold;
+    padding: 10px 40px;
+    border-radius: 30px; /* Rounded corners for the button */
+    text-align: center;
+    display: inline-block;
+    margin-top: 10px; /* Space above the button */
+    cursor: pointer; /* Cursor for button hover */
+}
+
+.add-to-cart-btn {
+    background-color: #FFD814;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #F7CA00;
+}
+
+.buy-now-btn {
+    background-color: #FFA41C;
+}
+
+.buy-now-btn:hover {
+    background-color: #FA8900;
+}
+
+.add-to-your-list-btn {
+    background-color: green;
+}
+
+.add-to-your-list-btn:hover {
+    background-color: darkgreen;
+}
+
+.book-details a:hover {
+    color: #ff9900;
+}
+
+img {
+    width: 200px;
+    height: auto;
+}
