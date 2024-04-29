@@ -125,7 +125,7 @@ public class BookServiceImpl implements BookService {
         Book book = this.bookRepository.findById(id).get();
         Long categoryId = book.getCategories().stream().filter(c -> !c.getId().equals(1L))
                 .findFirst().map(Category::getId).get();
-        Pageable pageable = PageRequest.of(0, 8, Sort.by("purchaseCount").descending());
+        Pageable pageable = PageRequest.of(0, 6, Sort.by("purchaseCount").descending());
         Page<Book> page = this.bookRepository.getRecommendedBooks(id, categoryId, pageable);
         return page.getContent().stream().map(b -> mapBookToDto(b, currency))
                 .collect(Collectors.toCollection(ArrayList::new));

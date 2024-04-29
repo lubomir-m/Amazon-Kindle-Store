@@ -1,6 +1,7 @@
 <html xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 
 <div th:fragment="review-list" class="reviews-container" id="reviews-container">
+    <div><h2>Most recent customer reviews</h2></div>
     <div class="review-list">
         <div class="review" th:each="review : ${reviews}">
             <div class="review-author">

@@ -74,13 +74,27 @@
     color: #333;
 }
 
-.rating {
-    display: flex;
-    align-items: center;
-}
-
 .star {
     width: 1em; /* Set the size of the stars */
     height: 1em;
     display: inline-block;
+}
+
+.rating {
+    /* Adjust your rating stars and count to be in-line and centered */
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.rating span {
+    /* Adjust the span containing the text to align it properly */
+    display: flex;
+    align-items: center;
+    white-space: nowrap; /* Prevents the text from wrapping */
+}
+
+.number-of-ratings {
+    margin-left: 10px;
+    color: #017185;
 }
