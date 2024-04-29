@@ -51,7 +51,7 @@
     text-overflow: ellipsis;
 }
 
-.recommended-book .book a {
+.recommended-book a {
     color: black;
     text-decoration: none;
 }
@@ -69,9 +69,10 @@
 }
 
 .recommended-book .price {
-    font-size: 1.2em;
+    font-size: 1em;
     font-weight: bold;
     color: #333;
+    margin: 0;
 }
 
 .recommended-book .star {
@@ -85,6 +86,7 @@
     display: flex;
     align-items: center;
     gap: 2px;
+    border-bottom: transparent;
 }
 
 .recommended-book .rating span {
@@ -96,5 +98,13 @@
 
 .recommended-book .number-of-ratings {
     margin-left: 10px;
+    color: #017185;
+}
+
+.recommended-book .kindle-ebook {
+    color: #575959;
+}
+
+.recommended-book .book-title a {
     color: #017185;
 }

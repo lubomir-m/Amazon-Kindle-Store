@@ -9,79 +9,89 @@
     <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/recommended-books.css}">
     <link rel="stylesheet" th:href="@{/css/book-details.css}">
-    <link rel="stylesheet" th:href="@{/css/review-list.css}">
+    <link rel="stylesheet" th:href="@{/css/authors-reviews.css}">
 </head>
 <body>
 <div th:replace="~{fragments/navigation :: navigation}"></div>
 <div th:replace="~{fragments/rate-review :: rate-review}"></div>
 
-<div class="main-container container-fluid">
+<div class="book-details-container container-fluid">
 
     <div class="book row" th:object="${book}">
         <div class="book-cover-image col-3">
-            <div class="book-cover">
+            <div class="book-cover" th:style="'background-color:' + *{coverColor}">
                 <div class="cover-title" th:text="*{title}"></div>
                 <div class="cover-authors">
                     <div class="author" th:each="author : *{authors}" th:text="${author.fullName}"></div>
                 </div>
             </div>
-            <a th:href="*{imageUrl}">View Cover Image</a>
+            <a th:href="*{imageUrl}">
+                <div class="view-cover-image-btn btn">View Cover Image</div>
+            </a>
         </div>
 
         <div class="book-details col-6">
-            <div class="book-title" th:text="*{title}"></div>
-            <div class="book-authors">
-                <span th:text="'by '"></span>
-                <a th:href="@{/authors/{id}(id=*{authors[0].id})}" th:text="*{authors[0].fullName}"></a>
-                <span th:if="${#lists.size(book.authors)} == 2">
+            <div class="book-details-1">
+                <div class="book-title" th:text="*{title}"></div>
+                <div class="book-authors">
+                    <span th:text="'by '"></span>
+                    <a th:href="@{/authors/{id}(id=*{authors[0].id})}" th:text="*{authors[0].fullName}"></a>
+                    <span th:if="${#lists.size(book.authors)} == 2">
                             <span th:text="' and '"></span>
                             <a th:href="@{/authors/{id}(id=*{authors[1].id})}" th:text="*{authors[1].fullName}"></a>
                     </span>
-                <span th:if="${#lists.size(book.authors)} == 3">
+                    <span th:if="${#lists.size(book.authors)} == 3">
                         <span th:text="', '"></span>
                         <a th:href="@{/authors/{id}(id=*{authors[1].id})}" th:text="*{authors[1].fullName}"></a>
                         <span th:text="', and '"></span>
                         <a th:href="@{/authors/{id}(id=*{authors[2].id})}" th:text="*{authors[2].fullName}"></a>
                     </span>
-            </div>
-            <div class="publisher-date">
-                <span th:text="'Published by: '"></span>
-                <a th:href="@{/publishers/{id}(id=*{publisher.id})}" th:text="*{publisher.name}"></a>
-                <span th:text="' | ' + ${#temporals.format(book.publicationDate, 'MMMM d, yyyy')}"></span>
-            </div>
-            <div class="kindle-ebook">Format: Kindle eBook | Available instantly</div>
-            <div class="rating">
-                <!-- Full Stars -->
-                <span th:each="i : ${#numbers.sequence(1, book.fullStars)}">
+                </div>
+                <div class="publisher-date">
+                    <span th:text="'Published by: '"></span>
+                    <a th:href="@{/publishers/{id}(id=*{publisher.id})}" th:text="*{publisher.name}"></a>
+                    <span th:text="' | ' + ${#temporals.format(book.publicationDate, 'MMMM d, yyyy')}"></span>
+                </div>
+                <div class="kindle-ebook">Format: Kindle eBook | Available instantly</div>
+                <div class="rating">
+                    <!-- Full Stars -->
+                    <span th:each="i : ${#numbers.sequence(1, book.fullStars)}">
         <img class="star" th:src="@{/stars/full-star.jpeg}" alt="Full Star">
     </span>
-                <!-- Half Star -->
-                <span th:if="${book.halfStar == 1}">
+                    <!-- Half Star -->
+                    <span th:if="${book.halfStar == 1}">
         <img class="star" th:src="@{/stars/half-star.png}" alt="Half Star">
     </span>
-                <!-- Empty Stars -->
-                <span th:if="${book.emptyStars > 0}">
+                    <!-- Empty Stars -->
+                    <span th:if="${book.emptyStars > 0}">
                         <span th:each="i : ${#numbers.sequence(1, book.emptyStars)}">
         <img class="star" th:src="@{/stars/empty-star.png}" alt="Empty Star">
     </span>
                     </span>
-                <span class="number-of-ratings"
-                      th:text="${#numbers.formatDecimal(book.ratingsCount, 0, 'WHITESPACE', 0, 'POINT')} +
+                    <span class="number-of-ratings"
+                          th:text="${#numbers.formatDecimal(book.ratingsCount, 0, 'WHITESPACE', 0, 'POINT')} +
                             '   ratings'"></span>
-            </div>
-            <div class="book-description" th:text="*{description}"></div>
-            <div class="rate-review">
-                <button type="button" class="open-rating-modal-btn btn" th:data-book-id="${book.id}">Rate this eBook
-                </button>
-
-                <button type="button" class="open-review-modal-btn btn" th:data-book-id="${book.id}">Review this eBook
-                </button>
-
+                </div>
             </div>
 
-            <div class="kindle-apps">Read with the free Kindle apps (available on iOS, Android, PC & Mac),
-                Kindle E-readers and on Kindle Cloud Reader.
+            <div class="book-description book-details-2" th:text="*{description}"></div>
+
+            <div class="book-details-3">
+                <div class="rate-review">
+                    <button type="button" class="open-rating-modal-btn btn" th:data-book-id="${book.id}">Rate this eBook
+                    </button>
+
+                    <button type="button" class="open-review-modal-btn btn" th:data-book-id="${book.id}">Review this
+                        eBook
+                    </button>
+
+                </div>
+
+                <div class="kindle-apps">Read with the free Kindle apps (available on iOS, Android, PC & Mac),
+                    Kindle E-readers and on Kindle Cloud Reader.
+                </div>
             </div>
+
         </div>
 
         <div class="purchase-container col-3">
@@ -101,7 +111,7 @@
     <div class="recommended-books row row-cols-xl-6 row-cols-3">
         <div class="recommended-book" th:each="book : ${books}" th:object="${book}">
             <a th:href="@{/books/{id}(id=*{id})}">
-                <div class="book-cover">
+                <div class="book-cover" th:style="'background-color:' + *{coverColor}">
                     <div class="cover-title" th:text="*{title}"></div>
                     <div class="cover-authors">
                         <div class="author" th:each="author : *{authors}" th:text="${author.fullName}"></div>
@@ -139,12 +149,13 @@
 
 
     <div class="authors-container">
-        <div class="title"><h2 th:text="${book.authors.size() >= 2 ? 'About the authors' : 'About the author'}"></h2></div>
-        <div class="author-container" th:each="author : ${book.authors}">
-            <div class="picture-container">
+        <div class="title"><h2 th:text="${book.authors.size() >= 2 ? 'About the authors' : 'About the author'}"></h2>
+        </div>
+        <div class="author-container row justify-content-center" th:each="author : ${book.authors}">
+            <div class="picture-container col-2 d-flex justify-content-end">
                 <img th:src="${author.pictureBase64}"/>
             </div>
-            <div class="description-container">
+            <div class="description-container col-5">
                 <div class="author-name"><a th:href="@{/authors/{id}(id=${author.id})}"
                                             th:text="${author.fullName}"></a></div>
                 <div class="author-description" th:text="${author.description}"></div>
@@ -154,7 +165,7 @@
 
     <div th:replace="~{fragments/review-list :: review-list}"></div>
 </div>
-
+</div>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 
