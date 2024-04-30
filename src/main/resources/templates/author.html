@@ -5,107 +5,118 @@
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>AmazonKindleStore.com</title>
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/book-list.css}">
+    <link rel="stylesheet" th:href="@{/css/sorting-options.css}">
 </head>
 <body>
 <div th:replace="~{fragments/navigation :: navigation}"></div>
 
-<div class="author-name" th:text="${author.fullName}"></div>
-<div class="author-about">
-    <div class="author-picture">
-        <img th:src="${author.pictureBase64}">
-    </div>
-    <div class="author-description">
-        <div class="about-the-author">About the author</div>
-        <div class="description" th:text="${author.description}"></div>
-    </div>
-</div>
-
-<div class="books-section" id="books-section">
-
-    <div class="sorting-options">
-        <div class="result-count" th:text="${startIndex} + '-' + ${endIndex} + ' of ' + ${numberOfBooks} + ' results'">
-            Results Count
+<div class="container-fluid author-page-container">
+    <div class="author-name row text-center" th:text="${author.fullName}"></div>
+    <div class="author-about row">
+        <div class="author-picture col-2 d-flex justify-content-end">
+            <img th:src="${author.pictureBase64}">
         </div>
-        <select id="sortOptions" onchange="location = this.value">
-            <option th:each="option : ${sortOptions.entrySet()}"
-                    th:value="@{/authors/{id}(id=${author.id}, page = 0, sortBy = ${option.key})}"
-                    th:text="${option.value}"
-                    th:selected="${currentSort == option.key}">
-                Sort Option
-            </option>
-        </select>
+        <div class="author-description col-5">
+            <div class="about-the-author">About the author</div>
+            <div class="description" th:text="${author.description}"></div>
+        </div>
     </div>
 
+    <div class="books-section row" id="books-section">
 
-    <div th:replace="~{fragments/book-list :: book-list}"></div>
+        <div class="col-8 offset-2">
+            <div class="sorting-options row justify-content-between align-content-center">
+                <div class="result-count col-auto" th:text="${startIndex} + '-' + ${endIndex} + ' of ' + ${numberOfBooks} + ' results'">
+                    Results Count
+                </div>
+                <select class="col-auto" id="sortOptions" onchange="location = this.value">
+                    <option th:each="option : ${sortOptions.entrySet()}"
+                            th:value="@{/authors/{id}(id=${author.id}, page = 0, sortBy = ${option.key})}"
+                            th:text="${option.value}"
+                            th:selected="${currentSort == option.key}">
+                        Sort Option
+                    </option>
+                </select>
+            </div>
 
 
-    <div class="pages-section" th:with="totalPages=${totalPages}, currentPage=${currentPage}">
-        <nav aria-label="Page navigation">
-            <ul class="pagination">
-                <!-- Previous Page Link -->
-                <li th:class="${currentPage == 0} ? 'page-item disabled' : 'page-item'">
-                    <a class="page-link" th:href="${currentPage > 0} ? @{/authors/{id}(id=${author.id}, 
+            <div class="book-list row" th:insert="~{fragments/book-list :: book-list}"></div>
+
+
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    <div class="pages-section" th:with="totalPages=${totalPages}, currentPage=${currentPage}">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <!-- Previous Page Link -->
+                                <li th:class="${currentPage == 0} ? 'page-item disabled' : 'page-item'">
+                                    <a class="page-link" th:href="${currentPage > 0} ? @{/authors/{id}(id=${author.id},
                 page=${currentPage - 1}, sortBy=${currentSort})} : '#'" aria-label="Previous">
-                        <span>< Previous</span>
-                    </a>
-                </li>
+                                        <div class="previous-btn">< Previous</div>
+                                    </a>
+                                </li>
 
-                <!-- First Page Link -->
-                <li th:if="${currentPage >= 1}" th:class="${currentPage >= 1} ? 'page-item' : 'page-item disabled'">
-                    <a class="page-link" th:href="@{/authors/{id}(id=${author.id}, 
+                                <!-- First Page Link -->
+                                <li th:if="${currentPage >= 1}" th:class="${currentPage >= 1} ? 'page-item' : 'page-item disabled'">
+                                    <a class="page-link" th:href="@{/authors/{id}(id=${author.id},
                 page=0, sortBy=${currentSort})}">1</a>
-                </li>
+                                </li>
 
-                <!-- Ellipsis before current page range -->
-                <li th:if="${currentPage - 1 >= 2}" class="page-item disabled">
-                    <span class="page-link">...</span>
-                </li>
+                                <!-- Ellipsis before current page range -->
+                                <li th:if="${currentPage - 1 >= 2}" class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
 
-                <!-- Page Numbers: Current Page - 1 -->
-                <li th:if="${currentPage >= 2}" class="page-item">
-                    <a class="page-link" th:href="@{/authors/{id}(id=${author.id}, 
+                                <!-- Page Numbers: Current Page - 1 -->
+                                <li th:if="${currentPage >= 2}" class="page-item">
+                                    <a class="page-link" th:href="@{/authors/{id}(id=${author.id},
                 page=${currentPage - 1}, sortBy=${currentSort})}" th:text="${currentPage}"></a>
-                </li>
+                                </li>
 
-                <!-- Current Page -->
-                <li class="page-item active">
-                    <span class="page-link" th:text="${currentPage + 1}"></span>
-                </li>
+                                <!-- Current Page -->
+                                <li class="page-item active">
+                                    <span class="page-link" th:text="${currentPage + 1}"></span>
+                                </li>
 
-                <!-- Page Numbers: Current Page + 1 -->
-                <li th:if="${currentPage + 1 < totalPages - 1}" class="page-item">
-                    <a class="page-link" th:href="@{/authors/{id}(id=${author.id}, 
+                                <!-- Page Numbers: Current Page + 1 -->
+                                <li th:if="${currentPage + 1 < totalPages - 1}" class="page-item">
+                                    <a class="page-link" th:href="@{/authors/{id}(id=${author.id},
                 page=${currentPage + 1}, sortBy=${currentSort})}" th:text="${currentPage + 2}"></a>
-                </li>
+                                </li>
 
-                <!-- Ellipsis after current page range -->
-                <li th:if="${currentPage + 2 < totalPages - 1}" class="page-item disabled">
-                    <span class="page-link">...</span>
-                </li>
+                                <!-- Ellipsis after current page range -->
+                                <li th:if="${currentPage + 2 < totalPages - 1}" class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
 
-                <!-- Last Page Link -->
-                <li th:if="${totalPages > 1} and ${currentPage + 2 <= totalPages}"
-                    th:class="${currentPage + 1 == totalPages} ? 'page-item active' : 'page-item'">
-                    <a class="page-link" th:href="@{/authors/{id}(id=${author.id}, 
+                                <!-- Last Page Link -->
+                                <li th:if="${totalPages > 1} and ${currentPage + 2 <= totalPages}"
+                                    th:class="${currentPage + 1 == totalPages} ? 'page-item active' : 'page-item'">
+                                    <a class="page-link" th:href="@{/authors/{id}(id=${author.id},
                 page=${totalPages - 1}, sortBy=${currentSort})}" th:text="${totalPages}"></a>
-                </li>
+                                </li>
 
-                <!-- Next Page Link -->
-                <li th:class="${currentPage + 1 == totalPages} ? 'page-item disabled' : 'page-item'">
-                    <a class="page-link" th:href="${currentPage + 1 < totalPages} ? 
-                @{/authors/{id}(id=${author.id}, page=${currentPage + 1}, sortBy=${currentSort})} : 
+                                <!-- Next Page Link -->
+                                <li th:class="${currentPage + 1 == totalPages} ? 'page-item disabled' : 'page-item'">
+                                    <a class="page-link" th:href="${currentPage + 1 < totalPages} ?
+                @{/authors/{id}(id=${author.id}, page=${currentPage + 1}, sortBy=${currentSort})} :
                 '#'" aria-label="Next">
-                        <span>Next ></span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+                                        <div class="next-btn">Next ></div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
 
+        </div>
+    </div>
 </div>
+
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 

@@ -197,3 +197,9 @@ html, body {
 .search-button:hover {
     background-color: #febd69; /* Lighter shade for hover, replace with the color you prefer */
 }
+
+.previous-btn, .next-btn {
+    width: 105px;
+    min-width: 105px;
+    text-align: center;
+}

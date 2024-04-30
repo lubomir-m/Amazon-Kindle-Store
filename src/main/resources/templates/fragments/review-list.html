@@ -46,7 +46,7 @@
                         <li th:class="${currentPage == 0} ? 'page-item disabled' : 'page-item'">
                             <a class="page-link" th:href="${currentPage > 0} ? @{/books/{id}(id=${book.id},
                     page=${currentPage - 1})} + '#reviews-container' : '#'">
-                                <span>< Previous</span>
+                                <div class="previous-btn">< Previous</div>
                             </a>
                         </li>
 
@@ -95,7 +95,7 @@
                         <li th:class="${currentPage + 1 >= totalPages} ? 'page-item disabled' : 'page-item'">
                             <a class="page-link" th:href="${currentPage + 1 <= totalPages} ?
                     @{/books/{id}(id=${book.id}, page=${currentPage + 1})}  + '#reviews-container' : '#'">
-                                <span>Next ></span>
+                                <div class="next-btn">Next ></div>
                             </a>
                         </li>
                     </ul>

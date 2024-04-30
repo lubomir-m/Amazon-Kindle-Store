@@ -8,7 +8,7 @@
             <li th:class="${currentPage == 0} ? 'page-item disabled' : 'page-item'">
                 <a class="page-link" th:href="${currentPage > 0} ? @{/categories/{id}(id=${currentCategory.id},
                 page=${currentPage - 1}, sortBy=${currentSort})} : '#'" >
-                    <span>< Previous</span>
+                    <div class="previous-btn">< Previous</div>
                 </a>
             </li>
 
@@ -57,7 +57,7 @@
                 <a class="page-link" th:href="${currentPage + 1 <= totalPages} ?
                 @{/categories/{id}(id=${currentCategory.id}, page=${currentPage + 1},
                 sortBy=${currentSort})} : '#'">
-                    <span>Next ></span>
+                    <div class="next-btn">Next ></div>
                 </a>
             </li>
         </ul>
