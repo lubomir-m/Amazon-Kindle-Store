@@ -174,18 +174,6 @@
     margin-bottom: 12px;
 }
 
-.btn  {
-    border: none;
-    color: black;
-    font-weight: bold;
-    padding: 10px 40px;
-    border-radius: 30px; /* Rounded corners for the button */
-    text-align: center;
-    display: inline-block;
-    margin-top: 10px; /* Space above the button */
-    cursor: pointer; /* Cursor for button hover */
-}
-
 .add-to-cart-btn {
     background-color: #FFD814;
 }

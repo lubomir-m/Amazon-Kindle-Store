@@ -5,7 +5,7 @@
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>AmazonKindleStore.com</title>
-    <<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/book-list.css}">
     <link rel="stylesheet" th:href="@{/css/sorting-options.css}">
@@ -26,16 +26,19 @@
         </div>
     </div>
 
+    <h4><div class="author-name row justify-content-center">All books by the author</div></h4>
+
     <div class="books-section row" id="books-section">
 
         <div class="col-8 offset-2">
-            <div class="sorting-options row justify-content-between align-content-center" id="sortingOptions">
-                <div class="result-count col-auto" th:text="${startIndex} + '-' + ${endIndex} + ' of ' + ${numberOfBooks} + ' results'">
+            <div class="sorting-options row justify-content-between align-content-center" id="sorting-options">
+                <div class="result-count col-auto"
+                     th:text="${startIndex} + '-' + ${endIndex} + ' of ' + ${numberOfBooks} + ' results'">
                     Results Count
                 </div>
                 <select class="col-auto" id="sortOptions" onchange="location = this.value">
                     <option th:each="option : ${sortOptions.entrySet()}"
-                            th:value="@{/authors/{id}(id=${author.id}, page = 0, sortBy = ${option.key})}"
+                            th:value="@{/authors/{id}(id=${author.id}, page = 0, sortBy = ${option.key})} + '#sorting-options'"
                             th:text="${option.value}"
                             th:selected="${currentSort == option.key}">
                         Sort Option
@@ -114,7 +117,7 @@
                                 <!-- Previous Page Link -->
                                 <li th:class="${currentPage == 0} ? 'page-item disabled' : 'page-item'">
                                     <a class="page-link" th:href="${currentPage > 0} ? @{/authors/{id}(id=${author.id},
-                page=${currentPage - 1}, sortBy=${currentSort})} : '#'" aria-label="Previous">
+                page=${currentPage - 1}, sortBy=${currentSort})} + '#sorting-options' : '#'" aria-label="Previous">
                                         <div class="previous-btn">< Previous</div>
                                     </a>
                                 </li>
@@ -122,7 +125,7 @@
                                 <!-- First Page Link -->
                                 <li th:if="${currentPage >= 1}" th:class="${currentPage >= 1} ? 'page-item' : 'page-item disabled'">
                                     <a class="page-link" th:href="@{/authors/{id}(id=${author.id},
-                page=0, sortBy=${currentSort})}">1</a>
+                page=0, sortBy=${currentSort})}  + '#sorting-options'">1</a>
                                 </li>
 
                                 <!-- Ellipsis before current page range -->
@@ -133,7 +136,7 @@
                                 <!-- Page Numbers: Current Page - 1 -->
                                 <li th:if="${currentPage >= 2}" class="page-item">
                                     <a class="page-link" th:href="@{/authors/{id}(id=${author.id},
-                page=${currentPage - 1}, sortBy=${currentSort})}" th:text="${currentPage}"></a>
+                page=${currentPage - 1}, sortBy=${currentSort})}  + '#sorting-options'" th:text="${currentPage}"></a>
                                 </li>
 
                                 <!-- Current Page -->
@@ -144,7 +147,7 @@
                                 <!-- Page Numbers: Current Page + 1 -->
                                 <li th:if="${currentPage + 1 < totalPages - 1}" class="page-item">
                                     <a class="page-link" th:href="@{/authors/{id}(id=${author.id},
-                page=${currentPage + 1}, sortBy=${currentSort})}" th:text="${currentPage + 2}"></a>
+                page=${currentPage + 1}, sortBy=${currentSort})}  + '#sorting-options'" th:text="${currentPage + 2}"></a>
                                 </li>
 
                                 <!-- Ellipsis after current page range -->
@@ -156,13 +159,13 @@
                                 <li th:if="${totalPages > 1} and ${currentPage + 2 <= totalPages}"
                                     th:class="${currentPage + 1 == totalPages} ? 'page-item active' : 'page-item'">
                                     <a class="page-link" th:href="@{/authors/{id}(id=${author.id},
-                page=${totalPages - 1}, sortBy=${currentSort})}" th:text="${totalPages}"></a>
+                page=${totalPages - 1}, sortBy=${currentSort})}  + '#sorting-options'" th:text="${totalPages}"></a>
                                 </li>
 
                                 <!-- Next Page Link -->
                                 <li th:class="${currentPage + 1 == totalPages} ? 'page-item disabled' : 'page-item'">
                                     <a class="page-link" th:href="${currentPage + 1 < totalPages} ?
-                @{/authors/{id}(id=${author.id}, page=${currentPage + 1}, sortBy=${currentSort})} :
+                @{/authors/{id}(id=${author.id}, page=${currentPage + 1}, sortBy=${currentSort})}  + '#sorting-options' :
                 '#'" aria-label="Next">
                                         <div class="next-btn">Next ></div>
                                     </a>
