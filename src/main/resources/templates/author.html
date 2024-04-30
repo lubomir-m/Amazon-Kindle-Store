@@ -9,18 +9,19 @@
     <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/book-list.css}">
     <link rel="stylesheet" th:href="@{/css/sorting-options.css}">
+    <link rel="stylesheet" th:href="@{/css/author.css}">
 </head>
 <body>
 <div th:replace="~{fragments/navigation :: navigation}"></div>
 
 <div class="container-fluid author-page-container">
-    <div class="author-name row text-center" th:text="${author.fullName}"></div>
-    <div class="author-about row">
+    <h1><div class="author-name row justify-content-center" th:text="${author.fullName}"></div></h1>
+    <div class="author-about row justify-content-center">
         <div class="author-picture col-2 d-flex justify-content-end">
             <img th:src="${author.pictureBase64}">
         </div>
         <div class="author-description col-5">
-            <div class="about-the-author">About the author</div>
+            <div class="about-the-author"><h3>About the author</h3></div>
             <div class="description" th:text="${author.description}"></div>
         </div>
     </div>
@@ -28,7 +29,7 @@
     <div class="books-section row" id="books-section">
 
         <div class="col-8 offset-2">
-            <div class="sorting-options row justify-content-between align-content-center">
+            <div class="sorting-options row justify-content-between align-content-center" id="sortingOptions">
                 <div class="result-count col-auto" th:text="${startIndex} + '-' + ${endIndex} + ' of ' + ${numberOfBooks} + ' results'">
                     Results Count
                 </div>
@@ -43,7 +44,66 @@
             </div>
 
 
-            <div class="book-list row" th:insert="~{fragments/book-list :: book-list}"></div>
+            <div class="book-list row">
+                <div class="book row" th:each="book : ${books}" th:object="${book}">
+
+                    <div class="book-cover col-6 col-xl-3" th:style="'background-color:' + *{coverColor}">
+                        <a th:href="@{/books/{id}(id=*{id})}">
+                            <div class="cover-title" th:text="*{title}"></div>
+                            <div class="cover-authors">
+                                <div class="author" th:each="author : *{authors}" th:text="${author.fullName}"></div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="book-details col-6 col-xl-8">
+                        <div class="book-title"><a th:href="@{/books/{id}(id=*{id})}" th:text="*{title}"></a></div>
+                        <div class="book-authors">
+                            <span th:text="'by '"></span>
+                            <a th:href="@{/authors/{id}(id=*{authors[0].id})}" th:text="*{authors[0].fullName}"></a>
+                            <span th:if="${#lists.size(book.authors)} == 2">
+                            <span th:text="' and '"></span>
+                            <a th:href="@{/authors/{id}(id=*{authors[1].id})}" th:text="*{authors[1].fullName}"></a>
+                    </span>
+                            <span th:if="${#lists.size(book.authors)} == 3">
+                        <span th:text="', '"></span>
+                        <a th:href="@{/authors/{id}(id=*{authors[1].id})}" th:text="*{authors[1].fullName}"></a>
+                        <span th:text="', and '"></span>
+                        <a th:href="@{/authors/{id}(id=*{authors[2].id})}" th:text="*{authors[2].fullName}"></a>
+                    </span>
+                        </div>
+                        <div class="publisher-date">
+                            <span th:text="'Published by: '"></span>
+                            <a th:href="@{/publishers/{id}(id=*{publisher.id})}" th:text="*{publisher.name}"></a>
+                            <span th:text="' | ' + ${#temporals.format(book.publicationDate, 'MMMM d, yyyy')}"></span>
+                        </div>
+                        <div class="rating">
+                            <!-- Full Stars -->
+                            <span th:each="i : ${#numbers.sequence(1, book.fullStars)}">
+        <img class="star" th:src="@{/stars/full-star.jpeg}" alt="Full Star">
+    </span>
+                            <!-- Half Star -->
+                            <span th:if="${book.halfStar == 1}">
+        <img class="star" th:src="@{/stars/half-star.png}" alt="Half Star">
+    </span>
+                            <!-- Empty Stars -->
+                            <span th:if="${book.emptyStars > 0}">
+                        <span th:each="i : ${#numbers.sequence(1, book.emptyStars)}">
+        <img class="star" th:src="@{/stars/empty-star.png}" alt="Empty Star">
+    </span>
+                    </span>
+                            <span class="number-of-ratings"
+                                  th:text="${#numbers.formatDecimal(book.ratingsCount, 0, 'WHITESPACE', 0, 'POINT')}"></span>
+                        </div>
+
+                        <div class="kindle-ebook">Kindle eBook</div>
+                        <div class="price" th:text="${book.selectedCurrency.symbol} +
+                ${#numbers.formatDecimal(book.selectedCurrencyPrice, 1, 'WHITESPACE', 2, 'POINT')}"></div>
+                        <div class="available-instantly">Available instantly</div>
+                        <div class="buy-now-btn btn" th:data-book-id="${book.id}">Buy Now</div>
+                    </div>
+                </div>
+            </div>
 
 
             <div class="row">

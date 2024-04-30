@@ -9,6 +9,7 @@
 
 .book-details {
     margin-top: 12px;
+    margin-bottom: 12px;
 }
 
 .book-cover {
@@ -20,6 +21,8 @@
 
     height: 300px;
     max-height: 300px;
+    width: 250px;
+    max-width: 250px;
 }
 
 .book-cover a {

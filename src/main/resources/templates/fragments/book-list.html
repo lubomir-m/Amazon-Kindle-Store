@@ -3,7 +3,7 @@
 <div th:fragment="book-list">
     <div class="book row" th:each="book : ${books}" th:object="${book}">
 
-        <div class="book-cover col-6 col-xl-2" th:style="'background-color:' + *{coverColor}">
+        <div class="book-cover col-auto" th:style="'background-color:' + *{coverColor}">
             <a th:href="@{/books/{id}(id=*{id})}">
                 <div class="cover-title" th:text="*{title}"></div>
                 <div class="cover-authors">
@@ -12,7 +12,7 @@
             </a>
         </div>
 
-        <div class="book-details col-6 col-xl-10">
+        <div class="book-details col">
             <div class="book-title"><a th:href="@{/books/{id}(id=*{id})}" th:text="*{title}"></a></div>
             <div class="book-authors">
                 <span th:text="'by '"></span>
