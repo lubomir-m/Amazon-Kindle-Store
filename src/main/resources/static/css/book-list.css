@@ -131,7 +131,7 @@
 }
 
 .buy-now-btn {
-    background-color: #FFD814; /* Amazon's 'Buy Now' button color */
+    background-color: #FFA41C;
     border: none;
     color: black;
     font-weight: bold;
@@ -144,7 +144,7 @@
 }
 
 .buy-now-btn:hover {
-    background-color: #F7CA00; /* Slightly darker on hover */
+    background-color: #FA8900; /* Slightly darker on hover */
 }
 
 .book-details a:hover {
