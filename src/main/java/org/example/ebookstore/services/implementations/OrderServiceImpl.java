@@ -59,6 +59,7 @@ public class OrderServiceImpl implements OrderService {
         OrderItem orderItem = new OrderItem();
         orderItem.setBook(book);
         orderItem.setPrice(priceInSelectedCurrency);
+        orderItem.setInsertionOrder(0);
 
         Order order = new Order();
         order.addOrderItem(orderItem);

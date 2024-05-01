@@ -77,7 +77,7 @@
                 </div>
             </div>
             <div class="cart col-auto">
-                <a class="cart-div" th:href="@{/cart}">
+                <a class="cart-div" th:href="@{/users/cart}">
                     <div class="cart-icon">
                         <svg class="shopping-cart">
                             <use href="#shopping-cart"></use>
@@ -123,6 +123,7 @@
             </div>
             <div class="nav-section right col-6">
                 <div class="row justify-content-end">
+                    <a class="col-auto" th:href="@{/admin-panel}" sec:authorize="hasRole('ADMIN')">Admin Panel</a>
                     <a class="col-auto" th:href="@{/fx-rates}">FX Rates</a>
                     <a class="col-auto" th:href="@{/customer-service}">Customer Service</a>
                     <a class="col-auto" th:href="@{/about}">About</a>

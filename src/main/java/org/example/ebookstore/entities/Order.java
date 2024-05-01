@@ -29,7 +29,8 @@ public class Order extends BaseEntity {
     )
     private Set<Book> books = new HashSet<>();
     @OneToMany(mappedBy = "order")
-    private Set<OrderItem> orderItems = new HashSet<>();
+    @OrderColumn(name = "insertion_order")
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     public Order() {
     }
@@ -82,15 +83,19 @@ public class Order extends BaseEntity {
     }
     public void removeBook(Book book) {
         this.books.remove(book);
-        Deque<Integer> deque = new ArrayDeque<>();
     }
 
-    public Set<OrderItem> getOrderItems() {
-        return Collections.unmodifiableSet(this.orderItems);
+    public List<OrderItem> getOrderItems() {
+        return Collections.unmodifiableList(this.orderItems);
     }
+
     public void addOrderItem(OrderItem orderItem) {
+        if (this.orderItems.contains(orderItem)) {
+            return;
+        }
         this.orderItems.add(orderItem);
     }
+
     public void removeOrderItem(OrderItem orderItem) {
         this.orderItems.remove(orderItem);
     }

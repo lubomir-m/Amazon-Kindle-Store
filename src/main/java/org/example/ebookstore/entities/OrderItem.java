@@ -15,6 +15,8 @@ public class OrderItem extends BaseEntity {
     private Book book;
     @Column(precision = 19, scale = 4, nullable = false)
     private BigDecimal price;
+    @Column(name = "insertion_order", nullable = false)
+    private Integer insertionOrder;
 
     public OrderItem() {
     }
@@ -41,5 +43,13 @@ public class OrderItem extends BaseEntity {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Integer getInsertionOrder() {
+        return insertionOrder;
+    }
+
+    public void setInsertionOrder(Integer insertionOrder) {
+        this.insertionOrder = insertionOrder;
     }
 }

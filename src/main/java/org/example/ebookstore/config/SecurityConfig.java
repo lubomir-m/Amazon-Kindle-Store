@@ -24,6 +24,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/change-currency"))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+
+                        .requestMatchers("/admin-panel").hasRole("ADMIN")
+
                         .requestMatchers("/", "/home", "/users/login", "/users/register", "/about",
                                 "/customer-service", "/books/*", "/publishers/*", "/authors/*",
                                 "categories/*", "/change-currency", "/change-currency/*", "/fx-rates")

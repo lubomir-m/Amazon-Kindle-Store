@@ -13,6 +13,7 @@ public class OrderItemDto {
     private OrderDto order;
     private BookDto book;
     private BigDecimal price;
+    private Integer insertionOrder;
 
     public OrderItemDto() {
     }
@@ -47,5 +48,13 @@ public class OrderItemDto {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Integer getInsertionOrder() {
+        return insertionOrder;
+    }
+
+    public void setInsertionOrder(Integer insertionOrder) {
+        this.insertionOrder = insertionOrder;
     }
 }

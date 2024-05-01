@@ -34,7 +34,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User user = optional.get();
 
         Set<SimpleGrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName().name()))
                 .collect(Collectors.toSet());
 
         return new CustomUserDetails(user.getId(), user.getFirstName(), user.getLastName(), authorities,

@@ -8,8 +8,7 @@ import org.example.ebookstore.entities.User;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class OrderDto {
     private Long id;
@@ -18,7 +17,7 @@ public class OrderDto {
     private Currency currency;
     private BigDecimal exchangeRate;
     private BigDecimal totalPrice;
-    private Set<OrderItemDto> orderItems = new HashSet<>();
+    private List<OrderItemDto> orderItems = new ArrayList<>();
 
     public OrderDto() {
     }
@@ -71,11 +70,11 @@ public class OrderDto {
         this.totalPrice = totalPrice;
     }
 
-    public Set<OrderItemDto> getOrderItems() {
+    public List<OrderItemDto> getOrderItems() {
         return orderItems;
     }
 
-    public void setOrderItems(Set<OrderItemDto> orderItems) {
+    public void setOrderItems(List<OrderItemDto> orderItems) {
         this.orderItems = orderItems;
     }
 }
