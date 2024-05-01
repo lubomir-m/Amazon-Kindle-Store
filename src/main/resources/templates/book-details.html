@@ -17,8 +17,8 @@
 
 <div class="book-details-container container-fluid">
 
-    <div class="book row" th:object="${book}">
-        <div class="book-cover-image col-3">
+    <div class="book row justify-content-center" th:object="${book}">
+        <div class="book-cover-image col-auto">
             <div class="book-cover" th:style="'background-color:' + *{coverColor}">
                 <div class="cover-title" th:text="*{title}"></div>
                 <div class="cover-authors">
@@ -30,7 +30,7 @@
             </a>
         </div>
 
-        <div class="book-details col-6">
+        <div class="book-details col col-xxl-5">
             <div class="book-details-1">
                 <div class="book-title" th:text="*{title}"></div>
                 <div class="book-authors">
@@ -108,8 +108,8 @@
         </div>
     </div>
 
-    <div class="recommended-books row row-cols-xl-6 row-cols-3">
-        <div class="recommended-book" th:each="book : ${books}" th:object="${book}">
+    <div class="recommended-books row justify-content-center">
+        <div class="recommended-book col-auto" th:each="book : ${books}" th:object="${book}">
             <a th:href="@{/books/{id}(id=*{id})}">
                 <div class="book-cover" th:style="'background-color:' + *{coverColor}">
                     <div class="cover-title" th:text="*{title}"></div>

@@ -16,7 +16,7 @@
 
 <div class="container-fluid">
     <h1>
-        <div class="your-list row justify-content-center">Your Ratings</div>
+        <div class="your-list row justify-content-center">Reviews</div>
     </h1>
 
     <div class="list-container row">
@@ -54,7 +54,7 @@
                             </div>
                             <div class="review-date">
                                 <span class="blue-text">Reviewed on:   </span>
-                                <span th:text="${#temporals.format(rating.submissionDate, 'MMMM d, yyyy')}"></span>
+                                <span th:text="${#temporals.format(review.rating.submissionDate, 'MMMM d, yyyy')}"></span>
                             </div>
                             <div class="review-title" th:text="${review.title}"></div>
                             <div class="review-text" th:text="${review.text}"></div>

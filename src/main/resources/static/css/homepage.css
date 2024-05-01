@@ -14,8 +14,10 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 400px;
-    max-height: 400px;
+    height: 300px;
+    max-height: 300px;
+    width: 250px;
+    max-width: 250px;
 }
 
 .book-cover, .book-cover > * {
@@ -66,6 +68,9 @@
     margin-bottom: 0.5em;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    width: 250px;
+    max-width: 250px;
 }
 
 .price {

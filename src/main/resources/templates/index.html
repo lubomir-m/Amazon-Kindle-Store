@@ -17,8 +17,8 @@
         <h2>Amazon Kindle Store Best Sellers</h2>
     </div>
 
-    <div class="book-list row row-cols-3 row-cols-xl-6">
-        <div class="book" th:each="book : ${books}" th:object="${book}">
+    <div class="book-list row justify-content-center">
+        <div class="book col-auto" th:each="book : ${books}" th:object="${book}">
             <a th:href="@{/books/{id}(id=*{id})}">
                 <div class="book-cover" th:style="'background-color:' + *{coverColor}">
                     <div class="cover-title" th:text="*{title}"></div>
