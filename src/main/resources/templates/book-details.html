@@ -35,16 +35,16 @@
                 <div class="book-title" th:text="*{title}"></div>
                 <div class="book-authors">
                     <span th:text="'by '"></span>
-                    <a th:href="@{/authors/{id}(id=*{authors[0].id})}" th:text="*{authors[0].fullName}"></a>
+                    <span><a th:href="@{/authors/{id}(id=*{authors[0].id})}" th:text="*{authors[0].fullName}"></a></span>
                     <span th:if="${#lists.size(book.authors)} == 2">
                             <span th:text="' and '"></span>
                             <a th:href="@{/authors/{id}(id=*{authors[1].id})}" th:text="*{authors[1].fullName}"></a>
                     </span>
                     <span th:if="${#lists.size(book.authors)} == 3">
                         <span th:text="', '"></span>
-                        <a th:href="@{/authors/{id}(id=*{authors[1].id})}" th:text="*{authors[1].fullName}"></a>
+                        <span><a th:href="@{/authors/{id}(id=*{authors[1].id})}" th:text="*{authors[1].fullName}"></a></span>
                         <span th:text="', and '"></span>
-                        <a th:href="@{/authors/{id}(id=*{authors[2].id})}" th:text="*{authors[2].fullName}"></a>
+                        <span><a th:href="@{/authors/{id}(id=*{authors[2].id})}" th:text="*{authors[2].fullName}"></a></span>
                     </span>
                 </div>
                 <div class="publisher-date">
