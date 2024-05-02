@@ -5,37 +5,46 @@
   <meta  name="_csrf" th:content="${_csrf.token}"/>
   <meta  name="_csrf_header" th:content="${_csrf.headerName}"/>
   <title>AmazonKindleStore.com</title>
-  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
   <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/css/fx-rates.css}">
 </head>
 <body>
 <div th:replace="~{fragments/navigation :: navigation}"></div>
 
-<div>
-  <span>The foreign exchange rates were last updated on </span>
-  <span th:text="${#temporals.format(lastUpdated, 'MMMM d, yyyy')}"></span>
-  <span>.</span>
-</div>
-<div>One euro is equal to:</div>
+<div class="container-fluid">
+  <div class="row justify-content-center"
+       th:text="'The foreign exchange rates were last updated on ' + ${#temporals.format(lastUpdated, 'MMMM d, yyyy')}
+                + '.'" th:style="'margin-top: 20px'"></div>
+  <div class="row justify-content-center">One euro is equal to:</div>
 
-<table class="table table-hover">
-  <thead>
-  <tr>
-    <th>Symbol</th>
-    <th>Code</th>
-    <th>Name</th>
-    <th>Latest Rate</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="entry : ${latestRates}">
-    <td th:text="${entry.key.symbol}"></td>
-    <td th:text="${entry.key.code}"></td>
-    <td th:text="${entry.key.name}"></td>
-    <td th:text="${#numbers.formatDecimal(entry.value, 1, 'COMMA', 4, 'POINT')}"></td>
-  </tr>
-  </tbody>
-</table>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-auto table-container">
+
+        <table class="table table-hover">
+          <thead>
+          <tr class="col">
+            <th class="col-auto">Symbol</th>
+            <th class="col-auto">Code</th>
+            <th class="col-auto">Name</th>
+            <th class="col-auto">Latest Rate</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="col" th:each="entry : ${latestRates}">
+            <td class="col-auto" th:text="${entry.key.symbol}"></td>
+            <td class="col-auto" th:text="${entry.key.code}"></td>
+            <td class="col-auto" th:text="${entry.key.name}"></td>
+            <td class="col-auto" th:text="${#numbers.formatDecimal(entry.value, 1, 'WHITESPACE', 4, 'POINT')}"></td>
+          </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
 
