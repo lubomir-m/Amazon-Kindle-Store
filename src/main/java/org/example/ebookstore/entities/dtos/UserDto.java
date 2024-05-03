@@ -1,9 +1,6 @@
 package org.example.ebookstore.entities.dtos;
 
-import org.example.ebookstore.entities.Currency;
-import org.example.ebookstore.entities.Order;
-import org.example.ebookstore.entities.ShoppingCart;
-import org.example.ebookstore.entities.Wishlist;
+import org.example.ebookstore.entities.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +15,7 @@ public class UserDto {
     private ShoppingCartDto shoppingCart;
     private Currency selectedCurrency;
     private String pictureBase64;
+    private Set<Role> roles;
 
     public UserDto() {
     }
@@ -92,5 +90,13 @@ public class UserDto {
 
     public void setSelectedCurrency(Currency selectedCurrency) {
         this.selectedCurrency = selectedCurrency;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

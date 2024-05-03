@@ -8,6 +8,7 @@ import org.example.ebookstore.entities.dtos.UserRegistrationDto;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -23,4 +24,5 @@ public interface UserService {
     boolean hasUserRatedBook(Long userId, Long bookId);
     boolean hasUserReviewedBook(Long userId, Long bookId);
     User createUser(UserRegistrationDto userRegistrationDto);
+    List<UserDto> findAll();
 }

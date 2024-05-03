@@ -73,7 +73,7 @@ public class BookController {
 
         Currency currency = (Currency) model.getAttribute("selectedCurrency");
         Sort sort = this.commonService.getSortByParameter(sortBy);
-        Pageable pageable = PageRequest.of(page, 2000, sort);
+        Pageable pageable = PageRequest.of(page, 200, sort);
         Page<BookDto> bookDtoPage = this.bookService.findBySearchQuery(query, pageable, currency);
 
         this.commonService.addBookPageAttributesToModel(model, bookDtoPage, pageable, page, sortBy);

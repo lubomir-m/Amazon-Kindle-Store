@@ -28,8 +28,11 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -206,5 +209,11 @@ public class UserServiceImpl implements UserService {
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
 
         return save(user);
+    }
+
+    @Override
+    public List<UserDto> findAll() {
+        return this.userRepository.findAll().stream().map(user -> this.modelMapper.map(user, UserDto.class))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 }
