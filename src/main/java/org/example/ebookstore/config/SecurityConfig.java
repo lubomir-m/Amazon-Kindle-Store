@@ -29,8 +29,8 @@ public class SecurityConfig {
 
                         .requestMatchers("/", "/home", "/users/login", "/users/register", "/about",
                                 "/customer-service", "/books/*", "/publishers/*", "/authors/*",
-                                "categories/*", "/change-currency", "/change-currency/*", "/fx-rates")
-                        .permitAll()
+                                "categories/*", "/change-currency", "/change-currency/*", "/fx-rates",
+                                "/search/**", "/search").permitAll()
                         .requestMatchers("/css/**", "/javascript/**", "/images/**", "/icons/**",
                                 "/stars/**").permitAll()
                         .anyRequest().authenticated())

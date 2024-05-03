@@ -32,15 +32,19 @@
                 </a>
             </div>
             <div class="nav-section center col">
-                <form th:action="@{/search}" method="get" class="search-form row">
-                    <input type="text" name="query" placeholder="Search Amazon Kindle Store" class="col">
-                    <button type="submit" class="search-button col-auto">
-                            <img class="search-icon" th:src="@{/icons/search.png}">
-                    </button>
-                </form>
+                <div class="row justify-content-center">
+                    <form th:action="@{/search}" method="get" class="search-form col col-xxl-6">
+                        <div class="search-container row justify-content-center">
+                            <input type="text" name="query" placeholder="Search Amazon Kindle Store" class="col">
+                            <button type="submit" class="search-button col-auto">
+                                <img class="search-icon" th:src="@{/icons/search.png}">
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
 
-            <form class="col-1" action="/change-currency" method="POST">
+            <form class="col-auto" action="/change-currency" method="POST">
                 <select name="currencyCode" onchange="this.form.submit()">
                     <th:block th:each="currency : ${allCurrencies}">
                         <option th:value="${currency.code}"
