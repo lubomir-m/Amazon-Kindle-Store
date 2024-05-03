@@ -116,11 +116,11 @@ body {
     color: #ff9900; /* Replace with the color you want on hover */
 }
 
-.account, .cart {
+.account, .cart-div {
     border: 1px solid transparent;
 }
 
-.account:hover, .cart:hover {
+.account:hover, .cart-div:hover {
     border: 1px solid white;
 }
 
@@ -134,9 +134,21 @@ body {
     height: 2.6em;
 }
 
+.search-button {
+    background-color: #febd69; /* Amazon's button color */
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border: none;
+}
+
+/* If you don't have a hover image, you can simply change the background color */
+.search-button:hover {
+    background-color: #febd69; /* Lighter shade for hover, replace with the color you prefer */
+}
+
 .search-icon {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
 }
 
 .down-arrow {
@@ -154,6 +166,7 @@ body {
 .cart-div {
     display: flex;
     flex-direction: row;
+    padding: 0 12px;
 }
 
 .nav-row {
@@ -171,10 +184,6 @@ body {
     flex-grow: 1; /* Allow this section to fill the space */
 }
 
-.search-form input[type="text"] {
-    width: 100%; /* Make the search box take the full width of its parent */
-    /* If you use Bootstrap, consider using the form-control class */
-}
 
 .nav-row:first-child {
     background-color: #131921; /* Dark background for the top row */
@@ -196,23 +205,14 @@ body {
 .search-form input[type="text"] {
     background-color: white; /* White background for input */
     color: black; /* Black text color */
-    border-radius: 4px; /* Rounded corners */
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
     padding: 8px 12px; /* Spacing inside the input */
-    margin-right: 2px; /* Spacing between input and button */
     border: 1px solid #ccc; /* Light border around the input */
 }
 
 /* Styling for the search button */
-.search-button {
-    background-color: #febd69; /* Amazon's button color */
-    border-radius: 4px; /* Rounded corners */
-    border: none; /* Remove border */
-}
 
-/* If you don't have a hover image, you can simply change the background color */
-.search-button:hover {
-    background-color: #febd69; /* Lighter shade for hover, replace with the color you prefer */
-}
 
 .previous-btn, .next-btn {
     width: 105px;

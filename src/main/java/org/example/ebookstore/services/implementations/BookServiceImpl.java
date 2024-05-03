@@ -185,5 +185,11 @@ public class BookServiceImpl implements BookService {
 
         this.bookRepository.saveAll(books);
     }
+
+    @Override
+    public Page<BookDto> findBySearchQuery(String query, Pageable pageable, Currency currency) {
+        return this.bookRepository.findBySearchQuery(query, pageable)
+                .map(book -> mapBookToDto(book, currency));
+    }
 }
 

@@ -25,4 +25,5 @@ public interface BookService {
     Page<BookDto> findByShoppingCartId(Long cartId, Pageable pageable, Currency currency);
     Page<BookDto> findByWishlistId(Long wishlistId, Pageable pageable, Currency currency);
     void updateFxPricesOfAllBooks();
+    Page<BookDto> findBySearchQuery(String query, Pageable pageable, Currency currency);
 }
