@@ -30,4 +30,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query("select b from Book b join b.authors a " +
             "where b.title like %:keywords% or a.fullName like %:keywords% or b.publisher.name like %:keywords%")
     Page<Book> findBySearchQuery(@Param("keywords") String keywords, Pageable pageable);
+    Page<Book> findAllByIdInOrAuthorsIdInOrPublisherIdIn(List<Long> bookIds, List<Long> authorIds,
+                                                                     List<Long> publisherIds, Pageable pageable);
+    List<Book> findAllByTitleLike(String keywords);
 }

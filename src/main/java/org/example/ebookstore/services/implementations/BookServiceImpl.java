@@ -1,8 +1,6 @@
 package org.example.ebookstore.services.implementations;
 
-import org.example.ebookstore.entities.BaseEntity;
-import org.example.ebookstore.entities.Book;
-import org.example.ebookstore.entities.Category;
+import org.example.ebookstore.entities.*;
 import org.example.ebookstore.entities.Currency;
 import org.example.ebookstore.entities.dtos.BookDto;
 import org.example.ebookstore.repositories.*;
@@ -30,15 +28,19 @@ public class BookServiceImpl implements BookService {
     private final CategoryRepository categoryRepository;
     private final ExchangeRateRepository exchangeRateRepository;
     private final CurrencyRepository currencyRepository;
+    private final AuthorRepository authorRepository;
+    private final PublisherRepository publisherRepository;
 
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository, ExchangeRateService exchangeRateService, ModelMapper modelMapper, CategoryRepository categoryRepository, ExchangeRateRepository exchangeRateRepository, CurrencyRepository currencyRepository) {
+    public BookServiceImpl(BookRepository bookRepository, ExchangeRateService exchangeRateService, ModelMapper modelMapper, CategoryRepository categoryRepository, ExchangeRateRepository exchangeRateRepository, CurrencyRepository currencyRepository, AuthorRepository authorRepository, PublisherRepository publisherRepository) {
         this.bookRepository = bookRepository;
         this.exchangeRateService = exchangeRateService;
         this.modelMapper = modelMapper;
         this.categoryRepository = categoryRepository;
         this.exchangeRateRepository = exchangeRateRepository;
         this.currencyRepository = currencyRepository;
+        this.authorRepository = authorRepository;
+        this.publisherRepository = publisherRepository;
     }
 
     public BigDecimal round(BigDecimal value) {
@@ -188,6 +190,25 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Page<BookDto> findBySearchQuery(String query, Pageable pageable, Currency currency) {
+//        List<Long> bookIds = this.bookRepository.findAllByTitleLike(query)
+//                .stream().map(Book::getId).collect(Collectors.toCollection(ArrayList::new));
+//        List<Long> authorIds = this.authorRepository.findAllByFullNameLike(query)
+//                .stream().map(Author::getId).collect(Collectors.toCollection(ArrayList::new));
+//        List<Long> publisherIds = this.publisherRepository.findAllByNameLike(query)
+//                .stream().map(Publisher::getId).collect(Collectors.toCollection(ArrayList::new));
+//
+//        System.out.println("Book ids: ");
+//        for (Long id : bookIds) {
+//            System.out.print(id + ", ");
+//        }
+//        System.out.println("%nAuthor ids: ");
+//        authorIds.forEach(id -> System.out.print(id + ", "));
+//        System.out.println("%nPublisher ids: ");
+//        publisherIds.forEach(id -> System.out.print(id + ", "));
+//
+//        return this.bookRepository.findAllByIdInOrAuthorsIdInOrPublisherIdIn(bookIds, authorIds,
+//                publisherIds, pageable).map(book -> mapBookToDto(book, currency));
+
         return this.bookRepository.findBySearchQuery(query, pageable)
                 .map(book -> mapBookToDto(book, currency));
     }
