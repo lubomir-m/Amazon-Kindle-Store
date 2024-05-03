@@ -11,7 +11,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", indexes = {
+        @Index(name = "idx_user_username", columnList = "username"),
+        @Index(name = "idx_user_email", columnList = "email")
+})
 public class User extends BaseEntity {
     @Size(min = 4, max = 30)
     @Column(unique = true, nullable = false, length = 30)

@@ -7,10 +7,7 @@ import org.example.ebookstore.entities.Review;
 import org.example.ebookstore.entities.dtos.BookDto;
 import org.example.ebookstore.entities.dtos.CategoryDto;
 import org.example.ebookstore.entities.dtos.ReviewDto;
-import org.example.ebookstore.services.interfaces.BookService;
-import org.example.ebookstore.services.interfaces.CategoryService;
-import org.example.ebookstore.services.interfaces.ReviewService;
-import org.example.ebookstore.services.interfaces.UserService;
+import org.example.ebookstore.services.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,15 +26,15 @@ import java.util.stream.Collectors;
 public class BookController {
     private final BookService bookService;
     private final UserService userService;
-    private final CategoryService categoryService;
     private final ReviewService reviewService;
+    private final CommonService commonService;
 
     @Autowired
-    public BookController(BookService bookService, UserService userService, CategoryService categoryService, ReviewService reviewService) {
+    public BookController(BookService bookService, UserService userService, ReviewService reviewService, CommonService commonService) {
         this.bookService = bookService;
         this.userService = userService;
-        this.categoryService = categoryService;
         this.reviewService = reviewService;
+        this.commonService = commonService;
     }
 
     @GetMapping("/books/{id}")
@@ -69,5 +66,18 @@ public class BookController {
         }
     }
 
+    @GetMapping("/search")
+    public String displaySearchResults(Model model, @RequestParam(defaultValue = "0") int page,
+                                       @RequestParam(defaultValue = "purchaseCountDesc") String sortBy,
+                                       @RequestParam String query) {
 
+        Currency currency = (Currency) model.getAttribute("selectedCurrency");
+        Sort sort = this.commonService.getSortByParameter(sortBy);
+        Pageable pageable = PageRequest.of(page, 16, sort);
+        Page<BookDto> bookDtoPage = this.bookService.findBySearchQuery(query, pageable, currency);
+
+        this.commonService.addBookPageAttributesToModel(model, bookDtoPage, pageable, page, sortBy);
+        model.addAttribute("query", query);
+        return "book-search";
+    }
 }

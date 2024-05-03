@@ -13,7 +13,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "books")
+@Table(name = "books", indexes = {
+        @Index(name = "idx_book_title", columnList = "title"),
+        @Index(name = "idx_book_average_rating", columnList = "average_rating"),
+        @Index(name = "idx_book_publication_date", columnList = "publication_date"),
+        @Index(name = "idx_book_price_eur", columnList = "price_eur"),
+        @Index(name = "idx_book_purchase_count", columnList = "purchase_count")
+})
 public class Book extends BaseEntity {
     @ManyToMany
     @JoinTable(

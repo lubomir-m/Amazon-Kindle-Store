@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "authors")
+@Table(name = "authors", indexes = @Index(name = "idx_author_full_name", columnList = "full_name"))
 public class Author extends BaseEntity {
     @Column(name = "full_name", nullable = false, length = 50)
     @Size(min = 5, max = 50)
