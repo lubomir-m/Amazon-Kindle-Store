@@ -70,83 +70,91 @@ document.addEventListener('DOMContentLoaded', function () {
     const resultText = document.getElementById('resultMessagesRating');
     const errorText = document.getElementById('errorMessagesRating');
 
-    closeButton.addEventListener('click', function () {
-        modal.style.display = 'none';
-        closeBackdrop();
-    });
+    if (closeButton) {
+        closeButton.addEventListener('click', function () {
+            modal.style.display = 'none';
+            closeBackdrop();
+        });
+    }
 
-    submitButton.addEventListener('click', function () {
-        let rating = document.getElementById('bookRating').value;
-        if (rating === '') {
-            errorText.textContent = 'Please select a rating.';
-            return;
-        }
 
-        let ratingData = {rating: rating};
-        let bookId = this.getAttribute('data-book-id');
-        fetch(`/books/${bookId}/rate`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                [csrfHeaderName]: csrfToken
-            },
-            body: JSON.stringify(ratingData)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    return response.text().then(text => {
-                        throw new Error(text);
-                    });
-                }
-                return response.json();
+    if (submitButton) {
+        submitButton.addEventListener('click', function () {
+            let rating = document.getElementById('bookRating').value;
+            if (rating === '') {
+                errorText.textContent = 'Please select a rating.';
+                return;
+            }
+
+            let ratingData = {rating: rating};
+            let bookId = this.getAttribute('data-book-id');
+            fetch(`/books/${bookId}/rate`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    [csrfHeaderName]: csrfToken
+                },
+                body: JSON.stringify(ratingData)
             })
-            .then(data => {
-                errorText.textContent = '';
-                resultText.textContent = 'Your rating has been submitted successfully.';
-                document.getElementById('averageRating').textContent = data.avererageRating.toFixed(1);
-                document.getElementById('ratingsCount').textContent = data.ratingsCount;
-            })
-            .catch(error => {
-                resultText.textContent = '';
-                errorText.textContent = error.message;
-            });
-    });
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            throw new Error(text);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    errorText.textContent = '';
+                    resultText.textContent = 'Your rating has been submitted successfully.';
+                    document.getElementById('averageRating').textContent = data.avererageRating.toFixed(1);
+                    document.getElementById('ratingsCount').textContent = data.ratingsCount;
+                })
+                .catch(error => {
+                    resultText.textContent = '';
+                    errorText.textContent = error.message;
+                });
+        });
+    }
+
 });
 
 // Open Review Modal
 document.addEventListener('DOMContentLoaded', function () {
     let button = document.querySelector('.open-review-modal-btn');
-    button.addEventListener('click', function () {
-        if (!isLoggedIn) {
-            openLoginModal();
-            return
-        }
+    if (button) {
+        button.addEventListener('click', function () {
+            if (!isLoggedIn) {
+                openLoginModal();
+                return
+            }
 
-        let bookId = this.getAttribute('data-book-id');
-        const resultText = document.getElementById('resultMessagesReview');
-        const errorText = document.getElementById('errorMessagesReview');
+            let bookId = this.getAttribute('data-book-id');
+            const resultText = document.getElementById('resultMessagesReview');
+            const errorText = document.getElementById('errorMessagesReview');
 
-        fetch(`/books/${bookId}/check-review`)
-            .then(response => {
-                if (!response.ok) {
-                    return response.text().then(text => {
-                        throw new Error(text);
-                    });
-                }
-                return response.text();
-            })
-            .then(() => {
-                resultText.textContent = '';
-                errorText.textContent = '';
-                document.getElementById('reviewModal').style.display = 'block';
-                openBackdrop();
-            })
-            .catch(error => {
-                document.getElementById('commonModalText').textContent = '';
-                document.getElementById('commonModalErrors').textContent = error.message;
-                openCommonModal();
-            });
-    });
+            fetch(`/books/${bookId}/check-review`)
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            throw new Error(text);
+                        });
+                    }
+                    return response.text();
+                })
+                .then(() => {
+                    resultText.textContent = '';
+                    errorText.textContent = '';
+                    document.getElementById('reviewModal').style.display = 'block';
+                    openBackdrop();
+                })
+                .catch(error => {
+                    document.getElementById('commonModalText').textContent = '';
+                    document.getElementById('commonModalErrors').textContent = error.message;
+                    openCommonModal();
+                });
+        });
+    }
 });
 
 //Review Modal: Close, Submit buttons
@@ -157,80 +165,86 @@ document.addEventListener('DOMContentLoaded', function () {
     const resultText = document.getElementById('resultMessagesReview');
     const errorText = document.getElementById('errorMessagesReview');
 
-    closeButton.addEventListener('click', function () {
-        modal.style.display = 'none';
-        closeBackdrop();
-    });
+    if (closeButton) {
+        closeButton.addEventListener('click', function () {
+            modal.style.display = 'none';
+            closeBackdrop();
+        });
+    }
 
-    submitButton.addEventListener('click', function () {
-        let reviewTitle = document.getElementById('reviewTitle').value;
-        let reviewText = document.getElementById('reviewText').value;
-        let reviewRating = document.getElementById('reviewRating').value;
-        let bookId = this.getAttribute('data-book-id');
+    if (submitButton) {
+        submitButton.addEventListener('click', function () {
+            let reviewTitle = document.getElementById('reviewTitle').value;
+            let reviewText = document.getElementById('reviewText').value;
+            let reviewRating = document.getElementById('reviewRating').value;
+            let bookId = this.getAttribute('data-book-id');
 
-        if (!reviewTitle || !reviewText || reviewRating === '') {
-            errorText.textContent = 'Please fill out all required fields.';
-            return;
-        }
+            if (!reviewTitle || !reviewText || reviewRating === '') {
+                errorText.textContent = 'Please fill out all required fields.';
+                return;
+            }
 
-        let reviewData = {
-            reviewTitle: reviewTitle,
-            reviewText: reviewText,
-            reviewRating: parseInt(reviewRating)
-        }
+            let reviewData = {
+                reviewTitle: reviewTitle,
+                reviewText: reviewText,
+                reviewRating: parseInt(reviewRating)
+            }
 
-        fetch(`/books/${bookId}/review`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                [csrfHeaderName]: csrfToken
-            },
-            body: JSON.stringify(reviewData)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    return response.text().then(text => {
-                        throw new Error(text);
-                    });
-                }
-                return response.json();
+            fetch(`/books/${bookId}/review`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    [csrfHeaderName]: csrfToken
+                },
+                body: JSON.stringify(reviewData)
             })
-            .then(data => {
-                updateReviewUI(data);
-                errorText.textContent = ''
-                resultText.textContent = 'Your review has been submitted successfully.';
-            })
-            .catch(error => {
-                resultText.textContent = '';
-                errorText.textContent = error.message;
-            });
-    });
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            throw new Error(text);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    updateReviewUI(data);
+                    errorText.textContent = ''
+                    resultText.textContent = 'Your review has been submitted successfully.';
+                })
+                .catch(error => {
+                    resultText.textContent = '';
+                    errorText.textContent = error.message;
+                });
+        });
+    }
 });
 
 function updateReviewUI(data) {
     document.getElementById('averageRating').textContent = data.averageRating.toFixed(1);
-    document.getElementById('ratingsCount').textContent = `${data.ratingsCount} ratings`;
+    document.getElementById('ratingsCount').textContent = data.ratingsCount;
 
     let newReview = document.createElement('div');
-    newReview.classList.add('review');
+    newReview.classList.add('review', 'row', 'justify-content-center');
 
     newReview.innerHTML = `
-        <div class="review-author">
-            <div class="picture-container">
-                <img src="${data.pictureBase64}"  alt="reviewer-picture"/>
+        <div class="picture-container col-2 d-flex justify-content-end">
+                <img src="${data.pictureBase64}"/>
             </div>
-            <div class="reviewer-name">${data.firstName} ${data.lastName}</div>
-            <div class="review-rating-title">
-                <div class="review-rating">
-                    ${generateStars(data.ratingValue)}
-                </div>
-                <div class="review-title">${data.title}</div>
-                <div class="review-date">Reviewed on ${formatDate(data.submissionDate)}</div>
-                <div class="review-text">${data.text}</div>
-            </div>
-        </div>
-    `;
+            <div class="review-details col-5 d-flex">
+                <div class="review-container-1">
+                    <div class="review-container-2">
+                        <div class="reviewer-name">${data.firstName} ${data.lastName}</div>
+                        <div class="review-rating">${generateStars(data.ratingValue)}</div>
+                        <div class="review-title">${data.title}</div>
+                        <div class="review-date">Reviewed on ${formatDate(data.submissionDate)}</div>
+                    </div>
 
+                    <div class="review-text">
+                        <div>${data.text}</div>
+                    </div>
+                </div>
+            </div>
+    `;
 
     let reviewList = document.querySelector('.review-list');
     reviewList.removeChild(reviewList.lastChild);
@@ -240,10 +254,10 @@ function updateReviewUI(data) {
 function generateStars(ratingValue) {
     let starsHtml = '';
     for (let i = 1; i <= ratingValue; i++) {
-        starsHtml += '<svg class="star full-star"><use href="#star-icon"></use></svg>';
+        starsHtml += '<img class="star" src="/stars/full-star.jpeg" alt="Full Star">';
     }
     for (let i = ratingValue + 1; i <= 5; i++) {
-        starsHtml += '<svg class="star empty-star"><use href="#star-icon"></use></svg>';
+        starsHtml += '<img class="star" src="/stars/empty-star.png" alt="Empty Star">';
     }
     return starsHtml;
 }
@@ -412,39 +426,41 @@ document.addEventListener('DOMContentLoaded', function () {
     const modalText = document.getElementById('commonModalText');
     const modalErrors = document.getElementById('commonModalErrors');
 
-    button.addEventListener('click', function () {
-        if (!isLoggedIn) {
-            openLoginModal();
-            return;
-        }
-
-        let bookId = button.getAttribute('data-book-id');
-        fetch(`/books/${bookId}/cart`, {
-            method: 'POST',
-            headers: {
-                [csrfHeaderName]: csrfToken
+    if (button) {
+        button.addEventListener('click', function () {
+            if (!isLoggedIn) {
+                openLoginModal();
+                return;
             }
-        })
-            .then(response => {
-                return response.text().then(text => {
-                    return {text: text, ok: response.ok};
-                });
-            })
-            .then(result => {
-                if (!result.ok) {
-                    throw new Error(result.text);
+
+            let bookId = button.getAttribute('data-book-id');
+            fetch(`/books/${bookId}/cart`, {
+                method: 'POST',
+                headers: {
+                    [csrfHeaderName]: csrfToken
                 }
-                modalErrors.textContent = '';
-                modalText.textContent = 'The book was added to your shopping cart.';
-                document.getElementById('numberOfBooksInCart').textContent = result.text;
-                openCommonModal();
             })
-            .catch(error => {
-                modalText.textContent = '';
-                modalErrors.textContent = error.message;
-                openCommonModal();
-            });
-    });
+                .then(response => {
+                    return response.text().then(text => {
+                        return {text: text, ok: response.ok};
+                    });
+                })
+                .then(result => {
+                    if (!result.ok) {
+                        throw new Error(result.text);
+                    }
+                    modalErrors.textContent = '';
+                    modalText.textContent = 'The book was added to your shopping cart.';
+                    document.getElementById('numberOfBooksInCart').textContent = result.text;
+                    openCommonModal();
+                })
+                .catch(error => {
+                    modalText.textContent = '';
+                    modalErrors.textContent = error.message;
+                    openCommonModal();
+                });
+        });
+    }
 });
 
 // Add to Your List Button
@@ -453,38 +469,40 @@ document.addEventListener('DOMContentLoaded', function () {
     const modalText = document.getElementById('commonModalText');
     const modalErrors = document.getElementById('commonModalErrors');
 
-    button.addEventListener('click', function () {
-        if (!isLoggedIn) {
-            openLoginModal();
-            return;
-        }
-
-        let bookId = button.getAttribute('data-book-id');
-        fetch(`/books/${bookId}/list`, {
-            method: 'POST',
-            headers: {
-                [csrfHeaderName]: csrfToken
+    if (button) {
+        button.addEventListener('click', function () {
+            if (!isLoggedIn) {
+                openLoginModal();
+                return;
             }
-        })
-            .then(response => {
-                return response.text().then(text => {
-                    return {text: text, ok: response.ok};
-                });
-            })
-            .then(result => {
-                if (!result.ok) {
-                    throw new Error(result.text);
+
+            let bookId = button.getAttribute('data-book-id');
+            fetch(`/books/${bookId}/list`, {
+                method: 'POST',
+                headers: {
+                    [csrfHeaderName]: csrfToken
                 }
-                modalErrors.textContent = '';
-                modalText.textContent = result.text;
-                openCommonModal();
             })
-            .catch(error => {
-                modalText.textContent = '';
-                modalErrors.textContent = error.message;
-                openCommonModal();
-            });
-    });
+                .then(response => {
+                    return response.text().then(text => {
+                        return {text: text, ok: response.ok};
+                    });
+                })
+                .then(result => {
+                    if (!result.ok) {
+                        throw new Error(result.text);
+                    }
+                    modalErrors.textContent = '';
+                    modalText.textContent = result.text;
+                    openCommonModal();
+                })
+                .catch(error => {
+                    modalText.textContent = '';
+                    modalErrors.textContent = error.message;
+                    openCommonModal();
+                });
+        });
+    }
 });
 
 // Update and Delete Review Buttons
@@ -549,40 +567,42 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     const updateButton = document.getElementById('update-review-btn');
-    updateButton.addEventListener('click', function () {
-        const bookId = this.getAttribute('data-book-id');
-        const reviewRating = document.getElementById('reviewRating').value;
-        const reviewTitle = document.getElementById('reviewTitle').value;
-        const reviewText = document.getElementById('reviewText').value;
+    if (updateButton) {
+        updateButton.addEventListener('click', function () {
+            const bookId = this.getAttribute('data-book-id');
+            const reviewRating = document.getElementById('reviewRating').value;
+            const reviewTitle = document.getElementById('reviewTitle').value;
+            const reviewText = document.getElementById('reviewText').value;
 
-        if (!reviewTitle || !reviewText || reviewRating === '') {
-            document.getElementById('errorMessagesReview').textContent = 'Please fill out all required fields.';
-            return;
-        }
-        const reviewData = {reviewRating, reviewTitle, reviewText};
+            if (!reviewTitle || !reviewText || reviewRating === '') {
+                document.getElementById('errorMessagesReview').textContent = 'Please fill out all required fields.';
+                return;
+            }
+            const reviewData = {reviewRating, reviewTitle, reviewText};
 
-        fetch(`/books/${bookId}/review/`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                [csrfHeaderName]: csrfToken
-            },
-            body: JSON.stringify(reviewData)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Unable to update review due to an error.");
-                }
-
-                document.getElementById('errorMessagesReview').textContent = '';
-                document.getElementById('resultMessagesReview').textContent =
-                    'The review was updated successfully.';
+            fetch(`/books/${bookId}/review/`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    [csrfHeaderName]: csrfToken
+                },
+                body: JSON.stringify(reviewData)
             })
-            .catch(error => {
-                document.getElementById('resultMessagesReview').textContent = '';
-                document.getElementById('errorMessagesReview').textContent = error.message;
-            });
-    });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Unable to update review due to an error.");
+                    }
+
+                    document.getElementById('errorMessagesReview').textContent = '';
+                    document.getElementById('resultMessagesReview').textContent =
+                        'The review was updated successfully.';
+                })
+                .catch(error => {
+                    document.getElementById('resultMessagesReview').textContent = '';
+                    document.getElementById('errorMessagesReview').textContent = error.message;
+                });
+        });
+    }
 });
 
 // Update and Delete Rating Buttons
@@ -643,38 +663,40 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     const updateButton = document.getElementById('update-rating-btn');
-    updateButton.addEventListener('click', function () {
-        const bookId = this.getAttribute('data-book-id');
-        const rating = document.getElementById('bookRating').value;
+    if (updateButton) {
+        updateButton.addEventListener('click', function () {
+            const bookId = this.getAttribute('data-book-id');
+            const rating = document.getElementById('bookRating').value;
 
-        if (rating === '') {
-            document.getElementById('errorMessagesRating').textContent = 'Please select a rating.';
-            return;
-        }
-        const reviewData = {rating};
+            if (rating === '') {
+                document.getElementById('errorMessagesRating').textContent = 'Please select a rating.';
+                return;
+            }
+            const reviewData = {rating};
 
-        fetch(`/books/${bookId}/rate/`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                [csrfHeaderName]: csrfToken
-            },
-            body: JSON.stringify(reviewData)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Unable to update rating due to an error.");
-                }
-
-                document.getElementById('errorMessagesRating').textContent = '';
-                document.getElementById('resultMessagesRating').textContent =
-                    'The rating was updated successfully.';
+            fetch(`/books/${bookId}/rate/`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    [csrfHeaderName]: csrfToken
+                },
+                body: JSON.stringify(reviewData)
             })
-            .catch(error => {
-                document.getElementById('resultMessagesRating').textContent = '';
-                document.getElementById('errorMessagesRating').textContent = error.message;
-            });
-    });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Unable to update rating due to an error.");
+                    }
+
+                    document.getElementById('errorMessagesRating').textContent = '';
+                    document.getElementById('resultMessagesRating').textContent =
+                        'The rating was updated successfully.';
+                })
+                .catch(error => {
+                    document.getElementById('resultMessagesRating').textContent = '';
+                    document.getElementById('errorMessagesRating').textContent = error.message;
+                });
+        });
+    }
 });
 
 
@@ -684,43 +706,45 @@ document.addEventListener('DOMContentLoaded', function () {
     const commonModalCloseButton = document.getElementById('commonModalCloseButton');
     let checkoutSuccess = false;
 
-    checkoutButton.addEventListener('click', function () {
-        const modalText = document.getElementById('commonModalText');
-        const modalErrors = document.getElementById('commonModalErrors');
+    if (checkoutButton) {
+        checkoutButton.addEventListener('click', function () {
+            const modalText = document.getElementById('commonModalText');
+            const modalErrors = document.getElementById('commonModalErrors');
 
-        fetch(`/users/cart/checkout` , {
-            method: 'POST',
-            headers: {
-                [csrfHeaderName]: csrfToken
-            }
-        })
-            .then(response => {
-                return response.text().then(text => {
-                    return {text: text, ok: response.ok};
-                });
-            })
-            .then(result => {
-                if (!result.ok) {
-                    throw new Error(result.text);
+            fetch(`/users/cart/checkout` , {
+                method: 'POST',
+                headers: {
+                    [csrfHeaderName]: csrfToken
                 }
-                modalErrors.textContent = '';
-                modalText.textContent = result.text;
-                checkoutSuccess = true;
-                openCommonModal();
             })
-            .catch(error => {
-                modalText.textContent = '';
-                modalErrors.textContent = error.message;
-                checkoutSuccess = false;
-                openCommonModal();
-            });
-    });
+                .then(response => {
+                    return response.text().then(text => {
+                        return {text: text, ok: response.ok};
+                    });
+                })
+                .then(result => {
+                    if (!result.ok) {
+                        throw new Error(result.text);
+                    }
+                    modalErrors.textContent = '';
+                    modalText.textContent = result.text;
+                    checkoutSuccess = true;
+                    openCommonModal();
+                })
+                .catch(error => {
+                    modalText.textContent = '';
+                    modalErrors.textContent = error.message;
+                    checkoutSuccess = false;
+                    openCommonModal();
+                });
+        });
 
-    commonModalCloseButton.addEventListener('click', function () {
-        if (checkoutSuccess) {
-            window.location.href = '/users/books';
-        }
-    });
+        commonModalCloseButton.addEventListener('click', function () {
+            if (checkoutSuccess) {
+                window.location.href = '/users/books';
+            }
+        });
+    }
 });
 
 
