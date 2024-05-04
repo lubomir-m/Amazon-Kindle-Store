@@ -14,7 +14,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
     List<User> findFirst10ByOrderByIdAsc();
-    //TODO: check if this query works
     @Query("select exists (select 1 from Order o join o.books b " +
             "where o.user.id = :userId and b.id = :bookId)")
     boolean hasUserPurchasedBook(@Param("userId") Long userId, @Param("bookId") Long bookId);

@@ -16,7 +16,9 @@ function closeLoginModal() {
 //Close Login Modal
 document.addEventListener('DOMContentLoaded', function () {
     let button = document.getElementById('loginModalCloseButton');
-    button.addEventListener('click', closeLoginModal);
+    if (button) {
+        button.addEventListener('click', closeLoginModal);
+    }
 })
 
 function openBackdrop() {
@@ -107,8 +109,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(data => {
                     errorText.textContent = '';
                     resultText.textContent = 'Your rating has been submitted successfully.';
-                    document.getElementById('averageRating').textContent = data.avererageRating.toFixed(1);
-                    document.getElementById('ratingsCount').textContent = data.ratingsCount;
+                    document.getElementById('averageRating').textContent = data.averageRating.toFixed(1);
+                    document.getElementById('ratingsCount').textContent = data.ratingsCount
+                        .toLocaleString('en-US', { minimumFractionDigits: 0 }).replace(/,/g, ' ');
                 })
                 .catch(error => {
                     resultText.textContent = '';
@@ -221,7 +224,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function updateReviewUI(data) {
     document.getElementById('averageRating').textContent = data.averageRating.toFixed(1);
-    document.getElementById('ratingsCount').textContent = data.ratingsCount;
+    document.getElementById('ratingsCount').textContent = data.ratingsCount
+        .toLocaleString('en-US', { minimumFractionDigits: 0 }).replace(/,/g, ' ');
 
     let newReview = document.createElement('div');
     newReview.classList.add('review', 'row', 'justify-content-center');
@@ -254,10 +258,10 @@ function updateReviewUI(data) {
 function generateStars(ratingValue) {
     let starsHtml = '';
     for (let i = 1; i <= ratingValue; i++) {
-        starsHtml += '<img class="star" src="/stars/full-star.jpeg" alt="Full Star">';
+        starsHtml += '<span style="margin-right: 4px"><img class="star" src="/stars/full-star.jpeg" alt="Full Star"></span>';
     }
     for (let i = ratingValue + 1; i <= 5; i++) {
-        starsHtml += '<img class="star" src="/stars/empty-star.png" alt="Empty Star">';
+        starsHtml += '<span style="margin-right: 4px"><img class="star" src="/stars/empty-star.png" alt="Empty Star"></span>';
     }
     return starsHtml;
 }
@@ -268,40 +272,40 @@ function formatDate(dateStr) {
     return date.toLocaleDateString(undefined, options);
 }
 
-//TODO: check // Login Form
-document.addEventListener('DOMContentLoaded', function () {
-    const loginForm = document.getElementById('loginForm');
-    if (loginForm) {
-        loginForm.addEventListener('submit', function (event) {
-            event.preventDefault();
-            const formData = new FormData(this);
-            const email = formData.get('email');
-            const password = formData.get('password');
-
-            fetch('/users/login/perform_login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    [csrfHeaderName]: csrfToken
-                },
-                body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Login failed.");
-                    }
-                    return response.text();
-                })
-                .then(() => {
-                    window.location.href = '/';
-                })
-                .catch(error => {
-                    document.getElementById('loginFormErrors').innerText = error.message;
-                    document.getElementById('loginFormErrors').style.display = 'block';
-                });
-        });
-    }
-});
+// //TODO: check // Login Form
+// document.addEventListener('DOMContentLoaded', function () {
+//     const loginForm = document.getElementById('loginForm');
+//     if (loginForm) {
+//         loginForm.addEventListener('submit', function (event) {
+//             event.preventDefault();
+//             const formData = new FormData(this);
+//             const email = formData.get('email');
+//             const password = formData.get('password');
+//
+//             fetch('/users/login/perform_login', {
+//                 method: 'POST',
+//                 headers: {
+//                     'Content-Type': 'application/x-www-form-urlencoded',
+//                     [csrfHeaderName]: csrfToken
+//                 },
+//                 body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+//             })
+//                 .then(response => {
+//                     if (!response.ok) {
+//                         throw new Error("Login failed.");
+//                     }
+//                     return response.text();
+//                 })
+//                 .then(() => {
+//                     window.location.href = '/';
+//                 })
+//                 .catch(error => {
+//                     document.getElementById('loginFormErrors').innerText = error.message;
+//                     document.getElementById('loginFormErrors').style.display = 'block';
+//                 });
+//         });
+//     }
+// });
 
 //TODO: check // Registration Form
 function registerUser() {

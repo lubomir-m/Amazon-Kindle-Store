@@ -77,15 +77,17 @@ public class RatingServiceImpl implements RatingService {
         Book book = this.bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("Book not found."));
         Optional<Review> optionalReview = this.reviewRepository.findByRatingId(rating.getId());
 
+
         book.removeRating(rating);
         if (optionalReview.isPresent()) {
             Review review = optionalReview.get();
             book.removeReviews(review);
             this.reviewRepository.delete(review);
+            this.ratingRepository.delete(rating);
             return "The rating and the review associated with it were deleted.";
         }
-        this.ratingRepository.delete(rating);
 
+        this.ratingRepository.delete(rating);
         return "The rating was deleted.";
     }
 

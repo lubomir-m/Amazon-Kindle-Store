@@ -72,18 +72,10 @@ public class GlobalControllerAdvice {
         return this.categoryService.getDirectSubcategories(1L);
     }
 
-    //TODO: fix this
+
     @ModelAttribute("currentUrl")
     public String populateCurrentUrl(HttpServletRequest request) {
-        String url = request.getRequestURL().toString();
-        System.out.println("Current URL:" + url);
-        if (url.contains("change-currency/")) {
-            return url.replace("change-currency/", "");
-        } else if (url.contains("change-currency")) {
-            return url.replace("change-currency", "");
-        } else {
-            return url;
-        }
+        return request.getRequestURL().toString();
     }
 
     //TODO: check

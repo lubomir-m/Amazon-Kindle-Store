@@ -71,13 +71,28 @@
                     </a>
                 </div>
                 <div class="dropdown-account">
-                    <div><a th:href="@{/users/profile}">Your Account</a></div>
-                    <div><a th:href="@{/users/books}">Your eBooks</a></div>
-                    <div><a th:href="@{/users/orders}">Your Orders</a></div>
-                    <div><a th:href="@{/users/ratings}">Your Ratings</a></div>
-                    <div><a th:href="@{/users/reviews}">Your Reviews</a></div>
-                    <div><a th:href="@{/users/list}">Your List</a></div>
-                    <div><a th:href="@{/users/cart}">Your Cart</a></div>
+                    <div class="dropdown-account-title">Your Account</div>
+
+                    <div th:if="${!isLoggedIn}"><a th:href="@{/users/login}">Sign in</a></div>
+                    <div th:if="${!isLoggedIn}"><a th:href="@{/users/register}">Register</a></div>
+
+                    <div th:if="${isLoggedIn}">
+                        <div><a th:href="@{/users/profile}">Profile</a></div>
+                        <div><a th:href="@{/users/books}">Owned eBooks</a></div>
+                        <div><a th:href="@{/users/orders}">Orders</a></div>
+                        <div><a th:href="@{/users/ratings}">Ratings</a></div>
+                        <div><a th:href="@{/users/reviews}">Reviews</a></div>
+                        <div><a th:href="@{/users/list}">List</a></div>
+                        <div><a th:href="@{/users/cart}">Cart</a></div>
+
+                        <div class="logout-div">
+                            <form th:action="@{/users/logout}" method="post">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <button type="submit" class="logout-btn">Sign out</button>
+                            </form>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div class="cart col-auto">
@@ -127,6 +142,8 @@
             </div>
             <div class="nav-section right col-6">
                 <div class="row justify-content-end">
+                    <a th:if="${!isLoggedIn}" class="col-auto" th:href="@{/users/login}">Sign in</a>
+                    <a th:if="${!isLoggedIn}" class="col-auto" th:href="@{/users/register}">Register</a>
                     <a class="col-auto" th:href="@{/admin-panel}" sec:authorize="hasRole('ADMIN')">Admin Panel</a>
                     <a class="col-auto" th:href="@{/fx-rates}">FX Rates</a>
                     <a class="col-auto" th:href="@{/customer-service}">Customer Service</a>

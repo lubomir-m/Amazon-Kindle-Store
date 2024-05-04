@@ -23,11 +23,12 @@
             <div id="resultMessagesRating" style="color: green; margin-top: 10px;"></div>
 
             <button th:if="${#strings.containsIgnoreCase(currentUrl, '/books/')}"
-                    type="button" id="submit-rating-btn" th:data-book-id="${book.id}">Submit</button>
+                    type="button" id="submit-rating-btn" th:data-book-id="${book.id}"
+                    class="btn">Submit</button>
             <button th:if="${#strings.containsIgnoreCase(currentUrl, '/users/ratings') or
-            #strings.containsIgnoreCase(currentUrl, '/users/reviews')}"
+            #strings.containsIgnoreCase(currentUrl, '/users/reviews')}" class="btn"
                     type="button" id="update-rating-btn" th:data-book-id="0">Update</button>
-            <button type="button" id="close-rating-btn">Close</button>
+            <button class="btn" type="button" id="close-rating-btn">Close</button>
         </div>
 
         <div id="reviewModal" style="display:none; position:fixed; left:50%; top:50%;
@@ -53,18 +54,18 @@
             </div>
             <div>
                 <label for="reviewText">Review Text:</label>
-                <textarea id="reviewText" cols="30" rows="10" placeholder="Write your review here"></textarea>
+                <textarea id="reviewText" style="width: 100%" rows="10" placeholder="Write your review here"></textarea>
             </div>
 
             <div id="errorMessagesReview" style="color: red; margin-top: 10px;"></div>
             <div id="resultMessagesReview" style="color: green; margin-top: 10px;"></div>
 
-            <button th:if="${#strings.containsIgnoreCase(currentUrl, '/books/')}"
+            <button th:if="${#strings.containsIgnoreCase(currentUrl, '/books/')}" class="btn"
                     type="button" id="submit-review-btn" th:data-book-id="${book.id}">Submit</button>
             <button th:if="${#strings.containsIgnoreCase(currentUrl, '/users/ratings') or
-            #strings.containsIgnoreCase(currentUrl, '/users/reviews')}"
+            #strings.containsIgnoreCase(currentUrl, '/users/reviews')}" class="btn"
                     type="button" id="update-review-btn" th:data-book-id="0">Update</button>
-            <button type="button" id="close-review-btn">Close</button>
+            <button type="button" id="close-review-btn" class="btn">Close</button>
         </div>
     </div>
 

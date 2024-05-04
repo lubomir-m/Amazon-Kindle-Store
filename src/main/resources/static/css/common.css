@@ -50,7 +50,7 @@ body {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 160px;
+    min-width: 170px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
     padding: 1em;
@@ -230,4 +230,30 @@ body {
     display: inline-block;
     margin-top: 10px; /* Space above the button */
     cursor: pointer; /* Cursor for button hover */
+    background-color: #ddd;
+}
+
+.btn:hover {
+    background-color: silver;
+}
+
+.dropdown-account-title {
+    margin-bottom: 20px;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: black;
+}
+
+.dropdown-account-title:hover {
+    color: black;
+}
+
+.logout-div {
+    margin-top: 12px;
+}
+
+.logout-div button {
+    padding: 6px 12px;
+    border-radius: 5px;
+    border: 1px solid black;
 }

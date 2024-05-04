@@ -28,8 +28,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     Page<Book> findByShoppingCartsId(Long cartId, Pageable pageable);
     Page<Book> findByWishlistsId(Long wishlistId, Pageable pageable);
     @Query("select b from Book b join b.authors a join b.publisher p " +
-            "where b.title like %:keywords% or a.fullName like %:keywords% or p.name like %:keywords% " +
-            "order by b.id asc")
+            "where b.title like %:keywords% or a.fullName like %:keywords% or p.name like %:keywords%")
     Page<Book> findBySearchQuery(@Param("keywords") String keywords, Pageable pageable);
     Page<Book> findAllByIdInOrAuthorsIdInOrPublisherIdIn(List<Long> bookIds, List<Long> authorIds,
                                                                      List<Long> publisherIds, Pageable pageable);

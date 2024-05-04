@@ -30,22 +30,16 @@ public class SecurityConfig {
                         .requestMatchers("/", "/home", "/users/login", "/users/register", "/about",
                                 "/customer-service", "/books/*", "/publishers/*", "/authors/*",
                                 "categories/*", "/change-currency", "/change-currency/*", "/fx-rates",
-                                "/search/**", "/search").permitAll()
+                                "/search/**", "/search", "/users/logout").permitAll()
                         .requestMatchers("/css/**", "/javascript/**", "/images/**", "/icons/**",
                                 "/stars/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
                         .usernameParameter("email")
-                        .loginProcessingUrl("/users/login/perform_login")
-                        .successHandler((request, response, authentication) -> {
-                            response.setContentType("application/json;charset=UTF-8");
-                            response.getWriter().write("{\"status\":\"success\"}");
-                        })
-                        .failureHandler((request, response, exception) -> {
-                            response.setContentType("application/json;charset=UTF-8");
-                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            response.getWriter().write("{\"status\":\"error\",\"message\":\"Incorrect email or password\"}");
-                        }))
+                        .loginPage("/users/login")
+                        .loginProcessingUrl("/users/perform_login")
+                        .defaultSuccessUrl("/", true)
+                        .failureUrl("/users/login?error=true"))
                 .logout(logout -> logout
                         .logoutUrl("/users/logout")
                         .logoutSuccessUrl("/")

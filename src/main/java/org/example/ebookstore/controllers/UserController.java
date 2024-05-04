@@ -36,6 +36,11 @@ public class UserController {
         this.orderService = orderService;
     }
 
+    @GetMapping("/login")
+    public String displayLoginPage() {
+        return "user-log-in";
+    }
+
     @GetMapping("/register")
     public String displayRegistrationPage() {
         return "user-register";

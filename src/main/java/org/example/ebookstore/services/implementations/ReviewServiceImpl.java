@@ -125,8 +125,8 @@ public class ReviewServiceImpl implements ReviewService {
         book.removeRating(rating);
 
         this.bookRepository.save(book);
-        this.ratingRepository.delete(rating);
         this.reviewRepository.delete(review);
+        this.ratingRepository.delete(rating);
 
         return "The review and the rating associated with it were deleted.";
     }

@@ -55,7 +55,7 @@
                 <div class="kindle-ebook">Format: Kindle eBook | Available instantly</div>
                 <div class="rating">
                     <span   id="averageRating"
-                            th:text="${#numbers.formatDecimal(book.ratingsCount, 1, 'WHITESPACE', 1, 'POINT')}"></span>
+                            th:text="${#numbers.formatDecimal(book.averageRating, 1, 'WHITESPACE', 1, 'POINT')}"></span>
                     <!-- Full Stars -->
                     <span th:each="i : ${#numbers.sequence(1, book.fullStars)}">
         <img class="star" th:src="@{/stars/full-star.jpeg}" alt="Full Star">

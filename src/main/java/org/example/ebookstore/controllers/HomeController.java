@@ -98,6 +98,7 @@ public class HomeController {
 
         return "fx-rates";
     }
+
 }
 
 
