@@ -196,17 +196,20 @@ public class UserServiceImpl implements UserService {
         user.addRole(role);
         role.addUser(user);
         this.roleRepository.save(role);
+        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
 
         ShoppingCart shoppingCart = new ShoppingCart();
         Wishlist wishlist = new Wishlist();
         shoppingCart.setUser(user);
         wishlist.setUser(user);
+
+        save(user);
+
         this.shoppingCartRepository.save(shoppingCart);
         this.wishlistRepository.save(wishlist);
 
         user.setShoppingCart(shoppingCart);
         user.setWishlist(wishlist);
-        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
 
         return save(user);
     }
