@@ -25,4 +25,6 @@ public interface UserService {
     boolean hasUserReviewedBook(Long userId, Long bookId);
     User createUser(UserRegistrationDto userRegistrationDto);
     List<UserDto> findAll();
+    void addAdminRoleToUser(Model model, Long userId);
+    void removeAdminRoleFromUser(Model model, Long userId);
 }

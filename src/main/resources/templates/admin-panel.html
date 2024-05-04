@@ -36,9 +36,9 @@
                         <td class="col-auto" th:text="${user.id}"></td>
                         <td class="col-auto" th:text="${user.email}"></td>
                         <td class="col-auto" th:text="${user.username}"></td>
-                        <td class="col-auto"
+                        <td class="col-auto user-roles"
                             th:text="${#lists.size(user.roles) >= 2} ? 'User, Admin' : 'User'"></td>
-                        <td class="col-auto">
+                        <td class="col-auto user-buttons">
                             <div th:if="${#lists.size(user.roles) == 1}" class="add-admin-role-btn btn"
                                  th:data-user-id="${user.id}">Add Admin Role</div>
                             <div th:if="${#lists.size(user.roles) >= 2}" class="remove-admin-role-btn btn"

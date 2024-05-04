@@ -216,4 +216,38 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.findAll().stream().map(user -> this.modelMapper.map(user, UserDto.class))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
+
+    @Override
+    @Transactional
+    public void addAdminRoleToUser(Model model, Long userId) {
+        User admin = this.userRepository.findById(((UserDto) model.getAttribute("userDto")).getId())
+                .orElseThrow(() -> new IllegalArgumentException("Admin not found."));
+        Role role = this.roleRepository.findByName(Role.UserRole.ADMIN).get();
+        if (!admin.getRoles().contains(role)) {
+            throw new IllegalArgumentException("You are not authorized to change user roles.");
+        }
+        User user = this.userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found."));
+
+        user.addRole(role);
+        role.addUser(user);
+        this.roleRepository.save(role);
+        this.userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void removeAdminRoleFromUser(Model model, Long userId) {
+        User admin = this.userRepository.findById(((UserDto) model.getAttribute("userDto")).getId())
+                .orElseThrow(() -> new IllegalArgumentException("Admin not found."));
+        Role role = this.roleRepository.findByName(Role.UserRole.ADMIN).get();
+        if (!admin.getRoles().contains(role)) {
+            throw new IllegalArgumentException("You are not authorized to change user roles.");
+        }
+        User user = this.userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found."));
+
+        user.removeRole(role);
+        role.removeUser(user);
+        this.roleRepository.save(role);
+        this.userRepository.save(user);
+    }
 }
