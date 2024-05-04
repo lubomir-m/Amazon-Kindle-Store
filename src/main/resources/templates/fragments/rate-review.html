@@ -4,6 +4,9 @@
     <div th:if="${isLoggedIn}">
         <div id="ratingModal" style="display:none; position:fixed; left:50%; top:50%;
             transform:translate(-50%, -50%); z-index:1000; background:white; border:1px solid black; padding:20px;">
+            <div id="rating-modal-image-container">
+                <img id="rating-modal-image" src="" alt="Image Description">
+            </div>
             <div class="modal-text">Rate this eBook</div>
             <div th:if="${#strings.containsIgnoreCase(currentUrl, '/books/')}"
                  class="modal-details" th:text="${book.title}"></div>
@@ -33,6 +36,9 @@
 
         <div id="reviewModal" style="display:none; position:fixed; left:50%; top:50%;
             transform:translate(-50%, -50%); z-index:1000; background:white; border:1px solid black; padding:20px;">
+            <div id="review-modal-image-container">
+                <img id="review-modal-image" src="" alt="Image Description">
+            </div>
             <div class="modal-text">Review this eBook</div>
             <div th:if="${#strings.containsIgnoreCase(currentUrl, '/books/')}"
                  class="modal-details" th:text="${book.title}"></div>
@@ -54,7 +60,7 @@
             </div>
             <div>
                 <label for="reviewText">Review Text:</label>
-                <textarea id="reviewText" style="width: 100%" rows="10" placeholder="Write your review here"></textarea>
+                <textarea id="reviewText" style="width: 100%" rows="4" placeholder="Write your review here"></textarea>
             </div>
 
             <div id="errorMessagesReview" style="color: red; margin-top: 10px;"></div>

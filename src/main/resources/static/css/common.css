@@ -329,5 +329,19 @@ body {
 }
 
 .sign-in-here a {
+    color: #017185;
     text-decoration: none;
+}
+
+.sign-in-here a:hover {
+    color: #ff9900;
+}
+
+#commonModal, #loginModal, #ratingModal, #reviewModal {
+    border-radius: 10px;
+}
+
+#common-modal-image, #rating-modal-image, #review-modal-image {
+    width: 300px;
+    margin: 15px;
 }

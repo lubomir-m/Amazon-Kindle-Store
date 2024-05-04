@@ -30,7 +30,7 @@
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
     margin: 10%;
-    font-size: 1.3em; /* Adjust font-size as needed */
+    font-size: 1.2em; /* Adjust font-size as needed */
     font-weight: bold;
     text-align: center; /* Center the text horizontally */
     line-height: 1.4em; /* Adjust line height to manage text spacing */
@@ -44,7 +44,7 @@
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     margin: 10%;
-    font-size: 1.1em; /* Adjust font-size as needed */
+    font-size: 1em; /* Adjust font-size as needed */
     font-weight: bold;
     text-align: center; /* Center the text horizontally */
     line-height: 1.2em;
@@ -111,5 +111,5 @@
 }
 
 .recommended-book .book-title a {
-    color: #017185;
+    color: black;
 }

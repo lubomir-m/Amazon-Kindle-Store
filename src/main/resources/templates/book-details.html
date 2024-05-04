@@ -81,13 +81,11 @@
 
             <div class="book-details-3">
                 <div class="rate-review">
-                    <button type="button" class="open-rating-modal-btn btn" th:data-book-id="${book.id}">Rate this eBook
-                    </button>
+                    <button type="button" class="open-rating-modal-btn btn" th:data-book-id="${book.id}"
+                    th:data-img-url="${book.imageUrl}">Rate this eBook</button>
 
-                    <button type="button" class="open-review-modal-btn btn" th:data-book-id="${book.id}">Review this
-                        eBook
-                    </button>
-
+                    <button type="button" class="open-review-modal-btn btn" th:data-book-id="${book.id}"
+                            th:data-img-url="${book.imageUrl}">Review this eBook</button>
                 </div>
 
                 <div class="kindle-apps">Read with the free Kindle apps (available on iOS, Android, PC & Mac),
@@ -104,9 +102,12 @@
                 ${#numbers.formatDecimal(book.selectedCurrencyPrice, 1, 'WHITESPACE', 2, 'POINT')}"></div>
                 <div class="vat">Price includes VAT</div>
                 <div class="publisher-name" th:text="'Sold by: ' + *{publisher.name}"></div>
-                <div class="buy-now-btn btn" th:data-book-id="${book.id}">Buy Now</div>
-                <div class="add-to-cart-btn btn" th:data-book-id="${book.id}">Add to Cart</div>
-                <div class="add-to-your-list-btn btn" th:data-book-id="${book.id}">Add to Your List</div>
+                <div class="buy-now-btn btn" th:data-book-id="${book.id}"
+                     th:data-img-url="${book.imageUrl}">Buy Now</div>
+                <div class="add-to-cart-btn btn" th:data-book-id="${book.id}"
+                     th:data-img-url="${book.imageUrl}">Add to Cart</div>
+                <div class="add-to-your-list-btn btn" th:data-book-id="${book.id}"
+                     th:data-img-url="${book.imageUrl}">Add to Your List</div>
             </div>
         </div>
     </div>

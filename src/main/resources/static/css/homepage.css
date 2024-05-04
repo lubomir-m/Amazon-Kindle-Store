@@ -1,6 +1,9 @@
 .homepage {
-    margin-top: 1em;
-    margin-bottom: 1em;
+    margin-top: 15px;
+}
+
+.homepage-title {
+    margin-bottom: 15px;
 }
 
 .book-cover {
@@ -72,6 +75,14 @@
 
     width: 250px;
     max-width: 250px;
+}
+
+.book {
+    margin-bottom: 30px;
+}
+
+.book-title a:hover {
+    color: #ff9900;
 }
 
 .price {

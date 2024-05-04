@@ -15,7 +15,7 @@
 <div th:replace="~{fragments/navigation :: navigation}"></div>
 
 <div class="container-fluid">
-    <h1><div class="your-list row">Your List</div></h1>
+    <h1><div class="your-list row justify-content-center">List</div></h1>
 
     <div class="list-container row">
         <div class="col-8 offset-2 content-pages-container">
@@ -87,9 +87,11 @@
                             <div class="price" th:text="${book.selectedCurrency.symbol} +
                 ${#numbers.formatDecimal(book.selectedCurrencyPrice, 1, 'WHITESPACE', 2, 'POINT')}"></div>
                             <div class="available-instantly">Available instantly</div>
-                            <div class="buy-now-btn btn" th:data-book-id="${book.id}">Buy Now</div>
+                            <div class="buy-now-btn btn" th:data-book-id="${book.id}"
+                                 th:data-img-url="${book.imageUrl}">Buy Now</div>
                             <div class="delete-from-list-btn btn" th:data-book-id="${book.id}"
-                                 th:data-book-title="${book.title}">Delete from Your List</div>
+                                 th:data-book-title="${book.title}"
+                                 th:data-img-url="${book.imageUrl}">Delete from Your List</div>
                         </div>
                     </div>
                 </div>

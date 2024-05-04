@@ -91,9 +91,10 @@
                             <div class="price" th:text="${book.selectedCurrency.symbol} +
                 ${#numbers.formatDecimal(book.selectedCurrencyPrice, 1, 'WHITESPACE', 2, 'POINT')}"></div>
                             <div class="available-instantly">Available instantly</div>
-                            <div class="buy-now-btn btn" th:data-book-id="${book.id}">Buy Now</div>
+                            <div class="buy-now-btn btn" th:data-book-id="${book.id}"
+                                 th:data-img-url="${book.imageUrl}">Buy Now</div>
                             <div class="delete-from-cart-btn btn" th:data-book-id="${book.id}"
-                                 th:data-book-title="${book.title}">Delete from Cart</div>
+                                 th:data-book-title="${book.title}" th:data-img-url="${book.imageUrl}">Delete from Cart</div>
                         </div>
                     </div>
                 </div>

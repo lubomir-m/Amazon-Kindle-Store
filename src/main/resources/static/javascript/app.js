@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
             let bookId = this.getAttribute('data-book-id');
+            let imgUrl = this.getAttribute('data-img-url');
 
             fetch(`/books/${bookId}/check-rating`)
                 .then(response => {
@@ -52,11 +53,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById('resultMessagesRating').textContent = '';
                     document.getElementById('errorMessagesRating').textContent = '';
                     document.getElementById('ratingModal').style.display = 'block';
+                    document.getElementById('rating-modal-image').src = imgUrl;
                     openBackdrop();
                 })
                 .catch(error => {
                     document.getElementById('commonModalText').textContent = '';
                     document.getElementById('commonModalErrors').textContent = error.message;
+                    document.getElementById('common-modal-image').src = imgUrl;
                     openCommonModal();
                 });
         });
@@ -129,6 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             let bookId = this.getAttribute('data-book-id');
+            let imgUrl = this.getAttribute('data-img-url');
             const resultText = document.getElementById('resultMessagesReview');
             const errorText = document.getElementById('errorMessagesReview');
 
@@ -144,12 +148,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(() => {
                     resultText.textContent = '';
                     errorText.textContent = '';
+                    document.getElementById('review-modal-image').src = imgUrl;
                     document.getElementById('reviewModal').style.display = 'block';
                     openBackdrop();
                 })
                 .catch(error => {
                     document.getElementById('commonModalText').textContent = '';
                     document.getElementById('commonModalErrors').textContent = error.message;
+                    document.getElementById('common-modal-image').src = imgUrl;
                     openCommonModal();
                 });
         });
@@ -370,6 +376,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const buttons = document.querySelectorAll('.buy-now-btn');
     const modalText = document.getElementById('commonModalText');
     const modalErrors = document.getElementById('commonModalErrors');
+    const img = document.getElementById('common-modal-image');
 
 
     buttons.forEach(button => {
@@ -380,6 +387,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const bookId = this.getAttribute('data-book-id');
+            const imgUrl = this.getAttribute('data-img-url');
             fetch(`/books/${bookId}/purchase`, {
                 method: 'POST', headers: {
                     [csrfHeaderName]: csrfToken
@@ -394,11 +402,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (!result.ok) {
                         throw new Error(result.text);
                     }
+                    img.src = imgUrl;
                     modalErrors.textContent = '';
                     modalText.textContent = result.text;
                     openCommonModal();
                 })
                 .catch(error => {
+                    img.src = imgUrl;
                     modalText.textContent = '';
                     modalErrors.textContent = error.message;
                     openCommonModal();
@@ -421,6 +431,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             let bookId = button.getAttribute('data-book-id');
+            let imgUrl = button.getAttribute('data-img-url');
             fetch(`/books/${bookId}/cart`, {
                 method: 'POST', headers: {
                     [csrfHeaderName]: csrfToken
@@ -435,12 +446,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (!result.ok) {
                         throw new Error(result.text);
                     }
+                    document.getElementById('common-modal-image').src = imgUrl;
                     modalErrors.textContent = '';
                     modalText.textContent = 'The book was added to your shopping cart.';
                     document.getElementById('numberOfBooksInCart').textContent = result.text;
                     openCommonModal();
                 })
                 .catch(error => {
+                    document.getElementById('common-modal-image').src = imgUrl;
                     modalText.textContent = '';
                     modalErrors.textContent = error.message;
                     openCommonModal();
@@ -454,6 +467,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let button = document.querySelector('.add-to-your-list-btn');
     const modalText = document.getElementById('commonModalText');
     const modalErrors = document.getElementById('commonModalErrors');
+    const img = document.getElementById('common-modal-image');
 
     if (button) {
         button.addEventListener('click', function () {
@@ -463,6 +477,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             let bookId = button.getAttribute('data-book-id');
+            let imgUrl = button.getAttribute('data-img-url');
             fetch(`/books/${bookId}/list`, {
                 method: 'POST', headers: {
                     [csrfHeaderName]: csrfToken
@@ -474,6 +489,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                 })
                 .then(result => {
+                    img.src = imgUrl;
                     if (!result.ok) {
                         throw new Error(result.text);
                     }
@@ -499,7 +515,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const rating = this.getAttribute('data-rating');
             const title = this.getAttribute('data-title');
             const text = this.getAttribute('data-text');
+            const imgUrl = this.getAttribute('data-img-url');
 
+            document.getElementById('review-modal-image').src = imgUrl;
             document.getElementById('reviewRating').value = rating;
             document.getElementById('reviewTitle').value = title;
             document.getElementById('reviewText').value = text;
@@ -521,6 +539,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const bookId = this.getAttribute('data-book-id');
             const modalText = document.getElementById('commonModalText');
             const modalErrors = document.getElementById('commonModalErrors');
+            const img = document.getElementById('common-modal-image');
+            const imgUrl = this.getAttribute('data-img-url');
+
 
             fetch(`/books/${bookId}/review`, {
                 method: 'DELETE', headers: {
@@ -533,6 +554,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                 })
                 .then(result => {
+                    img.src = imgUrl;
                     if (!result.ok) {
                         throw new Error(result.text);
                     }
@@ -552,6 +574,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const updateButton = document.getElementById('update-review-btn');
     if (updateButton) {
+        let reviewUpdateSuccess = false;
         updateButton.addEventListener('click', function () {
             const bookId = this.getAttribute('data-book-id');
             const reviewRating = document.getElementById('reviewRating').value;
@@ -564,6 +587,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             const reviewData = {reviewRating, reviewTitle, reviewText};
 
+
             fetch(`/books/${bookId}/review/`, {
                 method: 'PUT', headers: {
                     'Content-Type': 'application/json', [csrfHeaderName]: csrfToken
@@ -574,6 +598,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         throw new Error("Unable to update review due to an error.");
                     }
 
+                    reviewUpdateSuccess = true;
                     document.getElementById('errorMessagesReview').textContent = '';
                     document.getElementById('resultMessagesReview').textContent = 'The review was updated successfully.';
                 })
@@ -581,6 +606,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById('resultMessagesReview').textContent = '';
                     document.getElementById('errorMessagesReview').textContent = error.message;
                 });
+        });
+
+        const closeReviewModalButton = document.getElementById('close-review-btn');
+        closeReviewModalButton.addEventListener('click', function () {
+            if (reviewUpdateSuccess) {
+                window.location.href = '/users/reviews';
+            }
         });
     }
 });
@@ -592,6 +624,9 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener('click', function () {
             const bookId = this.getAttribute('data-book-id');
             const rating = this.getAttribute('data-rating');
+            const imgUrl = this.getAttribute('data-img-url');
+            const img = document.getElementById('rating-modal-image');
+            img.src = imgUrl;
 
             document.getElementById('bookRating').value = rating;
 
@@ -612,6 +647,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const bookId = this.getAttribute('data-book-id');
             const modalText = document.getElementById('commonModalText');
             const modalErrors = document.getElementById('commonModalErrors');
+            const imgUrl = this.getAttribute('data-img-url');
+            const img = document.getElementById('common-modal-image');
+            img.src = imgUrl;
 
             fetch(`/books/${bookId}/rate`, {
                 method: 'DELETE', headers: {
@@ -643,6 +681,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const updateButton = document.getElementById('update-rating-btn');
     if (updateButton) {
+        let updateRatingSuccess = false;
+
         updateButton.addEventListener('click', function () {
             const bookId = this.getAttribute('data-book-id');
             const rating = document.getElementById('bookRating').value;
@@ -651,18 +691,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('errorMessagesRating').textContent = 'Please select a rating.';
                 return;
             }
-            const reviewData = {rating};
+            const ratingData = {rating};
 
             fetch(`/books/${bookId}/rate/`, {
                 method: 'PUT', headers: {
                     'Content-Type': 'application/json', [csrfHeaderName]: csrfToken
-                }, body: JSON.stringify(reviewData)
+                }, body: JSON.stringify(ratingData)
             })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("Unable to update rating due to an error.");
                     }
 
+                    updateRatingSuccess = true;
                     document.getElementById('errorMessagesRating').textContent = '';
                     document.getElementById('resultMessagesRating').textContent = 'The rating was updated successfully.';
                 })
@@ -670,6 +711,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById('resultMessagesRating').textContent = '';
                     document.getElementById('errorMessagesRating').textContent = error.message;
                 });
+        });
+
+        const closeRatingModalButton = document.getElementById('close-rating-btn');
+        closeRatingModalButton.addEventListener('click', function () {
+            if (updateRatingSuccess) {
+                window.location.href = '/users/ratings';
+            }
         });
     }
 });

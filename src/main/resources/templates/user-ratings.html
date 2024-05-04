@@ -59,8 +59,10 @@
 
                         <div class="item-buttons">
                             <div class="update-rating-btn btn" th:data-book-id="${rating.book.id}"
-                                 th:data-rating="${rating.ratingValue}">Update</div>
-                            <div class="delete-rating-btn btn" th:data-book-id="${rating.book.id}">Delete</div>
+                                 th:data-rating="${rating.ratingValue}"
+                                 th:data-img-url="${rating.book.imageUrl}">Update</div>
+                            <div class="delete-rating-btn btn" th:data-book-id="${rating.book.id}"
+                                 th:data-img-url="${rating.book.imageUrl}">Delete</div>
                         </div>
                     </div>
                 </div>
