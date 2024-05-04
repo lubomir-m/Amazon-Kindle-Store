@@ -1,11 +1,10 @@
-
 const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
 const csrfHeaderName = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
 
 function openLoginModal() {
-        document.getElementById('loginModal').style.display = 'block';
-        openBackdrop();
+    document.getElementById('loginModal').style.display = 'block';
+    openBackdrop();
 }
 
 function closeLoginModal() {
@@ -91,12 +90,9 @@ document.addEventListener('DOMContentLoaded', function () {
             let ratingData = {rating: rating};
             let bookId = this.getAttribute('data-book-id');
             fetch(`/books/${bookId}/rate`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    [csrfHeaderName]: csrfToken
-                },
-                body: JSON.stringify(ratingData)
+                method: 'POST', headers: {
+                    'Content-Type': 'application/json', [csrfHeaderName]: csrfToken
+                }, body: JSON.stringify(ratingData)
             })
                 .then(response => {
                     if (!response.ok) {
@@ -111,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     resultText.textContent = 'Your rating has been submitted successfully.';
                     document.getElementById('averageRating').textContent = data.averageRating.toFixed(1);
                     document.getElementById('ratingsCount').textContent = data.ratingsCount
-                        .toLocaleString('en-US', { minimumFractionDigits: 0 }).replace(/,/g, ' ');
+                        .toLocaleString('en-US', {minimumFractionDigits: 0}).replace(/,/g, ' ');
                 })
                 .catch(error => {
                     resultText.textContent = '';
@@ -188,18 +184,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             let reviewData = {
-                reviewTitle: reviewTitle,
-                reviewText: reviewText,
-                reviewRating: parseInt(reviewRating)
+                reviewTitle: reviewTitle, reviewText: reviewText, reviewRating: parseInt(reviewRating)
             }
 
             fetch(`/books/${bookId}/review`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    [csrfHeaderName]: csrfToken
-                },
-                body: JSON.stringify(reviewData)
+                method: 'POST', headers: {
+                    'Content-Type': 'application/json', [csrfHeaderName]: csrfToken
+                }, body: JSON.stringify(reviewData)
             })
                 .then(response => {
                     if (!response.ok) {
@@ -225,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function updateReviewUI(data) {
     document.getElementById('averageRating').textContent = data.averageRating.toFixed(1);
     document.getElementById('ratingsCount').textContent = data.ratingsCount
-        .toLocaleString('en-US', { minimumFractionDigits: 0 }).replace(/,/g, ' ');
+        .toLocaleString('en-US', {minimumFractionDigits: 0}).replace(/,/g, ' ');
 
     let newReview = document.createElement('div');
     newReview.classList.add('review', 'row', 'justify-content-center');
@@ -272,99 +263,92 @@ function formatDate(dateStr) {
     return date.toLocaleDateString(undefined, options);
 }
 
-// //TODO: check // Login Form
-// document.addEventListener('DOMContentLoaded', function () {
-//     const loginForm = document.getElementById('loginForm');
-//     if (loginForm) {
-//         loginForm.addEventListener('submit', function (event) {
-//             event.preventDefault();
-//             const formData = new FormData(this);
-//             const email = formData.get('email');
-//             const password = formData.get('password');
-//
-//             fetch('/users/login/perform_login', {
-//                 method: 'POST',
-//                 headers: {
-//                     'Content-Type': 'application/x-www-form-urlencoded',
-//                     [csrfHeaderName]: csrfToken
-//                 },
-//                 body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
-//             })
-//                 .then(response => {
-//                     if (!response.ok) {
-//                         throw new Error("Login failed.");
-//                     }
-//                     return response.text();
-//                 })
-//                 .then(() => {
-//                     window.location.href = '/';
-//                 })
-//                 .catch(error => {
-//                     document.getElementById('loginFormErrors').innerText = error.message;
-//                     document.getElementById('loginFormErrors').style.display = 'block';
-//                 });
-//         });
-//     }
-// });
+// Register User Button
+document.addEventListener('DOMContentLoaded', function () {
+    const modalText = document.getElementById('commonModalText');
+    const modalErrors = document.getElementById('commonModalErrors');
+    const modalCloseButton = document.getElementById('commonModalCloseButton');
+    let registrationSuccess = false;
 
-//TODO: check // Registration Form
-function registerUser() {
-    const email = document.getElementById('email').value;
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-    const firstName = document.getElementById('firstName').value;
-    const lastName = document.getElementById('lastName').value;
-    const age = parseInt(document.getElementById('age').value);
+    const openRegistrationModal = function(event) {
+        event.stopPropagation();
 
+        const email = document.getElementById('email').value;
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
+        const age = parseInt(document.getElementById('age').value);
 
-    if (!email || !username || !password || password !== confirmPassword ||
-        !firstName || !lastName || isNaN(age)) {
-        document.getElementById('errorMessagesRegistration').textContent = 'Please fill in all fields correctly.';
-        return;
-    }
+        if (!email || !username || !password || !firstName || !lastName || isNaN(age)) {
+            modalText.textContent = '';
+            modalErrors.textContent = 'Please fill in all fields correctly.';
+            openCommonModal();
+            return;
+        }
 
-    const userData = {
-        email: email,
-        username: username,
-        password: password,
-        confirmPassword: confirmPassword,
-        firstName: firstName,
-        lastName: lastName,
-        age: age
+        if (password !== confirmPassword) {
+            modalText.textContent = '';
+            modalErrors.textContent = 'The passwords do not match.';
+            openCommonModal();
+            return;
+        }
+
+        const userData = {
+            email: email,
+            username: username,
+            password: password,
+            confirmPassword: confirmPassword,
+            firstName: firstName,
+            lastName: lastName,
+            age: age
+        };
+
+        fetch('/users/register', {
+            method: 'POST', headers: {
+                'Content-Type': 'application/json',
+                [csrfHeaderName]: csrfToken
+            }, body: JSON.stringify(userData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(text);
+                    });
+                }
+                return response.text();
+            })
+            .then(result => {
+                registrationSuccess = true;
+                modalErrors.textContent = '';
+                modalText.textContent = 'You have been registered successfully.';
+                openCommonModal();
+            })
+            .catch(error => {
+                modalText.textContent = '';
+                modalErrors.textContent = error.message;
+                openCommonModal();
+            });
     };
 
-    fetch('/users/register', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            [csrfHeaderName]: csrfToken
-        },
-        body: JSON.stringify(userData)
-    })
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(data => {
-                    throw new Error(Object.values(data).join(", "));
-                });
+    const registerUserButton = document.getElementById('register-user-btn');
+
+    if (registerUserButton) {
+        registerUserButton.addEventListener('click', openRegistrationModal);
+
+        modalCloseButton.addEventListener('click', function () {
+            if (registrationSuccess) {
+                window.location.href = '/users/login';
             }
-            return response.json();
-        })
-        .then(data => {
-            alert('You have registered successfully.');
-            window.location.href = '/users/login';
-        })
-        .catch(error => {
-            document.getElementById('errorMessagesRegistration').textContent = error.message;
         });
-}
+    }
+});
+
 
 function openCommonModal() {
-    if (isLoggedIn) {
-        document.getElementById('commonModal').style.display = 'block';
-        openBackdrop();
-    }
+    document.getElementById('commonModal').style.display = 'block';
+    openBackdrop();
 }
 
 function closeCommonModal() {
@@ -397,8 +381,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const bookId = this.getAttribute('data-book-id');
             fetch(`/books/${bookId}/purchase`, {
-                method: 'POST',
-                headers: {
+                method: 'POST', headers: {
                     [csrfHeaderName]: csrfToken
                 }
             })
@@ -439,8 +422,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             let bookId = button.getAttribute('data-book-id');
             fetch(`/books/${bookId}/cart`, {
-                method: 'POST',
-                headers: {
+                method: 'POST', headers: {
                     [csrfHeaderName]: csrfToken
                 }
             })
@@ -482,8 +464,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             let bookId = button.getAttribute('data-book-id');
             fetch(`/books/${bookId}/list`, {
-                method: 'POST',
-                headers: {
+                method: 'POST', headers: {
                     [csrfHeaderName]: csrfToken
                 }
             })
@@ -510,10 +491,10 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Update and Delete Review Buttons
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const updateButtons = document.querySelectorAll('.update-review-btn');
     updateButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const bookId = this.getAttribute('data-book-id');
             const rating = this.getAttribute('data-rating');
             const title = this.getAttribute('data-title');
@@ -542,8 +523,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const modalErrors = document.getElementById('commonModalErrors');
 
             fetch(`/books/${bookId}/review`, {
-                method: 'DELETE',
-                headers: {
+                method: 'DELETE', headers: {
                     [csrfHeaderName]: csrfToken
                 }
             })
@@ -585,12 +565,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const reviewData = {reviewRating, reviewTitle, reviewText};
 
             fetch(`/books/${bookId}/review/`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    [csrfHeaderName]: csrfToken
-                },
-                body: JSON.stringify(reviewData)
+                method: 'PUT', headers: {
+                    'Content-Type': 'application/json', [csrfHeaderName]: csrfToken
+                }, body: JSON.stringify(reviewData)
             })
                 .then(response => {
                     if (!response.ok) {
@@ -598,8 +575,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
 
                     document.getElementById('errorMessagesReview').textContent = '';
-                    document.getElementById('resultMessagesReview').textContent =
-                        'The review was updated successfully.';
+                    document.getElementById('resultMessagesReview').textContent = 'The review was updated successfully.';
                 })
                 .catch(error => {
                     document.getElementById('resultMessagesReview').textContent = '';
@@ -610,10 +586,10 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Update and Delete Rating Buttons
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const updateButtons = document.querySelectorAll('.update-rating-btn');
     updateButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const bookId = this.getAttribute('data-book-id');
             const rating = this.getAttribute('data-rating');
 
@@ -638,8 +614,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const modalErrors = document.getElementById('commonModalErrors');
 
             fetch(`/books/${bookId}/rate`, {
-                method: 'DELETE',
-                headers: {
+                method: 'DELETE', headers: {
                     [csrfHeaderName]: csrfToken
                 }
             })
@@ -679,12 +654,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const reviewData = {rating};
 
             fetch(`/books/${bookId}/rate/`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    [csrfHeaderName]: csrfToken
-                },
-                body: JSON.stringify(reviewData)
+                method: 'PUT', headers: {
+                    'Content-Type': 'application/json', [csrfHeaderName]: csrfToken
+                }, body: JSON.stringify(reviewData)
             })
                 .then(response => {
                     if (!response.ok) {
@@ -692,8 +664,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
 
                     document.getElementById('errorMessagesRating').textContent = '';
-                    document.getElementById('resultMessagesRating').textContent =
-                        'The rating was updated successfully.';
+                    document.getElementById('resultMessagesRating').textContent = 'The rating was updated successfully.';
                 })
                 .catch(error => {
                     document.getElementById('resultMessagesRating').textContent = '';
@@ -715,9 +686,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const modalText = document.getElementById('commonModalText');
             const modalErrors = document.getElementById('commonModalErrors');
 
-            fetch(`/users/cart/checkout` , {
-                method: 'POST',
-                headers: {
+            fetch(`/users/cart/checkout`, {
+                method: 'POST', headers: {
                     [csrfHeaderName]: csrfToken
                 }
             })
@@ -765,8 +735,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const bookTitle = this.getAttribute('data-book-title');
 
             fetch(`/books/${bookId}/cart`, {
-                method: 'DELETE',
-                headers: {
+                method: 'DELETE', headers: {
                     [csrfHeaderName]: csrfToken
                 }
             })
@@ -801,8 +770,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const bookTitle = this.getAttribute('data-book-title');
 
             fetch(`/books/${bookId}/list`, {
-                method: 'DELETE',
-                headers: {
+                method: 'DELETE', headers: {
                     [csrfHeaderName]: csrfToken
                 }
             })
@@ -841,6 +809,7 @@ function updateResultCount() {
 }
 
 
+// Admin Panel Buttons
 document.addEventListener('DOMContentLoaded', function () {
     const modalText = document.getElementById('commonModalText');
     const modalErrors = document.getElementById('commonModalErrors');
@@ -852,8 +821,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const userId = this.getAttribute('data-user-id');
 
             fetch(`/admin-panel/${userId}`, {
-                method: 'POST',
-                headers: {
+                method: 'POST', headers: {
                     [csrfHeaderName]: csrfToken
                 }
             })
@@ -893,8 +861,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const userId = this.getAttribute('data-user-id');
 
             fetch(`/admin-panel/${userId}`, {
-                method: 'DELETE',
-                headers: {
+                method: 'DELETE', headers: {
                     [csrfHeaderName]: csrfToken
                 }
             })

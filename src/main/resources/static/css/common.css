@@ -257,3 +257,77 @@ body {
     border-radius: 5px;
     border: 1px solid black;
 }
+
+.table-container {
+    margin: 40px 0;
+    border: 6px solid #BBBFBF;
+    border-radius: 10px;
+    padding: 20px 40px;
+}
+
+.remove-admin-role-btn {
+    background-color: #e14c4c;
+}
+
+.remove-admin-role-btn:hover {
+    background-color: #af5858;
+}
+
+.add-admin-role-btn {
+    background-color: #FFD814;
+}
+
+.add-admin-role-btn:hover {
+    background-color: #F7CA00;
+}
+
+.login-container, .registration-container {
+    min-width: 400px;
+}
+
+#loginForm {
+    margin-bottom: 30px;
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+}
+
+#loginForm input {
+    margin-bottom: 15px;
+}
+
+.sign-in-btn, .register-user-btn {
+    background-color: #FFD814;
+}
+
+.sign-in-btn:hover, .register-user-btn:hover {
+    background-color: #F7CA00;
+}
+
+.create-account {
+    padding-top: 15px;
+    border-top: 1px solid #BBBFBF;
+}
+
+.registration-container > *, .registration-form > * {
+    margin-bottom: 15px;
+}
+
+.registration-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.registration-form input {
+    width: 300px;
+}
+
+.sign-in-here {
+    padding-top: 15px;
+    border-top: 1px solid #BBBFBF;
+}
+
+.sign-in-here a {
+    text-decoration: none;
+}
