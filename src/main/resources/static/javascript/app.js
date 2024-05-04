@@ -811,3 +811,93 @@ function updateResultCount() {
         numberOfItems.textContent = (parseInt(numberOfItems.textContent) - 1).toString();
     }
 }
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const modalText = document.getElementById('commonModalText');
+    const modalErrors = document.getElementById('commonModalErrors');
+    const addAdminRoleButtons = document.querySelectorAll('.add-admin-role-btn');
+    const removeAdminRoleButtons = document.querySelectorAll('.remove-admin-role-btn');
+
+    addAdminRoleButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const userId = this.getAttribute('data-user-id');
+
+            fetch(`/admin-panel/${userId}`, {
+                method: 'POST',
+                headers: {
+                    [csrfHeaderName]: csrfToken
+                }
+            })
+                .then(response => {
+                    return response.text().then(text => {
+                        return {text: text, ok: response.ok};
+                    });
+                })
+                .then(result => {
+                    if (!result.ok) {
+                        throw new Error(result.text);
+                    }
+                    modalErrors.textContent = '';
+                    modalText.textContent = 'You have added the Admin role to the user.';
+                    openCommonModal();
+
+                    const tr = document.getElementById(userId);
+                    const userRolesTd = tr.querySelector('.user-roles');
+                    const userButtonsTd = tr.querySelector('.user-buttons');
+
+                    userRolesTd.textContent = 'User, Admin';
+                    userButtonsTd.innerHTML = `
+                        <div class="remove-admin-role-btn btn" data-user-id="${userId}">
+                        Remove Admin Role</div>
+                    `;
+                })
+                .catch(error => {
+                    modalText.textContent = '';
+                    modalErrors.textContent = error.message;
+                    openCommonModal();
+                });
+        });
+    });
+
+    removeAdminRoleButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const userId = this.getAttribute('data-user-id');
+
+            fetch(`/admin-panel/${userId}`, {
+                method: 'DELETE',
+                headers: {
+                    [csrfHeaderName]: csrfToken
+                }
+            })
+                .then(response => {
+                    return response.text().then(text => {
+                        return {text: text, ok: response.ok};
+                    });
+                })
+                .then(result => {
+                    if (!result.ok) {
+                        throw new Error(result.text);
+                    }
+                    modalErrors.textContent = '';
+                    modalText.textContent = 'You have removed the Admin role from the user.';
+                    openCommonModal();
+
+                    const tr = document.getElementById(userId);
+                    const userRolesTd = tr.querySelector('.user-roles');
+                    const userButtonsTd = tr.querySelector('.user-buttons');
+
+                    userRolesTd.textContent = 'User';
+                    userButtonsTd.innerHTML = `
+                        <div class="add-admin-role-btn btn" data-user-id="${userId}">
+                        Add Admin Role</div>
+                    `;
+                })
+                .catch(error => {
+                    modalText.textContent = '';
+                    modalErrors.textContent = error.message;
+                    openCommonModal();
+                });
+        });
+    });
+});
