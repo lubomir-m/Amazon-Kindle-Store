@@ -87,6 +87,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .get().getRate());
 
         for (Book book : books) {
+            if (this.userService.hasUserPurchasedBook(userId, book.getId())) {
+                continue;
+            }
+
             BigDecimal priceInSelectedCurrency = this.bookService.getPriceInSelectedCurrency(book, currency);
             totalOrderPrice = totalOrderPrice.add(priceInSelectedCurrency);
 

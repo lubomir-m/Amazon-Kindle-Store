@@ -4,7 +4,7 @@
     <div><h2>Most recent customer reviews</h2></div>
     <div class="review-list">
         <div class="review row justify-content-center" th:each="review : ${reviews}">
-            <div class="picture-container col-2 d-flex justify-content-end">
+            <div class="picture-container col-2 justify-content-end">
                 <img th:src="${review.user.pictureBase64}"/>
             </div>
             <div class="review-details col-5 d-flex">

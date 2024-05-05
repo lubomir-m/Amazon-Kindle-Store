@@ -214,6 +214,7 @@
 img {
     width: 200px;
     height: auto;
+    max-height: 100%;
 }
 
 .publisher-name {
