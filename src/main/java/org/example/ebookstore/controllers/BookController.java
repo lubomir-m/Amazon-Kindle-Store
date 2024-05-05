@@ -1,11 +1,8 @@
 package org.example.ebookstore.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.example.ebookstore.entities.Book;
 import org.example.ebookstore.entities.Currency;
-import org.example.ebookstore.entities.Review;
 import org.example.ebookstore.entities.dtos.BookDto;
-import org.example.ebookstore.entities.dtos.CategoryDto;
 import org.example.ebookstore.entities.dtos.ReviewDto;
 import org.example.ebookstore.services.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 public class BookController {

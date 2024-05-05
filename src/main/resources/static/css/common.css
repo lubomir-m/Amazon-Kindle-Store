@@ -359,3 +359,8 @@ body {
 .table-container thead th, .table-container tbody td {
     padding: 15px 20px;
 }
+
+#error-img {
+    height: auto;
+    max-height: 700px;
+}

@@ -1,7 +1,6 @@
 package org.example.ebookstore.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.example.ebookstore.entities.Author;
 import org.example.ebookstore.entities.Currency;
 import org.example.ebookstore.entities.dtos.AuthorDto;
 import org.example.ebookstore.entities.dtos.BookDto;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Map;
 import java.util.Optional;
 
 @Controller

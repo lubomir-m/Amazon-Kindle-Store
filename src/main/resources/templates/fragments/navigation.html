@@ -15,7 +15,7 @@
     </div>
     <div id="commonModal" style="display:none; position:fixed; left:50%; top:50%;
             transform:translate(-50%, -50%); z-index:1000; background:white; border:1px solid black; padding:20px;">
-        <div id="common-modal-image-container">
+        <div th:unless="${#strings.containsIgnoreCase(currentUrl, 'admin-panel')}" id="common-modal-image-container">
             <img id="common-modal-image" src="" alt="Image Description">
         </div>
         <div id="commonModalText"></div>

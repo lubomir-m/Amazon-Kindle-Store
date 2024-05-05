@@ -864,6 +864,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const addAdminRoleButtons = document.querySelectorAll('.add-admin-role-btn');
     const removeAdminRoleButtons = document.querySelectorAll('.remove-admin-role-btn');
 
+    let rolesModification = false;
+
     addAdminRoleButtons.forEach(button => {
         button.addEventListener('click', function () {
             const userId = this.getAttribute('data-user-id');
@@ -895,6 +897,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <div class="remove-admin-role-btn btn" data-user-id="${userId}">
                         Remove Admin Role</div>
                     `;
+                    rolesModification = true;
                 })
                 .catch(error => {
                     modalText.textContent = '';
@@ -935,6 +938,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <div class="add-admin-role-btn btn" data-user-id="${userId}">
                         Add Admin Role</div>
                     `;
+                    rolesModification = true;
                 })
                 .catch(error => {
                     modalText.textContent = '';
@@ -943,4 +947,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
         });
     });
+
+    if (addAdminRoleButtons.length > 0 || removeAdminRoleButtons.length > 0) {
+        const closeButton = document.getElementById('commonModalCloseButton');
+        closeButton.addEventListener('click', function () {
+            window.location.reload();
+        });
+    }
 });
