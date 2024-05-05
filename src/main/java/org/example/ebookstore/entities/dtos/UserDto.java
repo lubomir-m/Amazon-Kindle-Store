@@ -16,6 +16,7 @@ public class UserDto {
     private Currency selectedCurrency;
     private String pictureBase64;
     private Set<Role> roles;
+    private int age;
 
     public UserDto() {
     }
@@ -98,5 +99,13 @@ public class UserDto {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }

@@ -27,9 +27,10 @@ public class OrderServiceImpl implements OrderService {
     private final BookRepository bookRepository;
     private final ExchangeRateRepository exchangeRateRepository;
     private final ModelMapper modelMapper;
+    private final ShoppingCartRepository shoppingCartRepository;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, UserService userService, BookService bookService, OrderItemRepository orderItemRepository, BookRepository bookRepository, ExchangeRateRepository exchangeRateRepository, ModelMapper modelMapper) {
+    public OrderServiceImpl(OrderRepository orderRepository, UserService userService, BookService bookService, OrderItemRepository orderItemRepository, BookRepository bookRepository, ExchangeRateRepository exchangeRateRepository, ModelMapper modelMapper, ShoppingCartRepository shoppingCartRepository) {
         this.orderRepository = orderRepository;
         this.userService = userService;
         this.bookService = bookService;
@@ -37,6 +38,7 @@ public class OrderServiceImpl implements OrderService {
         this.bookRepository = bookRepository;
         this.exchangeRateRepository = exchangeRateRepository;
         this.modelMapper = modelMapper;
+        this.shoppingCartRepository = shoppingCartRepository;
     }
 
     @Override
@@ -76,6 +78,11 @@ public class OrderServiceImpl implements OrderService {
         orderItem.setOrder(order);
 
         user.addOrder(order);
+        ShoppingCart shoppingCart = user.getShoppingCart();
+        if (shoppingCart.getBooks().contains(book)) {
+            shoppingCart.removeBook(book);
+            this.shoppingCartRepository.save(shoppingCart);
+        }
 
         order = this.orderRepository.save(order);
         this.userService.save(user);
