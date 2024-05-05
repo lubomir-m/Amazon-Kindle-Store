@@ -345,3 +345,17 @@ body {
     width: 300px;
     margin: 15px;
 }
+
+#common-modal-image-container, #rating-modal-image-container, #review-modal-image-container {
+    max-height: 600px;
+    overflow: hidden;
+}
+
+.profile-field {
+    padding: 15px;
+    border-top: 1px solid #BBBFBF;
+}
+
+.table-container thead th, .table-container tbody td {
+    padding: 15px 20px;
+}

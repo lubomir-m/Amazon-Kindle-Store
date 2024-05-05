@@ -5,19 +5,42 @@
     <meta  name="_csrf" th:content="${_csrf.token}"/>
     <meta  name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>AmazonKindleStore.com</title>
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/common.css}">
 </head>
 <body>
 <div th:replace="~{fragments/navigation :: navigation}"></div>
 
 
-<div><a th:href="@{/users/books}">Your eBooks</a></div>
-<div><a th:href="@{/users/orders}">Your Orders</a></div>
-<div><a th:href="@{/users/ratings}">Your Ratings</a></div>
-<div><a th:href="@{/users/reviews}">Your Reviews</a></div>
-<div><a th:href="@{/users/list}">Your List</a></div>
-<div><a th:href="@{/users/cart}">Your Shopping Cart</a></div>
+<div class="container-fluid">
+    <div class="list-container row align-content-center">
+        <div class="col-auto table-container registration-container">
+            <h2 class="text-center">Account details</h2>
+            <div class="registration-form">
+                <div class="profile-field">
+                    <div><label>Email</label></div>
+                    <div th:text="${userDto.email}"></div>
+                </div>
+                <div class="profile-field">
+                    <div><label>Username</label></div>
+                    <div th:text="${userDto.username}"></div>
+                </div>
+                <div class="profile-field">
+                    <div><label>First name</label></div>
+                    <div th:text="${userDto.firstName}"></div>
+                </div>
+                <div class="profile-field">
+                    <div><label>Last name</label></div>
+                    <div th:text="${userDto.lastName}"></div>
+                </div>
+                <div class="profile-field">
+                    <div><label>Age</label></div>
+                    <div th:text="${userDto.age}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
