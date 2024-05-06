@@ -12,6 +12,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,9 +54,10 @@ public class InitialDatabaseSetup implements CommandLineRunner {
     private final BookService bookService;
     private ResourceLoader resourceLoader;
     private final ScheduledTaskAuditRepository scheduledTaskAuditRepository;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public InitialDatabaseSetup(ResourceLoader resourceLoader, PublisherRepository publisherRepository, AuthorRepository authorRepository, CategoryRepository categoryRepository, BookRepository bookRepository, CurrencyRepository currencyRepository, ExchangeRateRepository exchangeRateRepository, RoleRepository roleRepository, RatingRepository ratingRepository, ReviewRepository reviewRepository, WishlistRepository wishlistRepository, ShoppingCartRepository shoppingCartRepository, UserRepository userRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, PasswordEncoder passwordEncoder, UserService userService, AuthorService authorService, PictureRepository pictureRepository, ExchangeRateService exchangeRateService, BookService bookService, ScheduledTaskAuditRepository scheduledTaskAuditRepository) {
+    public InitialDatabaseSetup(ResourceLoader resourceLoader, PublisherRepository publisherRepository, AuthorRepository authorRepository, CategoryRepository categoryRepository, BookRepository bookRepository, CurrencyRepository currencyRepository, ExchangeRateRepository exchangeRateRepository, RoleRepository roleRepository, RatingRepository ratingRepository, ReviewRepository reviewRepository, WishlistRepository wishlistRepository, ShoppingCartRepository shoppingCartRepository, UserRepository userRepository, OrderRepository orderRepository, OrderItemRepository orderItemRepository, PasswordEncoder passwordEncoder, UserService userService, AuthorService authorService, PictureRepository pictureRepository, ExchangeRateService exchangeRateService, BookService bookService, ScheduledTaskAuditRepository scheduledTaskAuditRepository, JdbcTemplate jdbcTemplate) {
         this.publisherRepository = publisherRepository;
         this.authorRepository = authorRepository;
         this.categoryRepository = categoryRepository;
@@ -78,6 +80,7 @@ public class InitialDatabaseSetup implements CommandLineRunner {
         this.bookService = bookService;
         this.resourceLoader = resourceLoader;
         this.scheduledTaskAuditRepository = scheduledTaskAuditRepository;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
