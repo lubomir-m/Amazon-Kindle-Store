@@ -15,8 +15,9 @@
     </div>
     <div id="commonModal" style="display:none; position:fixed; left:50%; top:50%;
             transform:translate(-50%, -50%); z-index:1000; background:white; border:1px solid black; padding:20px;">
-        <div th:unless="${#strings.containsIgnoreCase(currentUrl, 'admin-panel')}" id="common-modal-image-container">
-            <img id="common-modal-image" src="" alt="Image Description">
+        <div th:unless="${#strings.containsIgnoreCase(currentUrl, 'admin-panel')
+                or #strings.containsIgnoreCase(currentUrl, '/users/cart')}" id="common-modal-image-container">
+            <img id="common-modal-image" src="" >
         </div>
         <div id="commonModalText"></div>
         <div id="commonModalErrors" style="color: red; margin-top: 10px;"></div>

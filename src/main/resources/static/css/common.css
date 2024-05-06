@@ -364,3 +364,7 @@ body {
     height: auto;
     max-height: 700px;
 }
+
+.about-section, .help-container {
+    margin-top: 30px;
+}

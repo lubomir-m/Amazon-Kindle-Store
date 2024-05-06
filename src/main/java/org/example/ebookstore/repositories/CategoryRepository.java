@@ -21,6 +21,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
             "from subcategories s join categories c on s.id = c.parent_id) " +
             "select * from subcategories s where s.id != :categoryId", nativeQuery = true)
     List<Category> findAllSubcategories(@Param("categoryId") Long categoryId);
+
     @Query(value = "with recursive parent_categories as (" +
             "select id, name, parent_id " +
             "from categories where id = :categoryId " +

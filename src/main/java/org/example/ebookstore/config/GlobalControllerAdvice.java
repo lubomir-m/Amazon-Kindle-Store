@@ -78,7 +78,6 @@ public class GlobalControllerAdvice {
         return request.getRequestURL().toString();
     }
 
-    //TODO: check
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
