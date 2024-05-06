@@ -18,7 +18,8 @@ import java.util.Set;
         @Index(name = "idx_book_average_rating", columnList = "average_rating"),
         @Index(name = "idx_book_publication_date", columnList = "publication_date"),
         @Index(name = "idx_book_price_eur", columnList = "price_eur"),
-        @Index(name = "idx_book_purchase_count", columnList = "purchase_count")
+        @Index(name = "idx_book_purchase_count", columnList = "purchase_count"),
+        @Index(name = "idx_book_search_column", columnList = "search_column")
 })
 public class Book extends BaseEntity {
     @ManyToMany
@@ -48,6 +49,9 @@ public class Book extends BaseEntity {
     @Column(nullable = false)
     @Size(min = 3)
     private String title;
+    @Column(name = "search_column", nullable = false, length = 500)
+    @Size(min = 3)
+    private String searchColumn;
     @Column(name = "publication_date", nullable = false)
     private LocalDate publicationDate;
     @ManyToOne
@@ -337,4 +341,11 @@ public class Book extends BaseEntity {
         this.purchaseCount = purchaseCount;
     }
 
+    public String getSearchColumn() {
+        return searchColumn;
+    }
+
+    public void setSearchColumn(String searchColumn) {
+        this.searchColumn = searchColumn;
+    }
 }

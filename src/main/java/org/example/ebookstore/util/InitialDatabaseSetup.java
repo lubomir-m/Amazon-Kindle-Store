@@ -636,6 +636,15 @@ public class InitialDatabaseSetup implements CommandLineRunner {
                 book.setDescription(descriptions.get(random.nextInt(descriptions.size())));
                 book.setCoverColor(Colors.getRandomColor());
 
+                StringBuilder searchSb = new StringBuilder();
+                searchSb.append(book.getTitle()).append(" ");
+                searchSb.append(book.getPublisher().getName()).append(" ");
+                for (Author author : book.getAuthors()) {
+                    searchSb.append(author.getFullName()).append(" ");
+                }
+                searchSb.deleteCharAt(searchSb.length() - 1);
+                book.setSearchColumn(searchSb.toString());
+
                 books.add(book);
             }
         } catch (IOException e) {

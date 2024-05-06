@@ -209,7 +209,13 @@ public class BookServiceImpl implements BookService {
 //        return this.bookRepository.findAllByIdInOrAuthorsIdInOrPublisherIdIn(bookIds, authorIds,
 //                publisherIds, pageable).map(book -> mapBookToDto(book, currency));
 
-        return this.bookRepository.findBySearchQuery(query, pageable)
+//        return this.bookRepository.findBySearchQuery(query, pageable)
+//                .map(book -> mapBookToDto(book, currency));
+
+//        return this.bookRepository.findAllBySearchColumnLikeIgnoreCase(query, pageable)
+//                .map(book -> mapBookToDto(book, currency));
+
+        return this.bookRepository.findAllBySearchQuery2(query, pageable)
                 .map(book -> mapBookToDto(book, currency));
     }
 }
