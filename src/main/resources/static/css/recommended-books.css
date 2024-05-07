@@ -5,8 +5,8 @@
 
 .recommended-book .book-cover {
     position: relative;
-    background-color: #ddd; /* Placeholder color, change as needed */
-    color: black; /* Set the text color to black */
+    background-color: #ddd;
+    color: black;
     overflow: hidden;
     text-overflow: ellipsis;
     margin-bottom: 15px;
@@ -24,18 +24,18 @@
     box-sizing: border-box;
 }
 
-/* Adjustments for the cover title and authors to ensure they do not overlap */
+
 .recommended-book .cover-title {
     display: -webkit-box;
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
     margin: 10%;
-    font-size: 1.2em; /* Adjust font-size as needed */
+    font-size: 1.2em;
     font-weight: bold;
-    text-align: center; /* Center the text horizontally */
-    line-height: 1.4em; /* Adjust line height to manage text spacing */
+    text-align: center;
+    line-height: 1.4em;
     max-height: 7em;
-    overflow: hidden; /* Hide overflow */
+    overflow: hidden;
     text-overflow: ellipsis;
 }
 
@@ -44,12 +44,12 @@
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     margin: 10%;
-    font-size: 1em; /* Adjust font-size as needed */
+    font-size: 1em;
     font-weight: bold;
-    text-align: center; /* Center the text horizontally */
+    text-align: center;
     line-height: 1.2em;
     max-height: 3.6em;
-    overflow: hidden; /* Hide overflow */
+    overflow: hidden;
     text-overflow: ellipsis;
 }
 
@@ -81,13 +81,13 @@
 }
 
 .recommended-book .star {
-    width: 1em; /* Set the size of the stars */
+    width: 1em;
     height: 1em;
     display: inline-block;
 }
 
 .recommended-book .rating {
-    /* Adjust your rating stars and count to be in-line and centered */
+
     display: flex;
     align-items: center;
     gap: 2px;
@@ -95,10 +95,10 @@
 }
 
 .recommended-book .rating span {
-    /* Adjust the span containing the text to align it properly */
+
     display: flex;
     align-items: center;
-    white-space: nowrap; /* Prevents the text from wrapping */
+    white-space: nowrap;
 }
 
 .recommended-book .number-of-ratings {

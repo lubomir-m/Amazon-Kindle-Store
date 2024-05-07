@@ -23,23 +23,23 @@ body {
 }
 
 .footer-text {
-    background-color: #131A22; /* Dark background for footer */
-    color: #ffffff; /* Light color for text */
-    font-size: 1.2em; /* Set a suitable font size */
-    padding: 2em 0; /* Top and bottom padding */
-    text-align: center; /* Center-align text */
-    line-height: 1.5; /* Space out the lines */
-    font-family: Arial, sans-serif; /* Use a clean, web-safe font */
+    background-color: #131A22;
+    color: #ffffff;
+    font-size: 1.2em;
+    padding: 2em 0;
+    text-align: center;
+    line-height: 1.5;
+    font-family: Arial, sans-serif;
 }
 
 .footer-text a {
-    color: #c60; /* Amazon-style orange color for links */
-    text-decoration: none; /* Removes underline from links */
-    font-weight: bold; /* Make the link bold to stand out */
+    color: #c60;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 .footer-text a:hover {
-    text-decoration: underline; /* Underline on hover for better UX */
+    text-decoration: underline;
 }
 
 .dropdwn {
@@ -95,12 +95,12 @@ body {
 
 .nav-section  a {
     color: white;
-    text-decoration: none; /* Removes underline from links */
+    text-decoration: none;
 }
 
-/* Hover effect for links */
+
 .nav-section a:hover {
-    color: #ff9900; /* Amazon's signature orange color for hover */
+    color: #ff9900;
 }
 
 .dropdwn:hover .dropdown-categories, .dropdwn:hover .dropdown-account {
@@ -108,12 +108,12 @@ body {
 }
 
 .dropdown-categories a {
-    color: black; /* Replace with the color you want for the text */
+    color: black;
 }
 
-/* You may also need to set a hover state if it's not changing correctly */
+
 .dropdown-categories a:hover {
-    color: #ff9900; /* Replace with the color you want on hover */
+    color: #ff9900;
 }
 
 .account, .cart-div {
@@ -135,15 +135,15 @@ body {
 }
 
 .search-button {
-    background-color: #febd69; /* Amazon's button color */
+    background-color: #febd69;
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
     border: none;
 }
 
-/* If you don't have a hover image, you can simply change the background color */
+
 .search-button:hover {
-    background-color: #febd69; /* Lighter shade for hover, replace with the color you prefer */
+    background-color: #febd69;
 }
 
 .search-icon {
@@ -170,9 +170,9 @@ body {
 }
 
 .nav-row {
-    align-items: center; /* Align items vertically */
-    padding-top: 10px; /* Add top padding */
-    padding-bottom: 10px; /* Add bottom padding */
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
     box-sizing: border-box;
 }
 
@@ -181,37 +181,37 @@ body {
 }
 
 .nav-section.center {
-    flex-grow: 1; /* Allow this section to fill the space */
+    flex-grow: 1;
 }
 
 
 .nav-row:first-child {
-    background-color: #131921; /* Dark background for the top row */
-    color: white; /* White text color */
+    background-color: #131921;
+    color: white;
     padding-top: 12px;
     padding-bottom: 12px;
 }
 
-/* Style for the second navigation row */
+
 .nav-row:nth-child(2) {
-    background-color: #232f3e; /* Slightly lighter background for the second row */
-    color: white; /* White text color */
+    background-color: #232f3e;
+    color: white;
 }
 
-/* General text color for links in the nav bar */
 
 
-/* Styling for the search box */
+
+
 .search-form input[type="text"] {
-    background-color: white; /* White background for input */
-    color: black; /* Black text color */
+    background-color: white;
+    color: black;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
-    padding: 8px 12px; /* Spacing inside the input */
-    border: 1px solid #ccc; /* Light border around the input */
+    padding: 8px 12px;
+    border: 1px solid #ccc;
 }
 
-/* Styling for the search button */
+
 
 
 .previous-btn, .next-btn {
@@ -225,11 +225,11 @@ body {
     color: black;
     font-weight: bold;
     padding: 10px 40px;
-    border-radius: 30px; /* Rounded corners for the button */
+    border-radius: 30px;
     text-align: center;
     display: inline-block;
-    margin-top: 10px; /* Space above the button */
-    cursor: pointer; /* Cursor for button hover */
+    margin-top: 10px;
+    cursor: pointer;
     background-color: #ddd;
 }
 

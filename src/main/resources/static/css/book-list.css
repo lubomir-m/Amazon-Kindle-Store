@@ -15,8 +15,8 @@
 
 .book-cover {
     position: relative;
-    background-color: #ddd; /* Placeholder color, change as needed */
-    color: black; /* Set the text color to black */
+    background-color: #ddd;
+    color: black;
     overflow: hidden;
     text-overflow: ellipsis;
 
@@ -38,18 +38,18 @@
     box-sizing: border-box;
 }
 
-/* Adjustments for the cover title and authors to ensure they do not overlap */
+
 .cover-title {
     display: -webkit-box;
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
     margin: 10%;
-    font-size: 1.3em; /* Adjust font-size as needed */
+    font-size: 1.3em;
     font-weight: bold;
-    text-align: center; /* Center the text horizontally */
-    line-height: 1.4em; /* Adjust line height to manage text spacing */
+    text-align: center;
+    line-height: 1.4em;
     max-height: 7em;
-    overflow: hidden; /* Hide overflow */
+    overflow: hidden;
     text-overflow: ellipsis;
 }
 
@@ -58,12 +58,12 @@
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     margin: 10%;
-    font-size: 1.1em; /* Adjust font-size as needed */
+    font-size: 1.1em;
     font-weight: bold;
-    text-align: center; /* Center the text horizontally */
+    text-align: center;
     line-height: 1.2em;
     max-height: 3.6em;
-    overflow: hidden; /* Hide overflow */
+    overflow: hidden;
     text-overflow: ellipsis;
 }
 
@@ -73,8 +73,8 @@
 }
 
 .book-authors a, .publisher-date a {
-    color: #017185; /* Similar to the official Amazon link color */
-    text-decoration: none; /* No underline */
+    color: #017185;
+    text-decoration: none;
 }
 
 .book-title {
@@ -90,30 +90,30 @@
 }
 
 .star {
-    width: 1em; /* Set the size of the stars */
+    width: 1em;
     height: 1em;
     display: inline-block;
 }
 
 .price {
-    font-size: 1.5em; /* Larger font for price */
-    color: black; /* Amazon's price color */
+    font-size: 1.5em;
+    color: black;
     font-weight: bold;
-    margin: 0.5em 0; /* Space above and below the price */
+    margin: 0.5em 0;
 }
 
 .rating {
-    /* Adjust your rating stars and count to be in-line and centered */
+
     display: flex;
     align-items: center;
     gap: 2px;
 }
 
 .rating span {
-    /* Adjust the span containing the text to align it properly */
+
     display: flex;
     align-items: center;
-    white-space: nowrap; /* Prevents the text from wrapping */
+    white-space: nowrap;
 }
 
 .number-of-ratings {
@@ -122,7 +122,7 @@
 }
 
 .available-instantly{
-    color: #565959; /* Color for secondary information */
+    color: #565959;
     font-size: 0.9em;
 }
 
@@ -137,15 +137,15 @@
     color: black;
     font-weight: bold;
     padding: 10px 40px;
-    border-radius: 30px; /* Rounded corners for the button */
+    border-radius: 30px;
     text-align: center;
     display: inline-block;
-    margin-top: 10px; /* Space above the button */
-    cursor: pointer; /* Cursor for button hover */
+    margin-top: 10px;
+    cursor: pointer;
 }
 
 .buy-now-btn:hover {
-    background-color: #FA8900; /* Slightly darker on hover */
+    background-color: #FA8900;
 }
 
 .book-details a:hover {

@@ -30,8 +30,8 @@
 
 .orders-list,
 .book-list {
-    display: flex; /* Ensure it stays a flex container */
-    flex-direction: column; /* Stack items */
+    display: flex;
+    flex-direction: column;
 }
 
 
