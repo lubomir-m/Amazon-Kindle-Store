@@ -243,7 +243,7 @@ public class InitialDatabaseSetup implements CommandLineRunner {
     }
 
     public void generateAuthors() {
-        // (100, 100, 10000)
+        // 13200 authors
         String[] firstNames = {
                 "James", "John", "Robert", "Michael", "William", "David", "Richard", "Joseph", "Thomas", "Charles",
                 "Christopher", "Daniel", "Matthew", "Anthony", "Mark", "Donald", "Steven", "Paul", "Andrew", "Joshua",

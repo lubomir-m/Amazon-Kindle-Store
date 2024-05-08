@@ -30,24 +30,21 @@ public class AppConfig {
         // Converter from byte[] to Base64 encoded string
         Converter<byte[], String> toBase64String = ctx -> Base64.getEncoder().encodeToString(ctx.getSource());
 
-        // Converter from Picture to Base64 encoded string with contentType
         Converter<Picture, String> pictureToBase64WithContentType = ctx -> {
             if (ctx.getSource() == null) {
-                return null; // or some default value if needed
+                return null; //
             }
             Picture picture = ctx.getSource();
-            String contentType = picture.getContentType(); // Ensure Picture class has getContentType()
+            String contentType = picture.getContentType();
             byte[] data = picture.getData();
             String base64Data = Base64.getEncoder().encodeToString(data);
             return String.format("data:%s;base64,%s", contentType, base64Data);
         };
 
-        // Define property mappings for User to UserDto
         modelMapper.createTypeMap(User.class, UserDto.class).addMappings(mapper -> {
             mapper.using(pictureToBase64WithContentType).map(User::getPicture, UserDto::setPictureBase64);
         });
 
-        // Define property mappings for Author to AuthorDto
         modelMapper.createTypeMap(Author.class, AuthorDto.class).addMappings(mapper -> {
             mapper.using(pictureToBase64WithContentType).map(Author::getPicture, AuthorDto::setPictureBase64);
         });
