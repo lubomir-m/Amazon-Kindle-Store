@@ -7,10 +7,10 @@ This is a clone of the Amazon Kindle Store created as the project for my Spring 
 
 ### Screenshots
 <p align="center">
-  <img src="screenshots/screenshot2.png" alt="Screenshot 2" width="500"/> <img src="screenshots/screenshot3.png" alt="Screenshot 3" width="500"/>
-  <img src="screenshots/screenshot4.png" alt="Screenshot 4" width="500"/> <img src="screenshots/screenshot5.png" alt="Screenshot 5" width="500"/>
-  <img src="screenshots/screenshot6.png" alt="Screenshot 6" width="500"/> <img src="screenshots/screenshot7.png" alt="Screenshot 7" width="500"/>
-  <img src="screenshots/screenshot8.png" alt="Screenshot 8" width="500"/> <img src="screenshots/screenshot9.png" alt="Screenshot 9" width="500"/>
+  <img src="screenshots/screenshot2.png" alt="Screenshot 2" width="400"/> <img src="screenshots/screenshot3.png" alt="Screenshot 3" width="400"/>
+  <img src="screenshots/screenshot4.png" alt="Screenshot 4" width="400"/> <img src="screenshots/screenshot5.png" alt="Screenshot 5" width="400"/>
+  <img src="screenshots/screenshot6.png" alt="Screenshot 6" width="400"/> <img src="screenshots/screenshot7.png" alt="Screenshot 7" width="400"/>
+  <img src="screenshots/screenshot8.png" alt="Screenshot 8" width="400"/> <img src="screenshots/screenshot9.png" alt="Screenshot 9" width="400"/>
 </p>
 
 ## Video Presentation
