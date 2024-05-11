@@ -86,6 +86,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         order.setExchangeRate(this.exchangeRateRepository.findFirstByCurrencyFromOrderByValidityDateDesc(currency)
                 .get().getRate());
 
+        int insertionOrder = 0;
         for (Book book : books) {
             if (this.userService.hasUserPurchasedBook(userId, book.getId())) {
                 continue;
@@ -104,6 +105,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             book.addOrders(order);
             book.setPurchaseCount(book.getPurchaseCount() + 1);
             orderItem.setOrder(order);
+            orderItem.setInsertionOrder(insertionOrder++);
         }
 
         order.setTotalPrice(this.bookService.round(totalOrderPrice));

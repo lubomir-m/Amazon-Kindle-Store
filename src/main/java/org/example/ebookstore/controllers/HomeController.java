@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -43,8 +42,7 @@ public class HomeController {
 
     @PostMapping("/change-currency")
     public String changeCurrency(@RequestParam String currencyCode, HttpServletResponse response,
-                                 @ModelAttribute("userDto") UserDto userDto,
-                                 RedirectAttributes redirectAttributes) {
+                                 @ModelAttribute("userDto") UserDto userDto) {
         if (userDto != null) {
             Optional<Currency> optional = this.currencyService.findByCodeIgnoreCase(currencyCode);
             if (optional.isPresent()) {
@@ -52,15 +50,14 @@ public class HomeController {
                 userDto.setSelectedCurrency(currency);
                 this.userService.updateUserCurrency(userDto.getId(), currency);
             }
-        } else {
-            Cookie cookie = new Cookie("selectedCurrency", currencyCode);
-            cookie.setMaxAge(60 * 60 * 24 * 7);
-            cookie.setHttpOnly(true);
-            cookie.setPath("/");
-            response.addCookie(cookie);
         }
 
-        redirectAttributes.addFlashAttribute("status", "Currency changed successfully.");
+        Cookie cookie = new Cookie("selectedCurrency", currencyCode);
+        cookie.setMaxAge(60 * 60 * 24 * 7);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
         return "redirect:/";
     }
 
