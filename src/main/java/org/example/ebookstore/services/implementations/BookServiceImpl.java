@@ -9,6 +9,7 @@ import org.example.ebookstore.services.interfaces.ExchangeRateService;
 import org.example.ebookstore.services.interfaces.PlaceholderReviewService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -110,6 +111,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Cacheable("homepageBookDtos")
     public List<BookDto> findFirst54BestSellers(Currency currency) {
         return this.bookRepository.findFirst54ByAverageRatingGreaterThanEqualOrderByPurchaseCountDesc(0.1)
                 .stream().map(book -> mapBookToDto(book, currency))

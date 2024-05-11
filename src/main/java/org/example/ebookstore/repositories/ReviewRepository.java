@@ -1,6 +1,8 @@
 package org.example.ebookstore.repositories;
 
 import org.example.ebookstore.entities.Review;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,8 +14,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@CacheConfig(cacheNames = "placeholderReviews")
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-    //TODO: cache this for one month
+    @Cacheable(cacheManager = "cacheManager", key = "'placeholderReviews'")
     List<Review> findFirst10ByOrderByIdAsc();
     @Query("select r from Review r left join r.book b where b.id = :bookId " +
             "order by r.submissionDate desc")

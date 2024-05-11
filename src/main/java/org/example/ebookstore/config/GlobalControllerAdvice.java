@@ -8,6 +8,8 @@ import org.example.ebookstore.services.interfaces.CategoryService;
 import org.example.ebookstore.services.interfaces.CurrencyService;
 import org.example.ebookstore.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,6 +26,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @ControllerAdvice
+@CacheConfig(cacheNames = {"currencies", "level2Categories"})
 public class GlobalControllerAdvice {
     private final CurrencyService currencyService;
     private final UserService userService;
@@ -36,8 +39,8 @@ public class GlobalControllerAdvice {
         this.categoryService = categoryService;
     }
 
-    //TODO: cache this for one day
     @ModelAttribute("allCurrencies")
+    @Cacheable(cacheNames = "currencies", cacheManager = "cacheManager", key = "'allCurrencies'")
     public List<Currency> populateCurrencies() {
         return currencyService.getAllCurrencies();
     }
@@ -66,8 +69,8 @@ public class GlobalControllerAdvice {
         return null;
     }
 
-    //TODO: cache this for one day
     @ModelAttribute("level2Categories")
+    @Cacheable(cacheNames = "level2Categories", cacheManager = "cacheManager", key = "'level2Categories'")
     public List<CategoryDto> populateCategories() {
         return this.categoryService.getDirectSubcategories(1L);
     }
