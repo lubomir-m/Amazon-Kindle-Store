@@ -18,6 +18,6 @@ This is a clone of the Amazon Kindle Store created as the project for my Spring 
 
 ## Installation
 > [!NOTE]
-> The original book data used in this project is sourced from the [Human Interface Laboratory, Kyushu University / book-dataset](https://github.com/uchidalab/book-dataset/tree/master/Task2) public repository. The CSV file included in this project has been modified for use in this specific application.
+> The original book data used in this project is sourced from the [Kyushu University / book-dataset](https://github.com/uchidalab/book-dataset/tree/master/Task2) public repository. The CSV file included in this project has been modified for use in this specific application.
 
 ## Usage
