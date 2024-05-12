@@ -23,7 +23,7 @@ You can find below a short video presentation of my clone project uploaded on Yo
 
 ## Installation
 1. Clone or download this repository
-2. Configure the following environment variables related to the database that you would like to use:
+2. Configure the following environment variables related to the database that you would like to use and the exchange rate API key:
    
 ```properties
 # Database Properties
@@ -38,6 +38,10 @@ backup.database.user=${DB_USERNAME}
 backup.database.password=${DB_PASSWORD}
 backup.file.path=src/database_backups
 backup.dump.path=/usr/local/mysql/bin/mysqldump
+
+# Free API key for getting the latest exchange rates with 1500 monthly requests
+# You can use this key or get your own key by registering at https://www.exchangerate-api.com/
+exchangerate.api.key=a9efd8f3e3c147edd16e527e
 ```
 
 3. Run the application
