@@ -49,6 +49,9 @@ public class ScheduledTasksServiceImpl implements ScheduledTasksService {
     @Value("${backup.dump.path}")
     private String sqlDumpPath;
 
+    @Value("${exchangerate.api.key}")
+    private String apiKey;
+
     @Autowired
     public ScheduledTasksServiceImpl(ExchangeRateService exchangeRateService, BookService bookService, ScheduledTaskAuditRepository scheduledTaskAuditRepository) {
         this.exchangeRateService = exchangeRateService;
@@ -74,7 +77,6 @@ public class ScheduledTasksServiceImpl implements ScheduledTasksService {
     }
 
     private Map<String, BigDecimal> getLatestFxRates() throws IOException, URISyntaxException {
-        String apiKey = "a9efd8f3e3c147edd16e527e";
         String urlStr = "https://v6.exchangerate-api.com/v6/" + apiKey + "/latest/EUR";
 
         URL url = new URI(urlStr).toURL();
