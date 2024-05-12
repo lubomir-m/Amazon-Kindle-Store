@@ -19,6 +19,7 @@ This is a clone of the Amazon Kindle Store created as the project for my Spring 
 </p>
 
 ## Video Presentation
+You can find below a short video presentation of my clone project uploaded on YouTube. If access to YouTube is restricted on your computer, you can download it from here [Video Presentation](add-the-link-here)
 
 ## Installation
 1. Clone or download this repository
@@ -40,8 +41,18 @@ backup.dump.path=/usr/local/mysql/bin/mysqldump
 ```
 
 3. Run the application
+  
+Whenever the application is run, the InitialDatabaseSetup component checks "if (this.roleRepository.count() < 2 || this.publisherRepository.count() == 0)" and, if true, generates the database. The TaskStartupRunner component checks if the database has been backed up and if the foreign exchange rates have been updated today. If not, it backs up the database, updates the exchange rates, and then updates the book prices in foreign currency. The database generation, backup, and updating the exchange rates and book prices takes about 6 minutes on my laptop. You can also use this [SQL dump file](add-the-link-here), if you prefer to not generate the database.
 
 > [!NOTE]
 > The original book data used in this project is sourced from the [Kyushu University / book-dataset](https://github.com/uchidalab/book-dataset/tree/master/Task2) public repository. The CSV file included in my repository has been modified for use in this specific application.
 
 ## Usage
+You need to enter an email and a password in order to log in to the application. The InitialDatabaseSetup component generates the following two accounts
+
+| Email            | Password |
+|------------------|----------|
+| admin@mail.com   | 1234     |
+| user@mail.com    | 1234     |
+
+admin@mail.com has the roles "ADMIN, USER", and user@mail.com has the role "USER". Only accounts with the ADMIN role can access the admin panel, which allows them to add and remove the ADMIN role from other accounts.
