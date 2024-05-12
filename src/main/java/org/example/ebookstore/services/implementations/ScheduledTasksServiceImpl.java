@@ -9,6 +9,7 @@ import org.example.ebookstore.services.interfaces.BookService;
 import org.example.ebookstore.services.interfaces.ExchangeRateService;
 import org.example.ebookstore.services.interfaces.ScheduledTasksService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cglib.core.Local;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,21 @@ public class ScheduledTasksServiceImpl implements ScheduledTasksService {
     private final ExchangeRateService exchangeRateService;
     private final BookService bookService;
     private final ScheduledTaskAuditRepository scheduledTaskAuditRepository;
+
+    @Value("${backup.database.name}")
+    private String dbName;
+
+    @Value("${backup.database.user}")
+    private String dbUser;
+
+    @Value("${backup.database.password}")
+    private String dbPass;
+
+    @Value("${backup.file.path}")
+    private String filePath;
+
+    @Value("${backup.dump.path}")
+    private String sqlDumpPath;
 
     @Autowired
     public ScheduledTasksServiceImpl(ExchangeRateService exchangeRateService, BookService bookService, ScheduledTaskAuditRepository scheduledTaskAuditRepository) {
@@ -87,16 +103,9 @@ public class ScheduledTasksServiceImpl implements ScheduledTasksService {
     @Scheduled(cron = "0 0 3 * * *")
     @Transactional
     public void backupDatabase() {
-        String dbName = "ebook_store";
-        String dbUser = "root";
-        String dbPass = "Password00!";
-        String filePath = "src/database_backups";
-
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String dateStr = formatter.format(new Date());
-
-
-        String executeCmd = "/usr/local/mysql/bin/mysqldump -u " + dbUser + " -p" + dbPass + " " + dbName + " -r " + filePath + "/"
+        String executeCmd = sqlDumpPath + " -u " + dbUser + " -p" + dbPass + " " + dbName + " -r " + filePath + "/"
                 + dbName + "_" + dateStr + ".sql";
 
         try {
