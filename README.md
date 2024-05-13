@@ -4,6 +4,22 @@
 
 ## Overview
 
+**Built with**
+<div style="display: flex; align-items: flex-start;">
+   <img src="https://techstack-generator.vercel.app/java-icon.svg" alt="icon" width="100" height="100" tile="Java"/>
+   <img width="100" src="https://user-images.githubusercontent.com/25181517/117201470-f6d56780-adec-11eb-8f7c-e70e376cfd07.png" alt="Spring" title="Spring"/>
+   <img width="100" src="https://user-images.githubusercontent.com/25181517/183891303-41f257f8-6b3d-487c-aa56-c497b880d0fb.png" alt="Spring Boot" title="Spring Boot"/>
+   <img src="https://techstack-generator.vercel.app/mysql-icon.svg" alt="icon" width="100" height="100" tile="MySQL"/>
+   <img width="100" src="https://user-images.githubusercontent.com/25181517/192108890-200809d1-439c-4e23-90d3-b090cf9a4eea.png" alt="IntelliJ" title="IntelliJ"/>
+   <img width="100" src="https://user-images.githubusercontent.com/25181517/192108372-f71d70ac-7ae6-4c0d-8395-51d8870c2ef0.png" alt="Git" title="Git"/><br>
+   <img src="https://techstack-generator.vercel.app/github-icon.svg" alt="icon" width="100" height="100" tile="GitHub"/>
+   <img src="https://techstack-generator.vercel.app/js-icon.svg" alt="icon" width="100" height="100" tile="JavaScript"/>
+   <img width="100" src="https://user-images.githubusercontent.com/25181517/192158954-f88b5814-d510-4564-b285-dff7d6400dad.png" alt="HTML" title="HTML"/>
+   <img height="100" width="100" src="https://cdn.simpleicons.org/thymeleaf" tile="Thymeleaf"/>
+   <img width="100" src="https://user-images.githubusercontent.com/25181517/183898674-75a4a1b1-f960-4ea9-abcb-637170a00a75.png" alt="CSS" title="CSS"/>
+   <img width="100" src="https://user-images.githubusercontent.com/25181517/183898054-b3d693d4-dafb-4808-a509-bab54cf5de34.png" alt="Bootstrap" title="Bootstrap"/>
+</div>
+
 This is a clone of the Amazon Kindle Store created as the project for my Spring Advanced course at Software University.
 The store supports a hierarchy of eBook categories, multiple currencies, pagination, filtering, sorting, users, roles,
 authors, publishers, wishlists, shopping carts and orders. Customers can add, delete, and update ratings and reviews and
@@ -31,7 +47,7 @@ Some of the other application features are:
 
 **The statistics below do not include tests**
 
-![Screenshot 10](screenshots/screenshot10.png)
+![Screenshot 10](screenshots/statistics.png)
 <p align="center">
   <img src="screenshots/screenshot2.png" alt="Screenshot 2" width="400"/> <img src="screenshots/screenshot3.png" alt="Screenshot 3" width="400"/>
   <img src="screenshots/screenshot4.png" alt="Screenshot 4" width="400"/> <img src="screenshots/screenshot5.png" alt="Screenshot 5" width="400"/>
