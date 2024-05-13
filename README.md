@@ -41,12 +41,14 @@ spring.datasource.driverClassName=com.mysql.cj.jdbc.Driver
 spring.datasource.url=jdbc:mysql://localhost:3306/ebook_store?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
 spring.datasource.username=${DB_USERNAME}
 spring.datasource.password=${DB_PASSWORD}
+
 # Database Backup Properties
 backup.database.name=ebook_store
 backup.database.user=${DB_USERNAME}
 backup.database.password=${DB_PASSWORD}
 backup.file.path=src/database_backups
 backup.dump.path=/usr/local/mysql/bin/mysqldump
+
 # Free API key for getting the latest exchange rates with 1500 monthly requests
 # You can use this key or get your own key by registering at https://www.exchangerate-api.com/
 exchangerate.api.key=a9efd8f3e3c147edd16e527e
