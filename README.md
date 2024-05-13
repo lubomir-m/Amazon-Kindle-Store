@@ -10,6 +10,21 @@ authors, publishers, wishlists, shopping carts and orders. Customers can add, de
 also search for books by title, author(s) name(s) and publisher name. Project Statistics: 193000 eBooks, 5909
 categories, 13200 authors, 152 publishers, and 8 currencies.
 
+The web application is designed to be fully responsive, ensuring an optimal viewing experience across various devices including monitors, laptops, tablets, and phones.
+Some of the other application features are:
+- Daily scheduled task to get the latest exchange rates via an API and update book prices in foreign currency
+- Extensive use of AJAX requests, modals, and DOM manipulation in order to improve the user experience by enabling the following functionalities without a full-page reload:
+  - Purchasing books
+  - Adding books to the user's list or shopping cart and updating the number of books in the cart
+  - Submitting ratings and reviews
+  - Dynamically updating the book's average rating and count of ratings upon submission
+  - Deleting the last review and displaying the new review on top
+  - Deleting books from the user’s list or cart, deleting ratings or reviews and showing the items as deleted
+- Cookie for saving the selected currency of users who are not logged in
+- Daily scheduled task to back up the database
+- Signin successes and failures logs
+- Performance logs
+
 ### Screenshots
 
 ![ER Diagram](screenshots/er_diagram.png)
