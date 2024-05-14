@@ -87,8 +87,7 @@ exchangerate.api.key=a9efd8f3e3c147edd16e527e
 
 3. Run the application
 
-Whenever the application is run, the InitialDatabaseSetup component checks "if (this.roleRepository.count() < 2 ||
-this.publisherRepository.count() == 0)" and, if true, generates the database. The TaskStartupRunner component checks if
+Whenever the application is run, the InitialDatabaseSetup component checks whether the "publishers" table is empty and, if it is, generates the database. The TaskStartupRunner component checks if
 the database has been backed up and if the foreign exchange rates have been updated today. If not, it backs up the
 database, updates the exchange rates, and then updates the book prices in foreign currency. The database generation,
 backup, and updating the exchange rates and book prices takes about 6 minutes on my laptop. You can also use
