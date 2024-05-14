@@ -29,7 +29,7 @@ categories, 13200 authors, 152 publishers, and 8 currencies.
 The web application is designed to be fully responsive, ensuring an optimal viewing experience across various devices including monitors, laptops, tablets, and phones.
 Some of the other application features are:
 - Daily scheduled task to get the latest exchange rates via an API and update book prices in foreign currency
-- Extensive use of AJAX requests, modals, and DOM manipulation in order to improve the user experience by enabling the following functionalities without a full-page reload:
+- Use of AJAX requests, modals, and DOM manipulation in order to improve the user experience by enabling the following functionalities without a full-page reload:
   - Purchasing books
   - Adding books to the user's list or shopping cart and updating the number of books in the cart
   - Submitting ratings and reviews
