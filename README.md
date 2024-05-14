@@ -1,4 +1,4 @@
-<h1 align="center">Amazon Kindle Store</h1>
+<h1 align="center" id="amazon-kindle-store"><img src="screenshots/Amazon_Kindle_logo.svg" alt="icon"  height="100" tile="Amazon Kindle Store"/></h1>
 
 ![Screenshot 1](screenshots/screenshot1.png)
 
