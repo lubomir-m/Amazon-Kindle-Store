@@ -10,7 +10,7 @@
    <img width="100" src="https://user-images.githubusercontent.com/25181517/117201470-f6d56780-adec-11eb-8f7c-e70e376cfd07.png" alt="Spring" title="Spring"/>
    <img width="100" src="https://user-images.githubusercontent.com/25181517/183891303-41f257f8-6b3d-487c-aa56-c497b880d0fb.png" alt="Spring Boot" title="Spring Boot"/>
    <img src="https://techstack-generator.vercel.app/mysql-icon.svg" alt="icon" width="100" height="100" tile="MySQL"/>
-   <img width="100" src="https://user-images.githubusercontent.com/25181517/192108890-200809d1-439c-4e23-90d3-b090cf9a4eea.png" alt="IntelliJ" title="IntelliJ"/>
+   <img width="100" height="100" src="https://github.com/lubomir-m/lubomir-m/blob/main/icons/intellij_idea.png" alt="IntelliJ" title="IntelliJ IDEA"/>
    <img width="100" src="https://user-images.githubusercontent.com/25181517/192108372-f71d70ac-7ae6-4c0d-8395-51d8870c2ef0.png" alt="Git" title="Git"/><br>
    <img src="https://techstack-generator.vercel.app/github-icon.svg" alt="icon" width="100" height="100" tile="GitHub"/>
    <img src="https://techstack-generator.vercel.app/js-icon.svg" alt="icon" width="100" height="100" tile="JavaScript"/>
@@ -20,15 +20,15 @@
    <img width="100" src="https://user-images.githubusercontent.com/25181517/183898054-b3d693d4-dafb-4808-a509-bab54cf5de34.png" alt="Bootstrap" title="Bootstrap"/>
 </div>
 
-This is a clone of the Amazon Kindle Store created as the project for my Spring Advanced course at Software University.
-The store supports a hierarchy of eBook categories, multiple currencies, pagination, filtering, sorting, users, roles,
+This is a clone of the [Amazon Kindle Store](https://www.amazon.com/Kindle-Store/b?ie=UTF8&node=133140011) created as the project for my [Spring Advanced](https://softuni.bg/trainings/4532/spring-advanced-june-2024) course at Software University.
+The store supports a hierarchy of eBook categories (N-ary tree), multiple currencies, pagination, filtering, sorting, users, roles,
 authors, publishers, wishlists, shopping carts and orders. Customers can add, delete, and update ratings and reviews and
 also search for books by title, author(s) name(s) and publisher name. Project Statistics: 193000 eBooks, 5909
 categories, 13200 authors, 152 publishers, and 8 currencies.
 
-The web application is designed to be fully responsive, ensuring an optimal viewing experience across various devices including monitors, laptops, tablets, and phones.
+The web application is designed to be responsive, ensuring an optimal viewing experience across various devices including monitors, laptops, tablets, and phones.
 Some of the other application features are:
-- Daily scheduled task to get the latest exchange rates via an API and update book prices in foreign currency
+- Daily scheduled tasks to get the latest exchange rates via an API, update book prices in foreign currency, and back up the database
 - Use of AJAX requests, modals, and DOM manipulation in order to improve the user experience by enabling the following functionalities without a full-page reload:
   - Purchasing books
   - Adding books to the user's list or shopping cart and updating the number of books in the cart
@@ -37,9 +37,9 @@ Some of the other application features are:
   - Deleting the last review and displaying the new review on top
   - Deleting books from the user’s list or cart, deleting ratings or reviews and showing the items as deleted
 - Cookie for saving the selected currency of users who are not logged in
-- Daily scheduled task to back up the database
-- Signin successes and failures logs
-- Performance logs
+- Performance logs, login successes and failures logs
+- One-day caching for: the currencies in the currency dropdown, the categories in the categories dropdown, the homepage books, the homepage BookDtos for each currency, and the placeholder reviews
+- Use of recursive common table expressions in order to find all parent categories and all subcategories of a given category
 
 ### Screenshots
 
