@@ -173,6 +173,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @Transactional
     public List<ReviewDto> getPlaceholderReviews(int count) {
         List<Review> allPlaceholders = this.reviewRepository.findFirst10ByOrderByIdAsc();
         Collections.shuffle(allPlaceholders);

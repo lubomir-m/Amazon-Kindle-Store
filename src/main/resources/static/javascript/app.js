@@ -248,8 +248,12 @@ function updateReviewUI(data) {
     `;
 
     let reviewList = document.querySelector('.review-list');
-    reviewList.removeChild(reviewList.lastChild);
     reviewList.insertBefore(newReview, reviewList.firstChild);
+
+    let reviews = document.querySelectorAll('.review-list .review');
+    if (reviews.length >= 11) {
+        reviews[reviews.length - 1].remove();
+    }
 }
 
 function generateStars(ratingValue) {
