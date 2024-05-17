@@ -20,7 +20,7 @@
    <img width="100" src="https://user-images.githubusercontent.com/25181517/183898054-b3d693d4-dafb-4808-a509-bab54cf5de34.png" alt="Bootstrap" title="Bootstrap"/>
 </div>
 
-This is a clone of the [Amazon Kindle Store](https://www.amazon.com/Kindle-Store/b?ie=UTF8&node=133140011) created as the project for my [Spring Advanced](https://softuni.bg/trainings/4532/spring-advanced-june-2024) course at Software University.
+This is a clone of the [Amazon Kindle Store](https://www.amazon.com/Kindle-Store/b?ie=UTF8&node=133140011) created as the project for my [Spring Advanced](https://softuni.bg/trainings/4532/spring-advanced-june-2024) course at Software University. The project requirements are described in this file: [Spring Advanced Individual Project Assignment](https://github.com/lubomir-m/Amazon-Kindle-Store/blob/main/Individual-Project-Assignment.docx).
 The store supports a hierarchy of eBook categories (N-ary tree), multiple currencies, pagination, filtering, sorting, users, roles,
 authors, publishers, wishlists, shopping carts and orders. Customers can add, delete, and update ratings and reviews and
 also search for books by title, author(s) name(s) and publisher name. Project Statistics: 193000 eBooks, 5909
