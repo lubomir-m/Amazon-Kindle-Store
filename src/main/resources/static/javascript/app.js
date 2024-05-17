@@ -229,7 +229,7 @@ function updateReviewUI(data) {
 
     newReview.innerHTML = `
         <div class="picture-container col-2 d-flex justify-content-end">
-                <img src="${data.pictureBase64}"/>
+                <img src="${data.pictureBase64}" style="margin-right: 35px"/>
             </div>
             <div class="review-details col-5 d-flex">
                 <div class="review-container-1">
