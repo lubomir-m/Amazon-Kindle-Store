@@ -214,7 +214,7 @@ public class BookServiceImpl implements BookService {
 //        return this.bookRepository.findBySearchQuery(query, pageable)
 //                .map(book -> mapBookToDto(book, currency));
 
-//        return this.bookRepository.findAllBySearchColumnLikeIgnoreCase(query, pageable)
+//        return this.bookRepository.findAllBySearchColumnLike(query, pageable)
 //                .map(book -> mapBookToDto(book, currency));
 
         return this.bookRepository.findAllBySearchQuery2(query, pageable)
