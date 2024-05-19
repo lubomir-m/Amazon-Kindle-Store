@@ -225,3 +225,10 @@ img {
 #averageRating {
     margin-right: 5px;
 }
+
+.similar-ebooks {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-left: 15px;
+    margin-bottom: 15px;
+}

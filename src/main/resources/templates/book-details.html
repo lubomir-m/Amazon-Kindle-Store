@@ -113,6 +113,7 @@
     </div>
 
     <div class="recommended-books row justify-content-center">
+        <div class="similar-ebooks">Similar eBooks:</div>
         <div class="recommended-book col-auto" th:each="book : ${books}" th:object="${book}">
             <a th:href="@{/books/{id}(id=*{id})}">
                 <div class="book-cover" th:style="'background-color:' + *{coverColor}">

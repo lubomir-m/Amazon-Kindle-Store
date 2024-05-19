@@ -52,6 +52,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @Transactional
     public Page<ReviewDto> getReviewsByBookId(Long bookId, Pageable pageable) {
         return this.reviewRepository.findAllByBookId(bookId, pageable)
                 .map(review -> this.modelMapper.map(review, ReviewDto.class));
@@ -132,12 +133,14 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @Transactional
     public Page<ReviewDto> findByUserId(Long userId, Pageable pageable) {
         return this.reviewRepository.findByUserIdOrderBySubmissionDateDesc(userId, pageable)
                 .map(review -> this.modelMapper.map(review, ReviewDto.class));
     }
 
     @Override
+    @Transactional
     public void updateReview(ReviewSubmissionDto reviewSubmissionDto, Model model, Long bookId) {
         UserDto userDto = (UserDto) model.getAttribute("userDto");
         if (userDto == null) {
@@ -177,8 +180,17 @@ public class ReviewServiceImpl implements ReviewService {
     public List<ReviewDto> getPlaceholderReviews(int count) {
         List<Review> allPlaceholders = this.reviewRepository.findFirst10ByOrderByIdAsc();
         Collections.shuffle(allPlaceholders);
-        return allPlaceholders.subList(0, count).stream().map(review ->
-                this.modelMapper.map(review, ReviewDto.class))
+        return getSubList(allPlaceholders, count);
+    }
+
+    @Transactional
+    public List<ReviewDto> getSubList(List<Review> list, int count) {
+        Book book = this.bookRepository.findById(1L).get();
+        return list.subList(0, count).stream().peek(review -> {
+                    // Force initialization of the necessary properties
+                    review.setBook(book);
+                    review.getBook().getReviews().size();
+                }).map(review -> this.modelMapper.map(review, ReviewDto.class))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 }
