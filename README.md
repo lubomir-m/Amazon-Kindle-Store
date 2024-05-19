@@ -38,7 +38,7 @@ Some of the other application features are:
   - Deleting books from the user’s list or cart, deleting ratings or reviews and showing the items as deleted
 - Cookie for saving the selected currency of users who are not logged in
 - Performance logs, login successes and failures logs
-- One-day caching for: the currencies in the currency dropdown, the categories in the categories dropdown, the homepage books, the homepage BookDtos for each currency, and the placeholder reviews
+- One-day caching for: the currencies in the currency dropdown, the categories in the categories dropdown, the homepage books, and the homepage BookDtos for each currency
 - Use of recursive common table expressions in order to find all parent categories and all subcategories of a given category
 
 ### Screenshots
