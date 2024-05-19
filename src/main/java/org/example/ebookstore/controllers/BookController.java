@@ -1,6 +1,7 @@
 package org.example.ebookstore.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import org.example.ebookstore.entities.Currency;
 import org.example.ebookstore.entities.dtos.BookDto;
 import org.example.ebookstore.entities.dtos.ReviewDto;
@@ -34,6 +35,7 @@ public class BookController {
     }
 
     @GetMapping("/books/{id}")
+    @Transactional
     public String bookDetails(@PathVariable("id") Long id, Model model, HttpServletRequest request,
                               @RequestParam(defaultValue = "0") int page) {
 

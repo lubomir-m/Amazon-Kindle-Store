@@ -14,9 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@CacheConfig(cacheNames = "placeholderReviews")
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-    @Cacheable(cacheManager = "cacheManager", key = "'placeholderReviews'")
     List<Review> findFirst10ByOrderByIdAsc();
     @Query("select r from Review r left join r.book b where b.id = :bookId " +
             "order by r.submissionDate desc")
