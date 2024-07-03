@@ -7,10 +7,10 @@
 **Built with**
 <div style="display: flex; align-items: flex-start;">
    <img src="https://techstack-generator.vercel.app/java-icon.svg" alt="icon" width="100" height="100" tile="Java"/>
-   <img width="100" src="https://user-images.githubusercontent.com/25181517/117201470-f6d56780-adec-11eb-8f7c-e70e376cfd07.png" alt="Spring" title="Spring"/>
+   <img width="100" src="https://github.com/lubomir-m/lubomir-m/blob/d8c1d58dac012eb034412cf4387a7a89a1e7d619/icons/spring.webp" alt="Spring" title="Spring"/>
    <img width="100" src="https://user-images.githubusercontent.com/25181517/183891303-41f257f8-6b3d-487c-aa56-c497b880d0fb.png" alt="Spring Boot" title="Spring Boot"/>
    <img src="https://techstack-generator.vercel.app/mysql-icon.svg" alt="icon" width="100" height="100" tile="MySQL"/>
-   <img width="100" height="100" src="https://github.com/lubomir-m/lubomir-m/blob/main/icons/intellij_idea.png" alt="IntelliJ" title="IntelliJ IDEA"/>
+   <img width="100" height="100" src="https://github.com/lubomir-m/lubomir-m/blob/main/icons/intellij.png" alt="IntelliJ" title="IntelliJ IDEA"/>
    <img width="100" src="https://user-images.githubusercontent.com/25181517/192108372-f71d70ac-7ae6-4c0d-8395-51d8870c2ef0.png" alt="Git" title="Git"/><br>
    <img src="https://techstack-generator.vercel.app/github-icon.svg" alt="icon" width="100" height="100" tile="GitHub"/>
    <img src="https://techstack-generator.vercel.app/js-icon.svg" alt="icon" width="100" height="100" tile="JavaScript"/>
