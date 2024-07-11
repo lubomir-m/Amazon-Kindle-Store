@@ -57,8 +57,9 @@ Some of the other application features are:
 
 ## Video Presentation
 
-You can find below a short video presentation of my clone project uploaded on YouTube. If access to YouTube is
-restricted on your computer, you can download it from here [Video Presentation](add-the-link-here)
+You can find below a short video presentation of my clone project uploaded on YouTube.
+[![Watch the video](https://img.youtube.com/vi/x2dcjIvK5BU/0.jpg)](https://www.youtube.com/watch?v=x2dcjIvK5BU)<br>
+If access to YouTube is restricted on your computer, you can download it from here [Video Presentation](https://youtu.be/x2dcjIvK5BU?si=3vEdTulthFyp9-NZ)
 
 ## Installation
 
